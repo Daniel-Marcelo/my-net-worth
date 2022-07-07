@@ -1,15 +1,19 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import AuthService from './Auth.service';
+import { NavBar } from './components/NavBar/NavBar';
 
-function App({authService = AuthService}) {
+function App({ authService = AuthService }) {
+
+  const test = () => {
+    fetch("/search/quote?symbols=TLS.AX,MUS.AX").then(response => {
+      console.log(response)
+    })
+  }
   return (
     <div className="App">
-      <header className="App-header">
-      </header>
-
-      <button onClick={authService.login}>Login</button>
+      <NavBar />
+      <button onClick={test}>Login</button>
     </div>
   );
 }

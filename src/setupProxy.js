@@ -1,11 +1,18 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
-const proxy = {
-    target: 'https://query2.finance.yahoo.com',
-    changeOrigin: true
-}
 module.exports = function(app) {
   app.use(
-    '/search/v7/finance',
-    createProxyMiddleware(proxy)
+    '/search',
+    createProxyMiddleware({
+      target: 'https://query2.finance.yahoo.com/v1/finance',
+      changeOrigin: true,
+    })
+  );
+
+  app.use(
+    '/search',
+    createProxyMiddleware({
+      target: 'https://query2.finance.yahoo.com/v1/finance',
+      changeOrigin: true,
+    })
   );
 };

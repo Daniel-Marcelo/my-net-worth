@@ -9,9 +9,9 @@ module.exports = function(app) {
   );
 
   app.use(
-    '/search',
+    '/chart',
     createProxyMiddleware({
-      target: 'https://query2.finance.yahoo.com/v1/finance',
+      target: 'https://query1.finance.yahoo.com/v8/finance',
       changeOrigin: true,
     })
   );

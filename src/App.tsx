@@ -9,7 +9,10 @@ import {
   Preflight,
 } from '@xstyled/styled-components'
 import { x } from '@xstyled/styled-components'
-import { PriceChart } from './components/PriceChart/PriceChart';
+import { PriceChart } from './components/PriceChartV2/PriceChart';
+import { useGetPriceHistory } from './components/PriceChartV2/useGetPriceHistory';
+// import { PriceChart } from './components/PriceChart/PriceChart';
+import format from 'date-fns/format';
 
 const theme = {
   ...defaultTheme,
@@ -18,7 +21,9 @@ const theme = {
 
 
 function App({ authService = AuthService }) {
-  const [selectedTicker, setSelectedTicker] = useState('')
+  const [selectedTicker, setSelectedTicker] = useState('');
+  const [chartData, setChartData] = useState([])
+  const getPriceHistory = useGetPriceHistory()
 
   const test = () => {
     fetch("/search/quote?symbols=TLS.AX,MUS.AX").then(response => {
@@ -26,19 +31,40 @@ function App({ authService = AuthService }) {
     })
   }
 
-  useEffect(() => {
-    if(selectedTicker) {
+  const fetchHistory = async () => {
+    const [timestamps, prices] = await getPriceHistory(selectedTicker);
+    const dates = timestamps.map(t => {
+      const date = new Date(0)
+      date.setUTCSeconds(t)
+      return date;
+    });
+    const data = dates.map((date, index) => {
+      return {
+        name: format(date, 'MM/dd/yyyy'),
+        price: prices[index]
+      }
+    });
+    setChartData(data)
+  }
 
+  useEffect(() => {
+    if (selectedTicker) {
+      fetchHistory()
     }
-  },  [selectedTicker])
+  }, [selectedTicker]);
+
+
   return (
     <ThemeProvider theme={theme}>
       <Preflight />
       <div className="App">
         <NavBar />
         <x.div p="4">
-        <TickerSearch setSelectedTicker={setSelectedTicker} />
-        <PriceChart/>
+          <TickerSearch setSelectedTicker={setSelectedTicker} />
+          {selectedTicker && <x.div display="flex" flexDirection="column" flex="1" alignItems="center" mt={8}>
+            <x.div mb={8}>{selectedTicker} price</x.div>
+            <PriceChart chartData={chartData} />
+          </x.div>}
         </x.div>
       </div>
     </ThemeProvider>

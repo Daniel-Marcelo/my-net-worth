@@ -1,18 +1,20 @@
-const { createProxyMiddleware } = require('http-proxy-middleware');
-module.exports = function(app) {
+const { createProxyMiddleware } = require("http-proxy-middleware");
+
+function abc(app) {
   app.use(
-    '/search',
+    "/search",
     createProxyMiddleware({
-      target: 'https://query2.finance.yahoo.com/v1/finance',
+      target: "https://query2.finance.yahoo.com/v1/finance",
       changeOrigin: true,
     })
   );
 
   app.use(
-    '/chart',
+    "/chart",
     createProxyMiddleware({
-      target: 'https://query1.finance.yahoo.com/v8/finance',
+      target: "https://query1.finance.yahoo.com/v8/finance",
       changeOrigin: true,
     })
   );
-};
+}
+module.exports = abc;

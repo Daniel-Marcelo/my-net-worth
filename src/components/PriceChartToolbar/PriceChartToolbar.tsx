@@ -12,6 +12,7 @@ interface ButtonProps {
 function Button({ onClick, children, isActive }: ButtonProps) {
   return (
     <x.span
+      mr={4}
       p={4}
       cursor="pointer"
       bg={{ _: isActive ? "#1976d2" : "#fff", hover: "#1976d2" }}

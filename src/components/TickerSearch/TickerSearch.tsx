@@ -41,9 +41,9 @@ export function TickerSearch({ setSelectedTicker }: TickerSearchProps) {
         onInputChange={getOptions}
         isOptionEqualToValue={(option, value) => option.ticker === value.ticker}
         options={options}
-        getOptionLabel={(option) => option.name}
+        getOptionLabel={(option) => (option as Quote).name}
         renderOption={renderOption}
-        onChange={onChange}
+        onChange={(event, value) => onChange(event, value as Quote)}
         sx={{ width: "100%" }}
         renderInput={(params) => <TextField {...params} label="Ticker or Company" />}
       />

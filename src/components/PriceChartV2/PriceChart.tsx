@@ -1,5 +1,5 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
-import { Quote } from "../TickerSearch/useTickerSearch";
+import { Quote } from "../../models";
 
 interface PriceChartProps {
   chartData: Quote[];

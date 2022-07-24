@@ -22,7 +22,10 @@ export function PriceChart({ chartData, selectedTicker }: PriceChartProps) {
       <XAxis dataKey="name" />
       <YAxis
         type="number"
-        domain={[(dataMin) => Math.round(dataMin), (dataMax) => Math.round(dataMax) + Math.round(dataMax * 0.005)]}
+        domain={[
+          (dataMin) => Math.round(dataMin) - Math.round(dataMin * 0.005),
+          (dataMax) => Math.round(dataMax) + Math.round(dataMax * 0.005),
+        ]}
       />
       <Tooltip />
       <Legend formatter={() => `${selectedTicker} Price`} />

@@ -55,7 +55,7 @@ function App() {
           <TickerSearch setSelectedTicker={setSelectedTicker} />
           {selectedTicker && (
             <x.div display="flex" flexDirection="column" flex="1" alignItems="center" mt={8}>
-             <x.div mb={8}>
+              <x.div mb={8}>
                 <PriceChartToolbar
                   selectedTicker={selectedTicker}
                   setSelectedTimeFrame={setSelectedTimeFrame}

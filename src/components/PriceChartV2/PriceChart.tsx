@@ -2,9 +2,10 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "r
 import { Quote } from "../../models";
 
 interface PriceChartProps {
+  selectedTicker: string;
   chartData: Quote[];
 }
-export function PriceChart({ chartData }: PriceChartProps) {
+export function PriceChart({ chartData, selectedTicker }: PriceChartProps) {
   return (
     <LineChart
       width={800}
@@ -24,8 +25,8 @@ export function PriceChart({ chartData }: PriceChartProps) {
         domain={[(dataMin) => Math.round(dataMin), (dataMax) => Math.round(dataMax) + Math.round(dataMax * 0.005)]}
       />
       <Tooltip />
-      <Legend />
-      <Line type="monotone" dataKey="price" stroke="#8884d8" activeDot={{ r: 8 }} />
+      <Legend formatter={() => `${selectedTicker} Price`} />
+      <Line dot={false} type="monotone" dataKey="price" stroke="#8884d8" activeDot={{ r: 8 }} />
     </LineChart>
   );
 }

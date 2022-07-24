@@ -64,7 +64,7 @@ function App() {
                   setChartData={setChartData}
                 />
               </x.div>
-              <PriceChart chartData={chartData} />
+              <PriceChart selectedTicker={selectedTicker} chartData={chartData} />
             </x.div>
           )}
         </x.div>

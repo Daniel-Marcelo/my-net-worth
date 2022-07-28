@@ -1,16 +1,16 @@
-import { TickerSearch } from "../../components/TickerSearch/TickerSearch"
 import format from "date-fns/format";
 import { x } from "@xstyled/styled-components";
-import { PriceChartToolbar } from "../../components/PriceChartToolbar";
 import { useEffect, useState } from "react";
+import { PriceChartToolbar } from "../../components/PriceChartToolbar";
+import { TickerSearch } from "../../components/TickerSearch/TickerSearch";
 import { PriceChart } from "../../components/PriceChartV2/PriceChart";
 import { useGetPriceHistory } from "../../components/PriceChartV2/useGetPriceHistory";
 
-export const QuotePage = () => {
-    const [selectedTicker, setSelectedTicker] = useState("");
-    const [selectedTimeframe, setSelectedTimeFrame] = useState("1d");
-    const [chartData, setChartData] = useState([]);
-    const getPriceHistory = useGetPriceHistory();
+export function QuotePage() {
+  const [selectedTicker, setSelectedTicker] = useState("");
+  const [selectedTimeframe, setSelectedTimeFrame] = useState("1d");
+  const [chartData, setChartData] = useState([]);
+  const getPriceHistory = useGetPriceHistory();
 
   const fetchHistory = async (range = "1d", interval = "2m") => {
     setSelectedTimeFrame(range);
@@ -33,20 +33,22 @@ export const QuotePage = () => {
     }
   }, [selectedTicker]);
 
-    return <>
-        <TickerSearch setSelectedTicker={setSelectedTicker} />
-        {selectedTicker && (
-            <x.div display="flex" flexDirection="column" flex="1" alignItems="center" mt={8}>
-                <x.div mb={8}>
-                    <PriceChartToolbar
-                        selectedTicker={selectedTicker}
-                        setSelectedTimeFrame={setSelectedTimeFrame}
-                        selectedTimeFrame={selectedTimeframe}
-                        setChartData={setChartData}
-                    />
-                </x.div>
-                {chartData.length && <PriceChart selectedTicker={selectedTicker} chartData={chartData} />}
-            </x.div>
-        )}
-    </>
+  return (
+    <x.div p={8}>
+      <TickerSearch setSelectedTicker={setSelectedTicker} />
+      {selectedTicker && (
+        <x.div display="flex" flexDirection="column" flex="1" alignItems="center" mt={8}>
+          <x.div mb={8}>
+            <PriceChartToolbar
+              selectedTicker={selectedTicker}
+              setSelectedTimeFrame={setSelectedTimeFrame}
+              selectedTimeFrame={selectedTimeframe}
+              setChartData={setChartData}
+            />
+          </x.div>
+          {chartData.length ? <PriceChart selectedTicker={selectedTicker} chartData={chartData} /> : ""}
+        </x.div>
+      )}
+    </x.div>
+  );
 }

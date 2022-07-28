@@ -3,11 +3,14 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useNavigate } from "react-router-dom";
+import { x } from "@xstyled/styled-components";
 
 export function NavBar() {
+  const navigate = useNavigate();
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -15,10 +18,18 @@ export function NavBar() {
           <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
-          </Typography>
-          <Button color="inherit">Login</Button>
+
+          <x.span cursor="pointer" onClick={() => navigate("/quote")}>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Quote
+            </Typography>
+          </x.span>
+          <x.span ml={4} cursor="pointer" onClick={() => navigate("/calc")}>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Calculator
+            </Typography>
+          </x.span>
+          {/* <Button color="inherit">Login</Button> */}
         </Toolbar>
       </AppBar>
     </Box>

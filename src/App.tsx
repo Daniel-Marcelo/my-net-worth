@@ -63,7 +63,7 @@ function App() {
                   setChartData={setChartData}
                 />
               </x.div>
-              <PriceChart selectedTicker={selectedTicker} chartData={chartData} />
+              {chartData.length && <PriceChart selectedTicker={selectedTicker} chartData={chartData} />}
             </x.div>
           )}
         </x.div>

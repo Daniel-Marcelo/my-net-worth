@@ -11,3 +11,17 @@ export enum ContributionPeriodLabel {
   Monthly = "Monthly",
   Annually = "Annually",
 }
+
+export interface BarChartEntry {
+  name: string;
+  // [key in ChartEntry]: number;
+  startingAmount: number;
+  interest: number;
+  contributions: number;
+}
+
+export enum ChartEntry {
+  startingAmount = "Starting Amount",
+  interest = "Interest",
+  contributions = "Contributions",
+}

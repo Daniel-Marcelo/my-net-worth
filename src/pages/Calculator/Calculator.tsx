@@ -19,6 +19,7 @@ import { useContributionPeriodOptions } from "./useContributionPeriodOptions";
 import { useInvestmentCalculator } from "./useInvestmentCalculator";
 import { useLabelize } from "../../hooks/useLabelize";
 import { useFormatNumber } from "../../hooks/useFormatNumber";
+import { useCalculatorChartColors } from "./useCalculatorChartColors";
 
 function CustomTooltip({ active, payload, label }: TooltipProps<number, string>) {
   const [colors] = useState({
@@ -50,11 +51,7 @@ function CustomTooltip({ active, payload, label }: TooltipProps<number, string>)
 }
 
 export function Calculator() {
-  const [colors] = useState({
-    startingAmount: "#0088FE",
-    contributions: "#8884d8",
-    interest: "#82ca9d",
-  });
+  const colors = useCalculatorChartColors()
   const [currency] = useState("£");
   const [startingAmount, setStartingAmount] = useState(1000);
   const [additionalContribution, setAdditionalContribution] = useState(100);

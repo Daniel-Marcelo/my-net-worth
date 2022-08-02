@@ -1,7 +1,6 @@
 import { BarChartEntry, ContributionPeriodValue } from "./Calculator.model";
 
 export const useInvestmentCalculator = () => {
-
   const periods = {
     [ContributionPeriodValue.Weekly]: 52,
     [ContributionPeriodValue.BiWeekly]: 26,
@@ -31,23 +30,14 @@ export const useInvestmentCalculator = () => {
       }
       allYearsContributions += thisYearContributions;
 
-      if (y === 1) {
-        console.log(thisYearContributions);
-        console.log(allYearsContributions);
-      }
-
-      console.log(`Total for year ${y} is ${total}`)
-      console.log(`contributions for year ${y} is ${thisYearContributions}`)
-
       const normalizedContributions = +(thisYearContributions + y === 1 ? 0 : allYearsContributions);
       items.push({
         name: `Year ${y}`,
         startingAmount,
-        interest: +(total - normalizedContributions - startingAmount).toFixed(2),
-        contributions: normalizedContributions.toFixed(2),
+        interest: +(total - normalizedContributions - startingAmount).toFixed(0),
+        contributions: +normalizedContributions.toFixed(0),
       });
     }
-
     return [items, total] as const;
   };
 };

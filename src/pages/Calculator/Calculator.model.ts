@@ -14,7 +14,6 @@ export enum ContributionPeriodLabel {
 
 export interface BarChartEntry {
   name: string;
-  // [key in ChartEntry]: number;
   startingAmount: number;
   interest: number;
   contributions: number;

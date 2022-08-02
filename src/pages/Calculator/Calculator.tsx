@@ -176,7 +176,7 @@ export function Calculator() {
 
       {totalValue ? (
         <Typography variant="h6" component="div" sx={{ textAlign: "center", my: 4, flexGrow: 1 }}>
-          £{format(totalValue)}
+          {currency}{format(totalValue)}
         </Typography>
       ) : (
         ""

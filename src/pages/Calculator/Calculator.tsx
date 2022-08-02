@@ -1,7 +1,6 @@
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { x } from "@xstyled/styled-components";
 import { useState } from "react";
-import numeral from "numeral";
 import {
   BarChart,
   Bar,
@@ -19,14 +18,16 @@ import { ContributionPeriodValue } from "./Calculator.model";
 import { useContributionPeriodOptions } from "./useContributionPeriodOptions";
 import { useInvestmentCalculator } from "./useInvestmentCalculator";
 import { useLabelize } from "../../hooks/useLabelize";
+import { useFormatNumber } from "../../hooks/useFormatNumber";
 
-function CustomTooltip({ active, payload, label }: TooltipProps<string, string>) {
+function CustomTooltip({ active, payload, label }: TooltipProps<number, string>) {
   const [colors] = useState({
     startingAmount: "#0088FE",
     contributions: "#8884d8",
     interest: "#82ca9d",
   });
   const labelize = useLabelize();
+  const format = useFormatNumber();
   const [currency] = useState("£");
   if (active && payload && payload.length) {
     return (
@@ -34,13 +35,13 @@ function CustomTooltip({ active, payload, label }: TooltipProps<string, string>)
         <x.div p={1} className="label">{`${label}`}</x.div>
         <x.div p={1} color={colors[payload[0].dataKey]} className="label">{`${labelize(
           payload[0].name
-        )} : ${currency}${numeral(payload[0].value).format("0,0.00")}`}</x.div>
+        )} : ${currency}${format(payload[0].value)}`}</x.div>
         <x.div p={1} color={colors[payload[1].dataKey]} className="label">{`${labelize(
           payload[1].name
-        )} : ${currency}${numeral(payload[1].value).format("0,0.00")}`}</x.div>
+        )} : ${currency}${format(payload[1].value)}`}</x.div>
         <x.div p={1} color={colors[payload[2].dataKey]} className="label">{`${labelize(
           payload[2].name
-        )} : ${currency}${numeral(payload[2].value).format("0,0.00")}`}</x.div>
+        )} : ${currency}${format(payload[2].value)}`}</x.div>
       </x.div>
     );
   }
@@ -67,6 +68,7 @@ export function Calculator() {
   const contributionPeriodOptions = useContributionPeriodOptions();
   const calculateInvestment = useInvestmentCalculator();
   const labelize = useLabelize();
+  const format = useFormatNumber();
 
   const validate = () => {
     setClickedCalculate(true);
@@ -177,7 +179,7 @@ export function Calculator() {
 
       {totalValue ? (
         <Typography variant="h6" component="div" sx={{ textAlign: "center", my: 4, flexGrow: 1 }}>
-          £{numeral(totalValue).format("0,0.00")}
+          £{format(totalValue)}
         </Typography>
       ) : (
         ""
@@ -188,7 +190,7 @@ export function Calculator() {
             <CartesianGrid strokeDasharray="1 1 1" />
             <XAxis dataKey="name" />
             <YAxis />
-            <Tooltip content={(props: TooltipProps<string, string>) => <CustomTooltip {...props} />} />
+            <Tooltip content={(props: TooltipProps<number, string>) => <CustomTooltip {...props} />} />
             <Legend formatter={(value, entry, index) => labelize(value)} />
             <Bar dataKey="startingAmount" stackId="a" fill={colors.startingAmount} />
             <Bar dataKey="contributions" stackId="a" fill={colors.contributions} />
@@ -210,7 +212,7 @@ export function Calculator() {
                   // console.log(props)
                   <x.span color={colors[props.payload.key]}>
                     {currency}
-                    {numeral(value).format("0,0.00")}
+                    {format(value)}
                   </x.span>
                 )}
               />

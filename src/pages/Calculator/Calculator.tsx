@@ -68,7 +68,7 @@ export function Calculator() {
   const calculateInvestment = useInvestmentCalculator();
   const labelize = useLabelize();
 
-  const valdate = () => {
+  const validate = () => {
     setClickedCalculate(true);
     if (contributionPeriod && rateOfReturn && startingAmount && years && additionalContribution) {
       const [chartRows, total] = calculateInvestment(
@@ -170,7 +170,7 @@ export function Calculator() {
           error={clickedCalculate && isError(years)}
         />
 
-        <Button variant="contained" onClick={valdate}>
+        <Button variant="contained" onClick={validate}>
           Calculate
         </Button>
       </x.div>

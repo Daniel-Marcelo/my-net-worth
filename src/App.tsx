@@ -5,6 +5,7 @@ import { Protected } from "./components/Protected/Protected";
 import { AuthContextProvider } from "./context/AuthContext";
 import { Calculator } from "./pages/Calculator/Calculator";
 import { HomePage } from "./pages/HomePage/HomePage";
+import { LoginPage } from "./pages/Login/LoginPage";
 import { QuotePage } from "./pages/QuotePage/QuotePage";
 
 const theme = {
@@ -26,6 +27,7 @@ function App() {
           <NavBar />
           <Routes>
             <Route path="/home" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
             <Route path="/quote" element={<QuotePage />} />
             <Route
               path="/calc"

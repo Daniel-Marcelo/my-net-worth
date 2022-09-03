@@ -6,6 +6,7 @@ import { AuthContextProvider } from "./context/AuthContext";
 import { Calculator } from "./pages/Calculator/Calculator";
 import { HomePage } from "./pages/HomePage/HomePage";
 import { LoginPage } from "./pages/Login/LoginPage";
+import { PortfoliosPage } from "./pages/PortfoliosPage/PortfoliosPage";
 import { QuotePage } from "./pages/QuotePage/QuotePage";
 import { RegisterPage } from "./pages/Register/RegisterPage";
 
@@ -28,6 +29,7 @@ function App() {
           <NavBar />
           <Routes>
             <Route path="/home" element={<HomePage />} />
+            <Route path="/portfolios" element={<PortfoliosPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/quote" element={<QuotePage />} />

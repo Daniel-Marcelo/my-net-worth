@@ -1,15 +1,19 @@
 import { Button, TextField } from "@mui/material";
 import { useState } from "react";
 import { x } from "@xstyled/styled-components";
-import GoogleButton from "react-google-button";
+import { GoogleLoginButton } from "react-social-login-buttons";
 import { useLogin } from "./useLogin";
 
 export function LoginPage() {
-  const login = useLogin();
+  const [loginWithGoogle, loginWithEmailPassword] = useLogin();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const onClickLogin = () => {};
+  const onClickLogin = () => {
+    if (email && password) {
+      loginWithEmailPassword(email, password);
+    }
+  };
   return (
     <x.div h="100vh" display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" pt={32}>
       <x.div letterSpacing="5px" fontSize="32px">
@@ -44,7 +48,7 @@ export function LoginPage() {
         </x.div>
 
         <x.div mt={4}>
-          <GoogleButton onClick={() => login()} />
+          <GoogleLoginButton onClick={() => loginWithGoogle()} />
         </x.div>
       </x.div>
     </x.div>

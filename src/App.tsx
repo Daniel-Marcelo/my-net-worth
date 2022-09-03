@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { NavBar } from "./components/NavBar/NavBar";
 import { Protected } from "./components/Protected/Protected";
 import { AuthContextProvider } from "./context/AuthContext";
+import { PortfolioContextProvider } from "./context/PortfolioContext";
 import { Calculator } from "./pages/Calculator/Calculator";
 import { HomePage } from "./pages/HomePage/HomePage";
 import { LoginPage } from "./pages/Login/LoginPage";
@@ -26,23 +27,25 @@ function App() {
       <Preflight />
       <BrowserRouter>
         <AuthContextProvider>
-          <NavBar />
-          <Routes>
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/portfolios" element={<PortfoliosPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/quote" element={<QuotePage />} />
-            <Route
-              path="/calc"
-              element={
-                <Protected>
-                  <Calculator />
-                </Protected>
-              }
-            />
-            <Route path="/*" element={<Navigate to="/home" replace />} />
-          </Routes>
+          <PortfolioContextProvider>
+            <NavBar />
+            <Routes>
+              <Route path="/home" element={<HomePage />} />
+              <Route path="/portfolios" element={<PortfoliosPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/quote" element={<QuotePage />} />
+              <Route
+                path="/calc"
+                element={
+                  <Protected>
+                    <Calculator />
+                  </Protected>
+                }
+              />
+              <Route path="/*" element={<Navigate to="/home" replace />} />
+            </Routes>
+          </PortfolioContextProvider>
         </AuthContextProvider>
       </BrowserRouter>
     </ThemeProvider>

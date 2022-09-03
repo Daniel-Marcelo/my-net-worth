@@ -22,15 +22,22 @@ function App() {
     <ThemeProvider theme={theme}>
       <Preflight />
       <BrowserRouter>
-      <AuthContextProvider>
-      <NavBar />
-        <Routes>
-        <Route path="/home" element={<HomePage />} />
-          <Route path="/quote" element={<QuotePage />} />
-          <Route path="/calc" element={<Protected><Calculator /></Protected>} />
-          <Route path="/*" element={<Navigate to="/home" replace />} />
-        </Routes>
-      </AuthContextProvider>
+        <AuthContextProvider>
+          <NavBar />
+          <Routes>
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/quote" element={<QuotePage />} />
+            <Route
+              path="/calc"
+              element={
+                <Protected>
+                  <Calculator />
+                </Protected>
+              }
+            />
+            <Route path="/*" element={<Navigate to="/home" replace />} />
+          </Routes>
+        </AuthContextProvider>
       </BrowserRouter>
     </ThemeProvider>
   );

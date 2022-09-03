@@ -51,7 +51,7 @@ function CustomTooltip({ active, payload, label }: TooltipProps<number, string>)
 }
 
 export function Calculator() {
-  const colors = useCalculatorChartColors()
+  const colors = useCalculatorChartColors();
   const [currency] = useState("£");
   const [startingAmount, setStartingAmount] = useState(1000);
   const [additionalContribution, setAdditionalContribution] = useState(100);
@@ -176,7 +176,8 @@ export function Calculator() {
 
       {totalValue ? (
         <Typography variant="h6" component="div" sx={{ textAlign: "center", my: 4, flexGrow: 1 }}>
-          {currency}{format(totalValue)}
+          {currency}
+          {format(totalValue)}
         </Typography>
       ) : (
         ""

@@ -1,8 +1,8 @@
 export enum QuoteType {
   Option = "OPTION",
   Future = "FUTURE",
-  Equity = 'EQUITY',
-  Etf = 'ETF'
+  Equity = "EQUITY",
+  Etf = "ETF",
 }
 
 export interface Quote {

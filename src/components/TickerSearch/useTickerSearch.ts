@@ -6,7 +6,7 @@ export const useTickerSearch =
     const response = await fetch(`/search?q=${text}`);
     const data = await response.json();
     return data.quotes
-      .filter((quote) => ![QuoteType.Future, QuoteType.Option].includes(quote.quoteType))
+      .filter((quote) => [QuoteType.Etf, QuoteType.Equity].includes(quote.quoteType))
       .map((quote) => ({
         ticker: quote.symbol,
         name: quote.shortname,

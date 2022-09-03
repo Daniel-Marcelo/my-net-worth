@@ -7,6 +7,11 @@ import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
 import { useLogin } from "./useLogin";
 
+function validate(email) {
+  const re = /\S+@\S+\.\S+/;
+  return re.test(email);
+}
+
 const schema = new passwordValidator();
 schema
   .is()
@@ -26,6 +31,7 @@ export function LoginPage() {
   const [loginWithGoogle, loginWithEmailPassword] = useLogin();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [clickedSave, setClickedSave] = useState(false);
 
   console.log(schema.validate("", { list: true }) as any[]);
   useEffect(() => {
@@ -34,9 +40,10 @@ export function LoginPage() {
   }, [password]);
 
   const onClickLogin = () => {
-    const passwordValid = schema.validate(password, { list: true });
-    console.log(passwordValid);
-    if (email && passwordValid) {
+    setClickedSave(true);
+    // const passwordValid = schema.validate(password, { list: true }) as string[];
+    // console.log(passwordValid);
+    if (validate(email) && !passwordRulesValid.length) {
       loginWithEmailPassword(email, password);
     }
   };
@@ -58,6 +65,8 @@ export function LoginPage() {
             onChange={(event) => setEmail(event.target.value)}
             label="Email"
             variant="outlined"
+            helperText={clickedSave && "Please enter a valid email address"}
+            error={clickedSave && !validate(email)}
           />
           <x.div mt={4}>
             <TextField
@@ -67,6 +76,8 @@ export function LoginPage() {
               onChange={(event) => setPassword(event.target.value)}
               label="Password"
               variant="outlined"
+              helperText={clickedSave && "Please enter a valid password"}
+              error={clickedSave && !!passwordRulesValid.length}
             />
           </x.div>
         </x.div>

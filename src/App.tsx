@@ -1,7 +1,10 @@
 import { defaultTheme, ThemeProvider, Preflight } from "@xstyled/styled-components";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { NavBar } from "./components/NavBar/NavBar";
+import { Protected } from "./components/Protected/Protected";
+import { AuthContextProvider } from "./context/AuthContext";
 import { Calculator } from "./pages/Calculator/Calculator";
+import { HomePage } from "./pages/HomePage/HomePage";
 import { QuotePage } from "./pages/QuotePage/QuotePage";
 
 const theme = {
@@ -19,12 +22,15 @@ function App() {
     <ThemeProvider theme={theme}>
       <Preflight />
       <BrowserRouter>
-        <NavBar />
+      <AuthContextProvider>
+      <NavBar />
         <Routes>
+        <Route path="/home" element={<HomePage />} />
           <Route path="/quote" element={<QuotePage />} />
-          <Route path="/calc" element={<Calculator />} />
-          <Route path="/*" element={<Navigate to="/quote" replace />} />
+          <Route path="/calc" element={<Protected><Calculator /></Protected>} />
+          <Route path="/*" element={<Navigate to="/home" replace />} />
         </Routes>
+      </AuthContextProvider>
       </BrowserRouter>
     </ThemeProvider>
   );

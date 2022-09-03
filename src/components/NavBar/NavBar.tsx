@@ -18,7 +18,6 @@ export function NavBar() {
           <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
             <MenuIcon />
           </IconButton>
-
           <x.span cursor="pointer" onClick={() => navigate("/quote")}>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Quote
@@ -27,6 +26,11 @@ export function NavBar() {
           <x.span ml={4} cursor="pointer" onClick={() => navigate("/calc")}>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Calculator
+            </Typography>
+          </x.span>
+          <x.span ml={4} cursor="pointer" onClick={() => navigate("/register")}>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Register
             </Typography>
           </x.span>
           {/* <Button color="inherit">Login</Button> */}

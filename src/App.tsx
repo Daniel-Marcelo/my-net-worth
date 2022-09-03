@@ -7,6 +7,7 @@ import { Calculator } from "./pages/Calculator/Calculator";
 import { HomePage } from "./pages/HomePage/HomePage";
 import { LoginPage } from "./pages/Login/LoginPage";
 import { QuotePage } from "./pages/QuotePage/QuotePage";
+import { RegisterPage } from "./pages/Register/RegisterPage";
 
 const theme = {
   ...defaultTheme,
@@ -28,6 +29,7 @@ function App() {
           <Routes>
             <Route path="/home" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
             <Route path="/quote" element={<QuotePage />} />
             <Route
               path="/calc"

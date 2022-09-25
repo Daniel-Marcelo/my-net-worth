@@ -35,6 +35,7 @@ module.exports = {
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": ["error"],
     "no-shadow": "off",
+    "react/jsx-no-useless-fragment": "off",
     "@typescript-eslint/no-shadow": ["error"],
     "@typescript-eslint/no-var-requires": 0,
     "react/jsx-filename-extension": [2, { extensions: [".js", ".jsx", ".ts", ".tsx"] }],

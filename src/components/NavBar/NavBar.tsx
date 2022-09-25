@@ -33,6 +33,16 @@ export function NavBar() {
               Register
             </Typography>
           </x.span>
+          <x.span ml={4} cursor="pointer" onClick={() => navigate("/login")}>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Login
+            </Typography>
+          </x.span>
+          <x.span ml={4} cursor="pointer" onClick={() => navigate("/portfolios")}>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Portfolios
+            </Typography>
+          </x.span>
           {/* <Button color="inherit">Login</Button> */}
         </Toolbar>
       </AppBar>

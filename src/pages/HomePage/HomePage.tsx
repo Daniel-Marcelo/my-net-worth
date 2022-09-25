@@ -5,9 +5,8 @@ import { useNavigate } from "react-router-dom";
 export function HomePage() {
   const navigate = useNavigate();
 
-  const onClickLogin = () => {
-    navigate("/login", { replace: true });
-  };
+  const onClickLogin = () => navigate("/login", { replace: true });
+
   return (
     <x.div h="100vh" display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" pt={32}>
       <x.div letterSpacing="10px" fontSize="58px">

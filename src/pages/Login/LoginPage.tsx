@@ -12,7 +12,8 @@ function validate(email) {
   return re.test(email);
 }
 
-const schema = new passwordValidator();
+const PasswordValidator = passwordValidator;
+const schema = new PasswordValidator();
 schema
   .is()
   .min(8) // Minimum length 8

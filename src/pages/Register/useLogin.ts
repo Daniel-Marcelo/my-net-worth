@@ -1,4 +1,3 @@
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { AuthService } from "../../Auth.service";
 import { useAuthContext } from "../../context/AuthContext";
 

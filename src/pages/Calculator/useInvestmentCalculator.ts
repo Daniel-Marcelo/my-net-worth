@@ -1,4 +1,4 @@
-import { BarChartEntry, ContributionPeriodValue } from "./Calculator.model";
+import { BarChartEntry, ContributionPeriodValue } from "../../models/Calculator";
 
 export const useInvestmentCalculator = () => {
   const periods = {

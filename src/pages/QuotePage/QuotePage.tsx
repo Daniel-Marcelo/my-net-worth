@@ -3,18 +3,20 @@ import { x } from "@xstyled/styled-components";
 import { useEffect, useState } from "react";
 import { PriceChartToolbar } from "../../components/PriceChartToolbar";
 import { TickerSearch } from "../../components/TickerSearch/TickerSearch";
-import { PriceChart } from "../../components/PriceChartV2/PriceChart";
-import { useGetPriceHistory } from "../../components/PriceChartV2/useGetPriceHistory";
+import { PriceChart } from "../../components/PriceChart/PriceChart";
+import { useFinance } from "../../services";
+import { PriceChartInterval, PriceChartTimeRange } from "../../models";
+import { Spinner } from "../../components/Spinner";
 
 export function QuotePage() {
   const [selectedTicker, setSelectedTicker] = useState("");
   const [selectedTimeframe, setSelectedTimeFrame] = useState("1d");
   const [chartData, setChartData] = useState([]);
-  const getPriceHistory = useGetPriceHistory();
+  const finance = useFinance();
 
-  const fetchHistory = async (range = "1d", interval = "2m") => {
+  const fetchHistory = async (range = PriceChartTimeRange.OneDay, interval = PriceChartInterval.TwoMins) => {
     setSelectedTimeFrame(range);
-    const [timestamps, prices] = await getPriceHistory(selectedTicker, range, interval);
+    const [timestamps, prices] = await finance.getPriceHistory(selectedTicker, range, interval);
     const dates = timestamps.map((t) => {
       const date = new Date(0);
       date.setUTCSeconds(t);

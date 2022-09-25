@@ -14,19 +14,17 @@ import {
   Cell,
   TooltipProps,
 } from "recharts";
-import { ContributionPeriodValue } from "./Calculator.model";
-import { useContributionPeriodOptions } from "./useContributionPeriodOptions";
+import { ContributionPeriodLabel, ContributionPeriodValue } from "../../models/Calculator";
 import { useInvestmentCalculator } from "./useInvestmentCalculator";
 import { useLabelize } from "../../hooks/useLabelize";
 import { useFormatNumber } from "../../hooks/useFormatNumber";
-import { useCalculatorChartColors } from "./useCalculatorChartColors";
 
+const calculatorColours = {
+  startingAmount: "#0088FE",
+  contributions: "#8884d8",
+  interest: "#82ca9d",
+};
 function CustomTooltip({ active, payload, label }: TooltipProps<number, string>) {
-  const [colors] = useState({
-    startingAmount: "#0088FE",
-    contributions: "#8884d8",
-    interest: "#82ca9d",
-  });
   const labelize = useLabelize();
   const format = useFormatNumber();
   const [currency] = useState("£");
@@ -34,13 +32,13 @@ function CustomTooltip({ active, payload, label }: TooltipProps<number, string>)
     return (
       <x.div background="#fff" p={4} borderRadius="4" borderWidth={1} borderStyle="solid" borderColor="lightgray">
         <x.div p={1} className="label">{`${label}`}</x.div>
-        <x.div p={1} color={colors[payload[0].dataKey]} className="label">{`${labelize(
+        <x.div p={1} color={calculatorColours[payload[0].dataKey]} className="label">{`${labelize(
           payload[0].name
         )} : ${currency}${format(payload[0].value)}`}</x.div>
-        <x.div p={1} color={colors[payload[1].dataKey]} className="label">{`${labelize(
+        <x.div p={1} color={calculatorColours[payload[1].dataKey]} className="label">{`${labelize(
           payload[1].name
         )} : ${currency}${format(payload[1].value)}`}</x.div>
-        <x.div p={1} color={colors[payload[2].dataKey]} className="label">{`${labelize(
+        <x.div p={1} color={calculatorColours[payload[2].dataKey]} className="label">{`${labelize(
           payload[2].name
         )} : ${currency}${format(payload[2].value)}`}</x.div>
       </x.div>
@@ -50,8 +48,26 @@ function CustomTooltip({ active, payload, label }: TooltipProps<number, string>)
   return null;
 }
 
+const contributionPeriodOptions = [
+  {
+    value: ContributionPeriodValue.Weekly,
+    label: ContributionPeriodLabel.Weekly,
+  },
+  {
+    value: ContributionPeriodValue.BiWeekly,
+    label: ContributionPeriodLabel.BiWeekly,
+  },
+  {
+    value: ContributionPeriodValue.Monthly,
+    label: ContributionPeriodLabel.Monthly,
+  },
+  {
+    value: ContributionPeriodValue.Annually,
+    label: ContributionPeriodLabel.Annually,
+  },
+];
+
 export function Calculator() {
-  const colors = useCalculatorChartColors();
   const [currency] = useState("£");
   const [startingAmount, setStartingAmount] = useState(1000);
   const [additionalContribution, setAdditionalContribution] = useState(100);
@@ -62,7 +78,7 @@ export function Calculator() {
   const [chartData, setChartData] = useState([]);
   const [pieData, setPieData] = useState([]);
   const [clickedCalculate, setClickedCalculate] = useState(false);
-  const contributionPeriodOptions = useContributionPeriodOptions();
+
   const calculateInvestment = useInvestmentCalculator();
   const labelize = useLabelize();
   const format = useFormatNumber();
@@ -188,27 +204,27 @@ export function Calculator() {
             <CartesianGrid strokeDasharray="1 1 1" />
             <XAxis dataKey="name" />
             <YAxis />
-            <Tooltip content={(props: TooltipProps<number, string>) => <CustomTooltip {...props} />} />
-            <Legend formatter={(value, entry, index) => labelize(value)} />
-            <Bar dataKey="startingAmount" stackId="a" fill={colors.startingAmount} />
-            <Bar dataKey="contributions" stackId="a" fill={colors.contributions} />
-            <Bar dataKey="interest" stackId="a" fill={colors.interest} />
+            <Tooltip content={CustomTooltip} />
+            <Legend formatter={(value) => labelize(value)} />
+            <Bar dataKey="startingAmount" stackId="a" fill={calculatorColours.startingAmount} />
+            <Bar dataKey="contributions" stackId="a" fill={calculatorColours.contributions} />
+            <Bar dataKey="interest" stackId="a" fill={calculatorColours.interest} />
           </BarChart>
         ) : null}
         {true ? (
           <x.div ml={12} display="flex" flexDirection="column" justifyContent="center">
             <PieChart width={200} height={200}>
               <Pie data={pieData} cx="50%" cy="50%" outerRadius={80} fill="#8884d8" dataKey="value">
-                {pieData.map((entry, index) => (
-                  <Cell key={entry.key} fill={colors[entry.key]} />
+                {pieData.map((entry) => (
+                  <Cell key={entry.key} fill={calculatorColours[entry.key]} />
                 ))}
               </Pie>
               <Tooltip
-                formatter={(value, name, props) => (
+                formatter={(value: number, name: string, props) => (
                   // console.log(value)
                   // console.log(name)
                   // console.log(props)
-                  <x.span color={colors[props.payload.key]}>
+                  <x.span color={calculatorColours[props.payload.key]}>
                     {currency}
                     {format(value)}
                   </x.span>

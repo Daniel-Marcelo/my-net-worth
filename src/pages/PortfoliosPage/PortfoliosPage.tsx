@@ -1,29 +1,29 @@
-import { Box, Button, Dialog, DialogTitle, Modal, TextField, Typography } from "@mui/material";
+import { Button, Card, CardContent, Typography } from "@mui/material";
 import { x } from "@xstyled/styled-components";
-import { useCallback, useEffect, useState } from "react";
-import { usePortfolioContext } from "../../context/PortfolioContext";
-import { PortfoliosService } from "../../services/PortfoliosService";
+import { SyntheticEvent, useState } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useNavigate } from "react-router-dom";
+import { usePortfolioService } from "../../services";
+import { CreatePortfolioModal } from "../../components/CreatePortfolioModal";
+import { usePortfolios } from "./usePortfolios";
 
 export function PortfoliosPage() {
-  const { portfolioData } = usePortfolioContext();
-  const [portfolios, setPortfolios] = portfolioData;
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [clickedSave, setClickedSave] = useState(false);
-  const [portfolioName, setPortfolioName] = useState("");
+  const portfolioService = usePortfolioService();
+  const [portfolios, getPortfolios] = usePortfolios();
 
-  const getPortfolios = useCallback(async () => {
-    const myPortfolios = await PortfoliosService.getPortfolios();
-    setPortfolios(myPortfolios);
-  }, [open]);
-
-  useEffect(() => {
-    getPortfolios();
-  }, [getPortfolios]);
-
-  const onClickCreate = async () => {
-    setClickedSave(true);
-    await PortfoliosService.createPortfolio(portfolioName);
+  const onClickCreate = async (name: string) => {
+    await portfolioService.create({ name });
+    await getPortfolios();
     setOpen(false);
+  };
+
+  const onClickDelete = async (id?: string) => {
+    if (id) {
+      await portfolioService.delete(id);
+      await getPortfolios();
+    }
   };
 
   return (
@@ -33,13 +33,13 @@ export function PortfoliosPage() {
           PORTFOLIOS
         </x.div>
       </x.div>
-      <x.div alignSelf="flex-start">
+      <x.div my={8}>
         <Button onClick={() => setOpen(true)} size="large" variant="contained">
           <x.span>CREATE PORTFOLIO</x.span>
         </Button>
       </x.div>
 
-      {portfolios.length ? (
+      {!portfolios.length ? (
         <x.div mt={48}>
           You currently have no portfolios created. Please{" "}
           <x.span textDecoration="underline" color="blue" cursor="pointer" onClick={() => setOpen(true)}>
@@ -47,31 +47,38 @@ export function PortfoliosPage() {
           </x.span>
         </x.div>
       ) : (
-        <x.div />
+        <>
+          {portfolios.map((portfolio) => (
+            <x.div mt={4} key={portfolio.id} cursor="pointer">
+              <Card sx={{ minWidth: 400 }} onClick={() => navigate(`/portfolio/${portfolio.id}`, { replace: true })}>
+                <CardContent>
+                  <x.div display="flex" justifyContent="space-between">
+                    <Typography variant="h5" component="div">
+                      {portfolio.name}
+                    </Typography>
+                    <x.span
+                      onClick={(e: SyntheticEvent<HTMLSpanElement>) => {
+                        console.log(e);
+                        e.preventDefault();
+                        e.stopPropagation();
+                        onClickDelete(portfolio.id);
+                      }}
+                      alignSelf="center"
+                      cursor="pointer"
+                    >
+                      <DeleteIcon color="error" />
+                    </x.span>
+                  </x.div>
+                </CardContent>
+                {/* <CardActions>
+            <Button size="medium" color="error"></Button>
+          </CardActions> */}
+              </Card>
+            </x.div>
+          ))}
+        </>
       )}
-      <Dialog onClose={() => setOpen(false)} open={open}>
-        <DialogTitle>Create Portfolio</DialogTitle>
-        <x.div p={8}>
-          <x.div mt={4}>
-            <TextField
-              fullWidth
-              type="text"
-              value={portfolioName}
-              onChange={(event) => setPortfolioName(event.target.value)}
-              label="Portfolio Name"
-              variant="outlined"
-              helperText={clickedSave && "Please enter a valid name"}
-              error={clickedSave && !portfolioName}
-            />
-          </x.div>
-
-          <x.div mt={4}>
-            <Button size="large" variant="contained" onClick={onClickCreate}>
-              <x.span px={16}>Create</x.span>
-            </Button>
-          </x.div>
-        </x.div>
-      </Dialog>
+      <CreatePortfolioModal open={open} setOpen={setOpen} onClickCreate={onClickCreate} />
     </x.div>
   );
 }

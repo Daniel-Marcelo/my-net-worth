@@ -1,20 +1,20 @@
 import { Autocomplete, TextField } from "@mui/material";
 import React, { SyntheticEvent, useState } from "react";
 import { x } from "@xstyled/styled-components";
-import { useTickerSearch } from "./useTickerSearch";
 import { Quote } from "../../models/Quote";
+import { useFinance } from "../../services";
 
 interface TickerSearchProps {
   setSelectedTicker: (value: string) => void;
 }
 
 export function TickerSearch({ setSelectedTicker }: TickerSearchProps) {
-  const searchTicker = useTickerSearch();
+  const finance = useFinance();
   const [options, setOptions] = useState([]);
 
   const getOptions = async (event: SyntheticEvent<Element, Event>, value: string) => {
     if (value.length && event.type !== "click") {
-      const response = await searchTicker(value);
+      const response = await finance.searchForTicker(value);
       setOptions(response);
     }
   };

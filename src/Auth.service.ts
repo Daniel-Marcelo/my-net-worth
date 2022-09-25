@@ -12,11 +12,19 @@ export const AuthService = {
     provider.addScope("https://www.googleapis.com/auth/contacts.readonly");
 
     const auth = getAuth();
-    return await signInWithPopup(auth, provider);
+    const result = await signInWithPopup(auth, provider);
+
+    // This gives you a Google Access Token. You can use it to access the Google API.
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    console.log(credential);
+    console.log(auth);
+    // const token = credential?.accessToken;
+    // The signed-in user info.
+    // const { user } = result;
   },
   createWithEmailPassword: async (email: string, password: string) => {
     const auth = getAuth();
-    return await createUserWithEmailAndPassword(auth, email, password);
+    return createUserWithEmailAndPassword(auth, email, password);
     // .then((userCredential) => {
     //   // Signed in
     //   const user = userCredential.user;
@@ -30,7 +38,7 @@ export const AuthService = {
   },
   loginWithEmailPassword: async (email: string, password: string) => {
     const auth = getAuth();
-    return await signInWithEmailAndPassword(auth, email, password);
+    return signInWithEmailAndPassword(auth, email, password);
     // .then((userCredential) => {
     //   // Signed in
     //   const user = userCredential.user;
@@ -48,13 +56,13 @@ export const AuthService = {
 
     const auth = getAuth();
     signInWithPopup(auth, provider)
-      .then((result) => {
+      .then(() => {
         // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        GoogleAuthProvider.credentialFromResult(result);
-        const token = credential?.accessToken;
+        // const credential = GoogleAuthProvider.credentialFromResult(result);
+        // GoogleAuthProvider.credentialFromResult(result);
+        // const token = credential?.accessToken;
         // The signed-in user info.
-        const { user } = result;
+        // const { user } = result;
         // ...
       })
       .catch(() => {

@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import React, { PropsWithChildren, useMemo, useState } from "react";
 
 const PortfolioContext = React.createContext(null);
 
 export const usePortfolioContext = () => React.useContext(PortfolioContext);
 
-export function PortfolioContextProvider({ children }) {
+export function PortfolioContextProvider({ children }: PropsWithChildren) {
   const [portfolios, setPortfolios] = useState([]);
-  return (
-    <PortfolioContext.Provider value={{ portfolioData: [portfolios, setPortfolios] }}>
-      {children}
-    </PortfolioContext.Provider>
-  );
+
+  const portfolioData = useMemo(() => [portfolios, setPortfolios], [portfolios, setPortfolios]);
+  const value = useMemo(() => ({ portfolioData }), [portfolioData]);
+  return <PortfolioContext.Provider value={value}>{children}</PortfolioContext.Provider>;
 }

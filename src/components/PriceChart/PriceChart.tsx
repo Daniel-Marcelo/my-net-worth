@@ -1,5 +1,6 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 import { Quote } from "../../models";
+import { Spinner } from "../Spinner";
 
 interface PriceChartProps {
   selectedTicker: string;
@@ -30,6 +31,7 @@ export function PriceChart({ chartData, selectedTicker }: PriceChartProps) {
       <Tooltip />
       <Legend formatter={() => `${selectedTicker} Price`} />
       <Line dot={false} type="monotone" dataKey="price" stroke="#8884d8" activeDot={{ r: 8 }} />
+      <Spinner />
     </LineChart>
   );
 }

@@ -6,18 +6,19 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { Quote } from "../../models";
 
 interface FormDialogProps {
-  selectedTicker: string;
+  selectedQuote: Quote;
   onAdd: (numberOfShares: number) => void;
   onClose: () => void;
 }
-export function FormDialog({ selectedTicker, onAdd, onClose }: FormDialogProps) {
+export function FormDialog({ selectedQuote, onAdd, onClose }: FormDialogProps) {
   const [numberOfShares, setNumberOfShares] = React.useState<number>();
   return (
     <div>
-      <Dialog open={!!selectedTicker} onClose={onClose}>
-        <DialogTitle>How many shares of {selectedTicker} do you want to add?</DialogTitle>
+      <Dialog open={!!selectedQuote} onClose={onClose}>
+        <DialogTitle>How many shares of {selectedQuote?.name} ({selectedQuote?.ticker}) do you want to add?</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus

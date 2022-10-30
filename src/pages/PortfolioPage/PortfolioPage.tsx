@@ -1,43 +1,43 @@
-import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useRef, useState } from "react";
 import { x } from "@xstyled/styled-components";
 import { TickerSearch } from "../../components/TickerSearch";
-import { usePortfolioEntryService, usePortfolioService } from "../../services";
+import { usePortfolioEntryService } from "../../services";
 import { FormDialog } from "../../components/AddTickerDialog";
-import { PortfolioEntry } from "../../models";
+import { PortfolioEntry, Quote } from "../../models";
+import { Button } from "@mui/material";
+import { UpdatesDrawer } from "../../components/UpdatesDrawer";
+import { usePortfolioIdFromUrl } from "../../hooks";
 
 export function PortfolioPage() {
-  const params = useParams();
   const ref = useRef();
-  const [id, setId] = useState("");
-  const [selectedTicker, setSelectedTicker] = useState("");
-  const portfolioService = usePortfolioService();
+  const id = usePortfolioIdFromUrl();
+  const [selectedQuote, setSelectedQuote] = useState<Quote>();
   const portfolioEntryService = usePortfolioEntryService();
 
-  useEffect(() => {
-    if (params.id && params.id !== id) {
-      setId(params.id);
-      portfolioService.get(params.id).then((dsd) => console.log(dsd));
-    }
-  }, [params]);
+  const [updatesOpen, setUpdatesOpen] = useState(false);
 
   const onClose = () => {
-    setSelectedTicker("");
+    setSelectedQuote(undefined);
   };
 
-  const onChoseTicker = (ticker: string) => {
-    setSelectedTicker(ticker);
+  const onChoseTicker = (selectedQuote: Quote) => {
+    setSelectedQuote(selectedQuote);
   };
 
   const onAdd = async (numberOfShares: number) => {
     const portfolioEntry = {
-      ticker: selectedTicker,
+      ticker: selectedQuote.ticker,
+      name: selectedQuote.name,
       portfolioId: `${id}`,
       numberOfShares,
     } as PortfolioEntry;
     await portfolioEntryService.create(portfolioEntry);
-    setSelectedTicker("");
+    setSelectedQuote(undefined);
   };
+
+  const onOpenUpdates = () => {
+    setUpdatesOpen(true)
+  }
 
   return (
     <x.div p={8}>
@@ -45,8 +45,12 @@ export function PortfolioPage() {
       <x.div mb={4} textAlign="center">
         Select a ticker to add to this portfolio
       </x.div>
-      <TickerSearch ref={ref} setSelectedTicker={onChoseTicker} selectedTicker={selectedTicker} />
-      <FormDialog onClose={onClose} selectedTicker={selectedTicker} onAdd={onAdd} />
+      <TickerSearch ref={ref} setSelectedQuote={onChoseTicker} selectedQuote={selectedQuote} />
+      <x.div mt={4} display="flex" justifyContent="end">
+      <Button variant="contained" onClick={onOpenUpdates}>Updates</Button>
+      </x.div>
+      <UpdatesDrawer open={updatesOpen} onClose={() => setUpdatesOpen(false)}/>
+      <FormDialog onClose={onClose} selectedQuote={selectedQuote} onAdd={onAdd} />
     </x.div>
   );
 }

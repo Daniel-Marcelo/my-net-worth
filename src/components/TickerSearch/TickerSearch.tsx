@@ -5,11 +5,11 @@ import { Quote } from "../../models/Quote";
 import { useFinance } from "../../services";
 
 interface TickerSearchProps {
-  setSelectedTicker: (value: string) => void;
-  selectedTicker: string;
+  setSelectedQuote: (value: Quote) => void;
+  selectedQuote: Quote;
 }
 
-export const TickerSearch = forwardRef(({ setSelectedTicker, selectedTicker }: TickerSearchProps, ref) => {
+export const TickerSearch = forwardRef(({ setSelectedQuote, selectedQuote }: TickerSearchProps, ref) => {
   const searchRef = useRef();
   const finance = useFinance();
   const [options, setOptions] = useState([]);
@@ -22,7 +22,7 @@ export const TickerSearch = forwardRef(({ setSelectedTicker, selectedTicker }: T
   };
 
   const onChange = (event: SyntheticEvent<Element, Event>, value: Quote) => {
-    setSelectedTicker(value.ticker);
+    setSelectedQuote(value);
   };
 
   const renderOption = (props: React.HTMLAttributes<HTMLLIElement>, option: Quote) => (
@@ -46,7 +46,7 @@ export const TickerSearch = forwardRef(({ setSelectedTicker, selectedTicker }: T
         options={options}
         getOptionLabel={(option) => (option ? (option as Quote).name || "" : "")}
         renderOption={renderOption}
-        value={selectedTicker}
+        value={selectedQuote}
         onChange={(event, value) => onChange(event, value as Quote)}
         sx={{ width: "100%" }}
         renderInput={(params) => <TextField {...params} label="Ticker or Company" />}

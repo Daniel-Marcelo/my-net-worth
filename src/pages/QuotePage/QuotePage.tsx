@@ -6,7 +6,6 @@ import { TickerSearch } from "../../components/TickerSearch/TickerSearch";
 import { PriceChart } from "../../components/PriceChart/PriceChart";
 import { useFinance } from "../../services";
 import { PriceChartInterval, PriceChartTimeRange } from "../../models";
-import { Spinner } from "../../components/Spinner";
 
 export function QuotePage() {
   const [selectedTicker, setSelectedTicker] = useState("");
@@ -37,7 +36,7 @@ export function QuotePage() {
 
   return (
     <x.div p={8}>
-      <TickerSearch setSelectedTicker={setSelectedTicker} />
+      <TickerSearch setSelectedTicker={setSelectedTicker} selectedTicker={selectedTicker} />
       {selectedTicker && (
         <x.div display="flex" flexDirection="column" flex="1" alignItems="center" mt={8}>
           <x.div mb={8}>

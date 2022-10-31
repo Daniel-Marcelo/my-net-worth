@@ -15,7 +15,11 @@ export function QuotePage() {
 
   const fetchHistory = async (range = PriceChartTimeRange.OneDay, interval = PriceChartInterval.TwoMins) => {
     setSelectedTimeFrame(range);
-    const [timestamps, prices] = await finance.getPriceHistory(selectedQuote ? selectedQuote?.ticker || '': '', range, interval);
+    const [timestamps, prices] = await finance.getPriceHistory(
+      selectedQuote ? selectedQuote?.ticker || "" : "",
+      range,
+      interval
+    );
     const dates = timestamps.map((t) => {
       const date = new Date(0);
       date.setUTCSeconds(t);

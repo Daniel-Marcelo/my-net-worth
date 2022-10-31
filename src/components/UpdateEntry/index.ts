@@ -1,1 +1,1 @@
-export * from './UpdateEntry';
+export * from "./UpdateEntry";

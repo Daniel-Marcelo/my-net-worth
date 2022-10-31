@@ -17,13 +17,15 @@ export function FormDialog({ selectedQuote, onAdd, onClose }: FormDialogProps) {
   const [numberOfShares, setNumberOfShares] = React.useState<number>();
 
   React.useEffect(() => {
-    setNumberOfShares(undefined)
+    setNumberOfShares(undefined);
   }, [selectedQuote]);
 
   return (
     <div>
       <Dialog open={!!selectedQuote} onClose={onClose}>
-        <DialogTitle>How many shares of {selectedQuote?.name} ({selectedQuote?.ticker}) do you want to add?</DialogTitle>
+        <DialogTitle>
+          How many shares of {selectedQuote?.name} ({selectedQuote?.ticker}) do you want to add?
+        </DialogTitle>
         <DialogContent>
           <TextField
             autoFocus

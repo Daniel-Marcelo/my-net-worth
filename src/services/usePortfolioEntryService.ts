@@ -19,10 +19,10 @@ export const usePortfolioEntryService = (): DBService<PortfolioEntry> & Portfoli
       querySnapshot.forEach((doc) => {
         items.push({
           id: doc.id,
-          ...doc.data() as PortfolioEntry
-        })
+          ...(doc.data() as PortfolioEntry),
+        });
       });
       return items;
-    }
+    },
   };
 };

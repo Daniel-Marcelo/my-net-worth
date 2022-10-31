@@ -1,10 +1,10 @@
 import { useRef, useState } from "react";
 import { x } from "@xstyled/styled-components";
+import { Button } from "@mui/material";
 import { TickerSearch } from "../../components/TickerSearch";
 import { usePortfolioEntryService } from "../../services";
 import { FormDialog } from "../../components/AddTickerDialog";
 import { PortfolioEntry, Quote } from "../../models";
-import { Button } from "@mui/material";
 import { UpdatesDrawer } from "../../components/UpdatesDrawer";
 import { useGetEntriesByPortfolioId, usePortfolioIdFromUrl } from "../../hooks";
 import { PortfolioEntryCard } from "../../components/PortfolioEntryCard";
@@ -37,13 +37,13 @@ export function PortfolioPage() {
   };
 
   const onOpenUpdates = () => {
-    setUpdatesOpen(true)
-  }
+    setUpdatesOpen(true);
+  };
 
   const onUpdatesDrawerClose = async () => {
     setUpdatesOpen(false);
     await getPortfolioEntries();
-  }
+  };
 
   return (
     <x.div p={8}>
@@ -53,14 +53,17 @@ export function PortfolioPage() {
       </x.div>
       <TickerSearch ref={ref} setSelectedQuote={onChoseTicker} selectedQuote={selectedQuote} />
       <x.div mt={4} display="flex" justifyContent="end">
-        <Button variant="contained" onClick={onOpenUpdates}>Updates</Button>
+        <Button variant="contained" onClick={onOpenUpdates}>
+          Updates
+        </Button>
       </x.div>
       <x.div mt={4}>
-        {portfolioEntries.map(portfolioEntry => (
+        {portfolioEntries.map((portfolioEntry) => (
           <PortfolioEntryCard
             ticker={portfolioEntry.ticker}
             name={portfolioEntry.name}
-            numberOfShares={portfolioEntry.numberOfShares} />
+            numberOfShares={portfolioEntry.numberOfShares}
+          />
         ))}
       </x.div>
       <UpdatesDrawer open={updatesOpen} onClose={onUpdatesDrawerClose} />

@@ -1,1 +1,1 @@
-export * from './UpdatesDrawer';
+export * from "./UpdatesDrawer";

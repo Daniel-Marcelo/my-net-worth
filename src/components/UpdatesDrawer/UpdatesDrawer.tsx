@@ -1,10 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import Drawer from '@mui/material/Drawer';
 import { x } from "@xstyled/styled-components";
-import { useCallback, useEffect, useState } from 'react';
-import { usePortfolioIdFromUrl } from '../../hooks';
-import { PortfolioEntry, Quote } from '../../models';
-import { usePortfolioEntryService } from '../../services';
+import { useGetEntriesByPortfolioId } from '../../hooks';
 import { UpdateEntry } from '../UpdateEntry';
 
 interface TemporaryDrawerProps {
@@ -15,22 +12,7 @@ export const UpdatesDrawer = ({
     open,
     onClose,
 }: TemporaryDrawerProps) => {
-    const id = usePortfolioIdFromUrl();
-    const portfolioEntryService = usePortfolioEntryService();
-    const [portfolioEntries, setPortfolioEntries] = useState<PortfolioEntry[]>([]);
-
-
-    const getPortfolioEntries = useCallback(async () => {
-        try {
-            const entries = await portfolioEntryService.getAllByPortfolioId(id);
-            setPortfolioEntries(entries)
-        } catch (error) {
-            console.log(error)
-        }
-    }, [id])
-    useEffect(() => {
-        getPortfolioEntries();
-    }, [portfolioEntryService]);
+    const [portfolioEntries] = useGetEntriesByPortfolioId();
 
     return (
         <Drawer

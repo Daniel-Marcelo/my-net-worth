@@ -6,14 +6,15 @@ import { FormDialog } from "../../components/AddTickerDialog";
 import { PortfolioEntry, Quote } from "../../models";
 import { Button } from "@mui/material";
 import { UpdatesDrawer } from "../../components/UpdatesDrawer";
-import { usePortfolioIdFromUrl } from "../../hooks";
+import { useGetEntriesByPortfolioId, usePortfolioIdFromUrl } from "../../hooks";
+import { PortfolioEntryCard } from "../../components/PortfolioEntryCard";
 
 export function PortfolioPage() {
   const ref = useRef();
   const id = usePortfolioIdFromUrl();
   const [selectedQuote, setSelectedQuote] = useState<Quote>();
   const portfolioEntryService = usePortfolioEntryService();
-
+  const [portfolioEntries, getPortfolioEntries] = useGetEntriesByPortfolioId();
   const [updatesOpen, setUpdatesOpen] = useState(false);
 
   const onClose = () => {
@@ -39,6 +40,11 @@ export function PortfolioPage() {
     setUpdatesOpen(true)
   }
 
+  const onUpdatesDrawerClose = async () => {
+    setUpdatesOpen(false);
+    await getPortfolioEntries();
+  }
+
   return (
     <x.div p={8}>
       <h2 />
@@ -47,9 +53,17 @@ export function PortfolioPage() {
       </x.div>
       <TickerSearch ref={ref} setSelectedQuote={onChoseTicker} selectedQuote={selectedQuote} />
       <x.div mt={4} display="flex" justifyContent="end">
-      <Button variant="contained" onClick={onOpenUpdates}>Updates</Button>
+        <Button variant="contained" onClick={onOpenUpdates}>Updates</Button>
       </x.div>
-      <UpdatesDrawer open={updatesOpen} onClose={() => setUpdatesOpen(false)}/>
+      <x.div mt={4}>
+        {portfolioEntries.map(portfolioEntry => (
+          <PortfolioEntryCard
+            ticker={portfolioEntry.ticker}
+            name={portfolioEntry.name}
+            numberOfShares={portfolioEntry.numberOfShares} />
+        ))}
+      </x.div>
+      <UpdatesDrawer open={updatesOpen} onClose={onUpdatesDrawerClose} />
       <FormDialog onClose={onClose} selectedQuote={selectedQuote} onAdd={onAdd} />
     </x.div>
   );

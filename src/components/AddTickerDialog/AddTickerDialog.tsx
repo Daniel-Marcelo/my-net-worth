@@ -15,6 +15,11 @@ interface FormDialogProps {
 }
 export function FormDialog({ selectedQuote, onAdd, onClose }: FormDialogProps) {
   const [numberOfShares, setNumberOfShares] = React.useState<number>();
+
+  React.useEffect(() => {
+    setNumberOfShares(undefined)
+  }, [selectedQuote]);
+
   return (
     <div>
       <Dialog open={!!selectedQuote} onClose={onClose}>

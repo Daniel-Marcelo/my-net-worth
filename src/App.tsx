@@ -61,9 +61,14 @@ function App() {
                     </LoggedInReRoute>
                   }
                 />
-                <Route path="/register" element={<LoggedInReRoute>
-                  <RegisterPage />
-                </LoggedInReRoute>} />
+                <Route
+                  path="/register"
+                  element={
+                    <LoggedInReRoute>
+                      <RegisterPage />
+                    </LoggedInReRoute>
+                  }
+                />
                 <Route path="/*" element={<Navigate to="/home" replace />} />
               </Routes>
             </UserSettingsProvider>

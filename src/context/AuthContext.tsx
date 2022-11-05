@@ -14,23 +14,25 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
   const [authContext, setAuthContext] = useState({});
 
   useEffect(() => {
-    const user = SessionStorageUtil.Get<LoggedInUser>('loggedInUser');
+    const user = SessionStorageUtil.Get<LoggedInUser>("loggedInUser");
     if (user && user.email) {
-      setLoggedIn(true)
+      setLoggedIn(true);
     }
-  }, [])
+  }, []);
 
   const updateLoggedInStatus = (email: string) => {
-    setLoggedIn(true)
-    SessionStorageUtil.Set('loggedInUser', { email })
-  }
+    setLoggedIn(true);
+    SessionStorageUtil.Set("loggedInUser", { email });
+  };
 
   return (
     <AuthContext.Provider
-      value={{
-        login: [isLoggedIn, updateLoggedInStatus],
-        auth: [authContext, setAuthContext],
-      } as const}
+      value={
+        {
+          login: [isLoggedIn, updateLoggedInStatus],
+          auth: [authContext, setAuthContext],
+        } as const
+      }
     >
       {children}
     </AuthContext.Provider>

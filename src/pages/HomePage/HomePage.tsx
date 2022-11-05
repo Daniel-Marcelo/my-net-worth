@@ -7,8 +7,8 @@ export function HomePage() {
   const navigate = useNavigate();
   const { login } = useAuthContext();
   const [isLoggedIn] = login;
-    const onClickLogin = () => navigate("/login");
-    const onClickPortfolios = () => navigate("/portfolios");
+  const onClickLogin = () => navigate("/login");
+  const onClickPortfolios = () => navigate("/portfolios");
 
   return (
     <x.div h="100vh" display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" pt={32}>
@@ -17,13 +17,15 @@ export function HomePage() {
       </x.div>
 
       <x.div mt={32}>
-        {isLoggedIn ?         <Button size="large" variant="contained" onClick={onClickPortfolios}>
-          <x.span px={48}>PORTFOLIOS</x.span>
-        </Button> : 
-        <Button size="large" variant="contained" onClick={onClickLogin}>
-          <x.span px={48}>LOGIN</x.span>
-        </Button>
-        }
+        {isLoggedIn ? (
+          <Button size="large" variant="contained" onClick={onClickPortfolios}>
+            <x.span px={48}>PORTFOLIOS</x.span>
+          </Button>
+        ) : (
+          <Button size="large" variant="contained" onClick={onClickLogin}>
+            <x.span px={48}>LOGIN</x.span>
+          </Button>
+        )}
       </x.div>
     </x.div>
   );

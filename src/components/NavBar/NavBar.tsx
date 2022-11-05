@@ -10,22 +10,19 @@ import { useAuthContext } from "../../context/AuthContext";
 
 interface NavBarLinkProps {
   ml?: number;
-  text: string,
-  route: string,
-
+  text: string;
+  route: string;
 }
-const NavBarLink = ({
-  text,
-  route,
-  ml = 4,
-}: NavBarLinkProps) => {
+function NavBarLink({ text, route, ml = 4 }: NavBarLinkProps) {
   const navigate = useNavigate();
 
-  return <x.span ml={ml} cursor="pointer" onClick={() => navigate(route)}>
-    <Typography variant="h6" component="span" sx={{ flexGrow: 1 }}>
-      {text}
-    </Typography>
-  </x.span>
+  return (
+    <x.span ml={ml} cursor="pointer" onClick={() => navigate(route)}>
+      <Typography variant="h6" component="span" sx={{ flexGrow: 1 }}>
+        {text}
+      </Typography>
+    </x.span>
+  );
 }
 
 export function NavBar() {
@@ -41,11 +38,15 @@ export function NavBar() {
           </IconButton>
           <NavBarLink ml={0} text="Quote" route="/quote" />
           <NavBarLink text="Calculator" route="/calc" />
-          {isLoggedIn ? <NavBarLink text="Portfolios" route="/portfolios" /> : ''}
-          {!isLoggedIn ? <x.span display="flex" flex={1} justifyContent="end">
-            <NavBarLink text="Register" route="/register" />
-            <NavBarLink text="Login" route="/login" />
-          </x.span> : ''}
+          {isLoggedIn ? <NavBarLink text="Portfolios" route="/portfolios" /> : ""}
+          {!isLoggedIn ? (
+            <x.span display="flex" flex={1} justifyContent="end">
+              <NavBarLink text="Register" route="/register" />
+              <NavBarLink text="Login" route="/login" />
+            </x.span>
+          ) : (
+            ""
+          )}
         </Toolbar>
       </AppBar>
     </Box>

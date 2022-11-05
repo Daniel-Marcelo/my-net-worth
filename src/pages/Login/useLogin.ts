@@ -11,7 +11,7 @@ export const useLogin = () => {
   const loginWithGoogle = async () => {
     const data = await authService.loginWithGoogleV2();
     setAuthContext(data);
-    setIsLoggedIn('email@mail.com');
+    setIsLoggedIn("email@mail.com");
   };
 
   const loginWithEmailPassword = async (email: string, password: string) => {

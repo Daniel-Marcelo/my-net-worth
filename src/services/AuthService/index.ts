@@ -1,2 +1,2 @@
-export * from './useAuthService';
-export * from './AuthService.model';
+export * from "./useAuthService";
+export * from "./AuthService.model";

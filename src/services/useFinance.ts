@@ -1,5 +1,5 @@
 import { PriceChartInterval, PriceChartTimeRange, Quote } from "../models";
-import { DoUseLocalStorage } from "../utils/localStorage";
+import { LocalStorageUtil } from "../utils/localStorage";
 import { useLocalFinance } from "./useLocalFinance";
 import { useYahooFinance } from "./useYahooFinance";
 
@@ -11,5 +11,5 @@ export const useFinance = () => {
   const yahooFinance = useYahooFinance();
   const localFinance = useLocalFinance();
 
-  return DoUseLocalStorage() ? localFinance : yahooFinance;
+  return LocalStorageUtil.DoUse() ? localFinance : yahooFinance;
 };

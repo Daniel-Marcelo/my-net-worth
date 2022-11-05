@@ -5,7 +5,9 @@ import { GoogleLoginButton } from "react-social-login-buttons";
 import passwordValidator from "password-validator";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
-import { useLogin } from "./useLogin";
+import { useLogin } from "../Login/useLogin";
+import { useAuthService } from "../../services/AuthService";
+import { useRegister } from "./useRegister";
 
 function validate(email) {
   const re = /\S+@\S+\.\S+/;
@@ -30,13 +32,15 @@ schema
 export function RegisterPage() {
   const [passwordRulesValid, setPasswordRulesValid] = useState(schema.validate("", { list: true }) as any[]);
   const [loginWithGoogle, loginWithEmailPassword] = useLogin();
+  const registerService = useRegister();
+  // const authService = useAuthService();
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [clickedSave, setClickedSave] = useState(false);
 
-  console.log(schema.validate("", { list: true }) as any[]);
+  // console.log(schema.validate("", { list: true }) as any[]);
   useEffect(() => {
     const passwordValid = schema.validate(password, { list: true }) as any[];
     setPasswordRulesValid(passwordValid);
@@ -44,10 +48,8 @@ export function RegisterPage() {
 
   const onClickRegister = () => {
     setClickedSave(true);
-    // const passwordValid = schema.validate(password, { list: true }) as string[];
-    // console.log(passwordValid);
     if (validate(email) && !passwordRulesValid.length) {
-      loginWithEmailPassword(email, password);
+      registerService.registerWithEmailAndPassword(email, password);
     }
   };
 
@@ -55,11 +57,11 @@ export function RegisterPage() {
     passwordRulesValid.includes(rule) ? <CloseIcon color="error" /> : <CheckIcon color="success" />;
 
   return (
-    <x.div h="100vh" display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" pt={32}>
+    <x.div h="100vh" display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" pt={12}>
       <x.div letterSpacing="5px" fontSize="32px">
         REGISTER FOR MY NET WORTH
       </x.div>
-      <x.div mt={16} display="flex" flexDirection="column" alignItems="center">
+      <x.div mt={12} display="flex" flexDirection="column" alignItems="center">
         <x.div w="100%">
           <TextField
             fullWidth

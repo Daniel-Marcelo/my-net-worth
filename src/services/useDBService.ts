@@ -1,5 +1,5 @@
 import { FirebaseItem } from "../models/Firebase";
-import { DoUseLocalStorage } from "../utils/localStorage";
+import { LocalStorageUtil } from "../utils/localStorage";
 import { useFirebaseService } from "./useFirebaseService";
 import { useLocalStorageService } from "./useLocalStorageService";
 
@@ -14,5 +14,5 @@ export const useDBService = <T>(collectionName: string): DBService<T> => {
   const localStorageService = useLocalStorageService<T>(collectionName);
   const firebaseService = useFirebaseService<T>(collectionName);
 
-  return DoUseLocalStorage() ? localStorageService : firebaseService;
+  return LocalStorageUtil.DoUse() ? localStorageService : firebaseService;
 };

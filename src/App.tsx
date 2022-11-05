@@ -2,8 +2,8 @@ import { defaultTheme, ThemeProvider, Preflight } from "@xstyled/styled-componen
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { LoggedInReRoute } from "./components/LoggedInReRoute/LoggedInReRoute";
 import { NavBar } from "./components/NavBar/NavBar";
-import { Protected } from "./components/Protected/Protected";
-import { AuthContextProvider } from "./context/AuthContext";
+import { ProtectedPage } from "./components/ProtectedPage/ProtectedPage";
+import { AuthContextProvider, useAuthContext } from "./context/AuthContext";
 import { PortfolioContextProvider } from "./context/PortfolioContext";
 import { UserSettingsProvider } from "./context/UserSettingsContext";
 import { Calculator } from "./pages/Calculator/Calculator";
@@ -35,7 +35,24 @@ function App() {
               <NavBar />
               <Routes>
                 <Route path="/home" element={<HomePage />} />
-                <Route path="/portfolios" element={<PortfoliosPage />} />
+                <Route
+                  path="/portfolios"
+                  element={
+                    <ProtectedPage>
+                      <PortfoliosPage />
+                    </ProtectedPage>
+                  }
+                />
+                <Route path="/quote" element={<QuotePage />} />
+                <Route path="/calc" element={<Calculator />} />
+                <Route
+                  path="/portfolio/:id"
+                  element={
+                    <ProtectedPage>
+                      <PortfolioPage />
+                    </ProtectedPage>
+                  }
+                />
                 <Route
                   path="/login"
                   element={
@@ -44,10 +61,9 @@ function App() {
                     </LoggedInReRoute>
                   }
                 />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/quote" element={<QuotePage />} />
-                <Route path="/calc" element={<Calculator />} />
-                <Route path="/portfolio/:id" element={<PortfolioPage />} />
+                <Route path="/register" element={<LoggedInReRoute>
+                  <RegisterPage />
+                </LoggedInReRoute>} />
                 <Route path="/*" element={<Navigate to="/home" replace />} />
               </Routes>
             </UserSettingsProvider>

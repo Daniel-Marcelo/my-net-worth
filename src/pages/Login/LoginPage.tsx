@@ -53,11 +53,11 @@ export function LoginPage() {
     passwordRulesValid.includes(rule) ? <CloseIcon color="error" /> : <CheckIcon color="success" />;
 
   return (
-    <x.div h="100vh" display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" pt={32}>
+    <x.div h="100vh" display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" pt={12}>
       <x.div letterSpacing="5px" fontSize="32px">
-        LOG IN TO MY NET WORTH
+        LOGIN TO MY NET WORTH
       </x.div>
-      <x.div mt={16} display="flex" flexDirection="column" alignItems="center">
+      <x.div mt={12} display="flex" flexDirection="column" alignItems="center">
         <x.div w="100%">
           <TextField
             fullWidth

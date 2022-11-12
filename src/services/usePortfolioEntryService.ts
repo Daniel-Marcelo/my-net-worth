@@ -10,7 +10,7 @@ const portfolioCollection = "portfolioEntry";
 export const usePortfolioEntryService = (): DBService<PortfolioEntry> & PortfolioEntryService => {
   const dbService = useDBService<PortfolioEntry>(portfolioCollection);
 
-  return {
+  const portfolioEntryService = {
     ...dbService,
     getAllByPortfolioId: async (portfolioId: string) => {
       const q = query(collection(db, portfolioCollection), where("portfolioId", "==", portfolioId));
@@ -25,4 +25,6 @@ export const usePortfolioEntryService = (): DBService<PortfolioEntry> & Portfoli
       return items;
     },
   };
+
+  return portfolioEntryService;
 };

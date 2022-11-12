@@ -19,7 +19,7 @@ export const useGetEntriesByPortfolioId = () => {
 
   useEffect(() => {
     getPortfolioEntries();
-  }, [portfolioEntryService]);
+  }, [id]);
 
   return [portfolioEntries, getPortfolioEntries] as const;
 };

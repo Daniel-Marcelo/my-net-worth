@@ -1,10 +1,11 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { x } from "@xstyled/styled-components";
 import { Button } from "@mui/material";
+import groupBy from "lodash/groupBy";
 import { TickerSearch } from "../../components/TickerSearch";
 import { usePortfolioEntryService } from "../../services";
 import { FormDialog } from "../../components/AddTickerDialog";
-import { PortfolioEntry, Quote } from "../../models";
+import { GroupedPortfolioEntry, PortfolioEntry, Quote } from "../../models";
 import { UpdatesDrawer } from "../../components/UpdatesDrawer";
 import { useGetEntriesByPortfolioId, usePortfolioIdFromUrl } from "../../hooks";
 import { PortfolioEntryCard } from "../../components/PortfolioEntryCard";
@@ -15,7 +16,27 @@ export function PortfolioPage() {
   const [selectedQuote, setSelectedQuote] = useState<Quote>();
   const portfolioEntryService = usePortfolioEntryService();
   const [portfolioEntries, getPortfolioEntries] = useGetEntriesByPortfolioId();
+  const [groupedEntries, setGroupedEntries] = useState<GroupedPortfolioEntry[]>([]);
   const [updatesOpen, setUpdatesOpen] = useState(false);
+
+  useEffect(() => {
+    if (portfolioEntries.length) {
+      const groupedEntries = portfolioEntries.reduce((acc, entry) => {
+        if (acc[entry.ticker]) {
+          acc[entry.ticker].totalShares += entry.numberOfShares;
+          acc[entry.ticker].lastUpdated.push(entry.createdAt);
+        } else {
+          acc[entry.ticker] = {
+            ticker: entry.ticker,
+            totalShares: entry.numberOfShares,
+            lastUpdated: [entry.createdAt],
+          } as GroupedPortfolioEntry;
+        }
+        return acc;
+      }, {});
+      setGroupedEntries(Object.values(groupedEntries));
+    }
+  }, [portfolioEntries]);
 
   const onClose = () => {
     setSelectedQuote(undefined);
@@ -58,12 +79,8 @@ export function PortfolioPage() {
         </Button>
       </x.div>
       <x.div mt={4}>
-        {portfolioEntries.map((portfolioEntry) => (
-          <PortfolioEntryCard
-            ticker={portfolioEntry.ticker}
-            name={portfolioEntry.name}
-            numberOfShares={portfolioEntry.numberOfShares}
-          />
+        {groupedEntries.map((portfolioEntry) => (
+          <PortfolioEntryCard portfolioEntry={portfolioEntry} />
         ))}
       </x.div>
       <UpdatesDrawer open={updatesOpen} onClose={onUpdatesDrawerClose} />

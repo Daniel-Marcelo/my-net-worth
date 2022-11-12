@@ -1,28 +1,26 @@
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import { marginBottom, x } from "@xstyled/styled-components";
+import { x } from "@xstyled/styled-components";
 import pluralize from "pluralize";
+import { GroupedPortfolioEntry, PortfolioEntry } from "../../models";
 
 interface PortfolioEntryCardProps {
-  ticker: string;
-  name: string;
-  date?: string;
-  numberOfShares: number;
+  portfolioEntry: GroupedPortfolioEntry;
 }
 
-export function PortfolioEntryCard({ ticker, name, numberOfShares }: PortfolioEntryCardProps) {
+export function PortfolioEntryCard({ portfolioEntry }: PortfolioEntryCardProps) {
   return (
     <Card sx={{ minWidth: 275, marginBottom: 2 }}>
       <CardContent>
         <x.div display="flex" justifyContent="space-between">
           <x.div>
-            {ticker} - {name}
+            {portfolioEntry.ticker} - {portfolioEntry.name}
           </x.div>
           <x.div>
-            {numberOfShares} {pluralize("share", numberOfShares)}
+            {portfolioEntry.totalShares} {pluralize("share", portfolioEntry.totalShares)}
           </x.div>
         </x.div>
-        <x.div mt={2}>Fri 5th Oct 2022</x.div>
+        {/* <x.div mt={2}>{portfolioEntry ? portfolioEntry.date : '-'}</x.div> */}
       </CardContent>
     </Card>
   );

@@ -26,7 +26,6 @@ function NavBarLink({ text, route, ml = 4 }: NavBarLinkProps) {
 }
 
 export function NavBar() {
-  const navigate = useNavigate();
   const { login } = useAuthContext();
   const [isLoggedIn] = login;
   return (
@@ -38,15 +37,20 @@ export function NavBar() {
           </IconButton>
           <NavBarLink ml={0} text="Quote" route="/quote" />
           <NavBarLink text="Calculator" route="/calc" />
-          {isLoggedIn ? <NavBarLink text="Portfolios" route="/portfolios" /> : ""}
-          {!isLoggedIn ? (
-            <x.span display="flex" flex={1} justifyContent="end">
-              <NavBarLink text="Register" route="/register" />
-              <NavBarLink text="Login" route="/login" />
-            </x.span>
-          ) : (
-            ""
-          )}
+          {!isLoggedIn === undefined && (
+            <>
+              {isLoggedIn ? <NavBarLink text="Portfolios" route="/portfolios" /> : ""}
+              {!isLoggedIn ? (
+                <x.span display="flex" flex={1} justifyContent="end">
+                  <NavBarLink text="Register" route="/register" />
+                  <NavBarLink text="Login" route="/login" />
+                </x.span>
+              ) : (
+                ""
+              )}
+            </>
+          )
+          }
         </Toolbar>
       </AppBar>
     </Box>

@@ -19,6 +19,8 @@ const theme = {
 };
 
 function App() {
+  useAuthContext();
+
   // const test = () => {
   //   fetch("/search/quote?symbols=TLS.AX,MUS.AX").then((response) => {
   //     console.log(response);

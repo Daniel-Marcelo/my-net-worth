@@ -25,10 +25,10 @@ export const db = getFirestore(app);
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <Preflight />
-      <App />
-    </ThemeProvider>
+    {/* <ThemeProvider theme={theme}> */}
+    <Preflight />
+    <App />
+    {/* </ThemeProvider> */}
   </React.StrictMode>,
   document.getElementById("root")
 );

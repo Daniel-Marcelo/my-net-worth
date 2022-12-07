@@ -1,14 +1,18 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { x } from "@xstyled/styled-components";
 import { Button } from "@mui/material";
-import groupBy from "lodash/groupBy";
 import { TickerSearch } from "../../components/TickerSearch";
 import { usePortfolioEntryService } from "../../services";
 import { FormDialog } from "../../components/AddTickerDialog";
-import { GroupedPortfolioEntry, PortfolioEntry, Quote } from "../../models";
+import { PortfolioEntry, Quote } from "../../models";
 import { UpdatesDrawer } from "../../components/UpdatesDrawer";
 import { useGetEntriesByPortfolioId, usePortfolioIdFromUrl } from "../../hooks";
 import { PortfolioEntryCard } from "../../components/PortfolioEntryCard";
+import { useGroupedEntries } from "./useGroupedEntries";
+import { usePortfolioStatsCalculator } from "./usePortfolioStatsCalculator";
+import { PortfolioSummary } from "../../components/PortfolioSummary/PortfolioSummary";
+import { useGetTickerPrices } from "./useGetTickerPrices";
+import { TickerHistoryDialog } from "../../components/TickerHistoryDialog";
 
 export function PortfolioPage() {
   const ref = useRef();
@@ -16,49 +20,22 @@ export function PortfolioPage() {
   const [selectedQuote, setSelectedQuote] = useState<Quote>();
   const portfolioEntryService = usePortfolioEntryService();
   const [portfolioEntries, getPortfolioEntries] = useGetEntriesByPortfolioId();
-  const [groupedEntries, setGroupedEntries] = useState<GroupedPortfolioEntry[]>([]);
   const [updatesOpen, setUpdatesOpen] = useState(false);
-
-  useEffect(() => {
-    if (portfolioEntries.length) {
-      const groupedEntries = portfolioEntries.reduce((acc, entry) => {
-        if (acc[entry.ticker]) {
-          acc[entry.ticker].totalShares += entry.numberOfShares;
-          acc[entry.ticker].lastUpdated.push(entry.createdAt);
-        } else {
-          acc[entry.ticker] = {
-            ticker: entry.ticker,
-            totalShares: entry.numberOfShares,
-            lastUpdated: [entry.createdAt],
-          } as GroupedPortfolioEntry;
-        }
-        return acc;
-      }, {});
-      setGroupedEntries(Object.values(groupedEntries));
-    }
-  }, [portfolioEntries]);
-
-  const onClose = () => {
-    setSelectedQuote(undefined);
-  };
-
-  const onChoseTicker = (selectedQuote: Quote) => {
-    setSelectedQuote(selectedQuote);
-  };
+  const groupedEntries = useGroupedEntries(portfolioEntries);
+  const tickerToPriceMap = useGetTickerPrices(groupedEntries);
+  const [selectedTicker, setSelectedTicker] = useState("");
 
   const onAdd = async (numberOfShares: number) => {
     const portfolioEntry = {
       ticker: selectedQuote.ticker,
       name: selectedQuote.name,
       portfolioId: `${id}`,
+      createdAt: new Date().toISOString(),
       numberOfShares,
     } as PortfolioEntry;
     await portfolioEntryService.create(portfolioEntry);
+    await getPortfolioEntries();
     setSelectedQuote(undefined);
-  };
-
-  const onOpenUpdates = () => {
-    setUpdatesOpen(true);
   };
 
   const onUpdatesDrawerClose = async () => {
@@ -66,25 +43,44 @@ export function PortfolioPage() {
     await getPortfolioEntries();
   };
 
+  const onClickCard = (ticker: string) => {
+    setSelectedTicker(ticker);
+  };
+
   return (
     <x.div p={8}>
       <h2 />
+      <TickerHistoryDialog
+        ticker={selectedTicker}
+        portfolioEntries={portfolioEntries}
+        open={!!selectedTicker}
+        closeDialog={() => setSelectedTicker("")}
+      />
+      <PortfolioSummary tickerToPriceMap={tickerToPriceMap} groupedEntries={groupedEntries} />
       <x.div mb={4} textAlign="center">
         Select a ticker to add to this portfolio
       </x.div>
-      <TickerSearch ref={ref} setSelectedQuote={onChoseTicker} selectedQuote={selectedQuote} />
+      <TickerSearch
+        ref={ref}
+        setSelectedQuote={(selectedQuote) => setSelectedQuote(selectedQuote)}
+        selectedQuote={selectedQuote}
+      />
       <x.div mt={4} display="flex" justifyContent="end">
-        <Button variant="contained" onClick={onOpenUpdates}>
+        <Button variant="contained" onClick={() => setUpdatesOpen(true)}>
           Updates
         </Button>
       </x.div>
       <x.div mt={4}>
         {groupedEntries.map((portfolioEntry) => (
-          <PortfolioEntryCard portfolioEntry={portfolioEntry} />
+          <PortfolioEntryCard
+            onClickCard={onClickCard}
+            tickerToPriceMap={tickerToPriceMap}
+            portfolioEntry={portfolioEntry}
+          />
         ))}
       </x.div>
-      <UpdatesDrawer open={updatesOpen} onClose={onUpdatesDrawerClose} />
-      <FormDialog onClose={onClose} selectedQuote={selectedQuote} onAdd={onAdd} />
+      <UpdatesDrawer portfolioEntries={portfolioEntries} open={updatesOpen} onClose={onUpdatesDrawerClose} />
+      <FormDialog onClose={() => setSelectedQuote(undefined)} selectedQuote={selectedQuote} onAdd={onAdd} />
     </x.div>
   );
 }

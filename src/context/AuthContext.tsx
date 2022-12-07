@@ -15,7 +15,7 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log('User is signed in')
+        console.log("User is signed in");
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
         // const uid = user.uid;
@@ -23,8 +23,8 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
         // ...
       } else {
         // User is signed out
-        console.log('user is signed out');
-        setLoggedIn(false)
+        console.log("user is signed out");
+        setLoggedIn(false);
         // ...
       }
     });

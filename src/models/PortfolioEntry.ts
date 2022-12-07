@@ -5,12 +5,12 @@ export interface PortfolioEntry extends FirebaseItem {
   portfolioId: string;
   name: string;
   numberOfShares: number;
-  createdAt: Date;
+  createdAt: string;
 }
 
 export interface GroupedPortfolioEntry extends FirebaseItem {
   ticker: string;
   name: string;
   totalShares: number;
-  lastUpdated: Date[];
+  lastUpdated: string[];
 }

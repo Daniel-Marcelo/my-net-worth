@@ -7,7 +7,7 @@ export interface Finance {
   getPriceHistory: (ticker: string, range?: PriceChartTimeRange, interval?: PriceChartInterval) => Promise<number[][]>;
   searchForTicker: (text: string) => Promise<Quote[]>;
 }
-export const useFinance = () => {
+export const useFinance = (): Finance => {
   const yahooFinance = useYahooFinance();
   const localFinance = useLocalFinance();
 

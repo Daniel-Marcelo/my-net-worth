@@ -49,8 +49,7 @@ export function NavBar() {
                 ""
               )}
             </>
-          )
-          }
+          )}
         </Toolbar>
       </AppBar>
     </Box>

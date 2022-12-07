@@ -2,15 +2,15 @@ import { Box, Typography } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import { x } from "@xstyled/styled-components";
 import { useGetEntriesByPortfolioId } from "../../hooks";
+import { PortfolioEntry } from "../../models";
 import { UpdateEntry } from "../UpdateEntry";
 
 interface TemporaryDrawerProps {
+  portfolioEntries: PortfolioEntry[];
   open: boolean;
   onClose: () => void;
 }
-export function UpdatesDrawer({ open, onClose }: TemporaryDrawerProps) {
-  const [portfolioEntries] = useGetEntriesByPortfolioId();
-
+export function UpdatesDrawer({ portfolioEntries, open, onClose }: TemporaryDrawerProps) {
   return (
     <Drawer anchor="right" open={open} onClose={onClose}>
       <Box sx={{ width: 350 }} role="presentation">

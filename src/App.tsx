@@ -40,9 +40,9 @@ function App() {
                 <Route
                   path="/portfolios"
                   element={
-                    <ProtectedPage>
-                      <PortfoliosPage />
-                    </ProtectedPage>
+                    // <ProtectedPage>
+                    <PortfoliosPage />
+                    // </ProtectedPage>
                   }
                 />
                 <Route path="/quote" element={<QuotePage />} />
@@ -50,9 +50,9 @@ function App() {
                 <Route
                   path="/portfolio/:id"
                   element={
-                    <ProtectedPage>
-                      <PortfolioPage />
-                    </ProtectedPage>
+                    // <ProtectedPage>
+                    <PortfolioPage />
+                    // </ProtectedPage>
                   }
                 />
                 <Route

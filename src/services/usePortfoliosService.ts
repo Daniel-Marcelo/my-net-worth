@@ -5,7 +5,5 @@ const portfolioCollection = "portfolios";
 export const usePortfolioService = (): DBService<Portfolio> => {
   const dbService = useDBService<Portfolio>(portfolioCollection);
 
-  return {
-    ...dbService,
-  };
+  return dbService;
 };

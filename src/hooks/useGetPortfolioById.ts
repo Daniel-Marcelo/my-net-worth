@@ -1,8 +1,7 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { usePortfolioService } from "../services";
-import { toastConfig } from "../utils";
+import { toast } from "../utils";
 import { usePortfolioIdFromUrl } from "./usePortfolioIdFromUrl";
 
 export const useGetPortfolioById = () => {
@@ -15,7 +14,7 @@ export const useGetPortfolioById = () => {
       try {
         return await portfolioService.get(id);
       } catch (error) {
-        toast.error("Portolio does not exist! Please select a valid portfolio", toastConfig);
+        toast.error("Portolio does not exist.");
         navigate("/portfolios");
       }
     }

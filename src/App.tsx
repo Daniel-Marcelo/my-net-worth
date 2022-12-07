@@ -5,7 +5,6 @@ import { LoggedInReRoute } from "./components/LoggedInReRoute/LoggedInReRoute";
 import { NavBar } from "./components/NavBar/NavBar";
 import { ProtectedPage } from "./components/ProtectedPage/ProtectedPage";
 import { AuthContextProvider, useAuthContext } from "./context/AuthContext";
-import { PortfolioContextProvider } from "./context/PortfolioContext";
 import { UserSettingsProvider } from "./context/UserSettingsContext";
 import { Calculator } from "./pages/Calculator/Calculator";
 import { HomePage } from "./pages/HomePage/HomePage";
@@ -35,49 +34,47 @@ function App() {
       <Preflight />
       <BrowserRouter>
         <AuthContextProvider>
-          <PortfolioContextProvider>
-            <UserSettingsProvider>
-              <NavBar />
-              <Routes>
-                <Route path="/home" element={<HomePage />} />
-                <Route
-                  path="/portfolios"
-                  element={
-                    <ProtectedPage>
-                      <PortfoliosPage />
-                    </ProtectedPage>
-                  }
-                />
-                <Route path="/quote" element={<QuotePage />} />
-                <Route path="/calc" element={<Calculator />} />
-                <Route
-                  path="/portfolio/:id"
-                  element={
-                    <ProtectedPage>
-                      <PortfolioPage />
-                    </ProtectedPage>
-                  }
-                />
-                <Route
-                  path="/login"
-                  element={
-                    <LoggedInReRoute>
-                      <LoginPage />
-                    </LoggedInReRoute>
-                  }
-                />
-                <Route
-                  path="/register"
-                  element={
-                    <LoggedInReRoute>
-                      <RegisterPage />
-                    </LoggedInReRoute>
-                  }
-                />
-                <Route path="/*" element={<Navigate to="/home" replace />} />
-              </Routes>
-            </UserSettingsProvider>
-          </PortfolioContextProvider>
+          <UserSettingsProvider>
+            <NavBar />
+            <Routes>
+              <Route path="/home" element={<HomePage />} />
+              <Route
+                path="/portfolios"
+                element={
+                  <ProtectedPage>
+                    <PortfoliosPage />
+                  </ProtectedPage>
+                }
+              />
+              <Route path="/quote" element={<QuotePage />} />
+              <Route path="/calc" element={<Calculator />} />
+              <Route
+                path="/portfolio/:id"
+                element={
+                  <ProtectedPage>
+                    <PortfolioPage />
+                  </ProtectedPage>
+                }
+              />
+              <Route
+                path="/login"
+                element={
+                  <LoggedInReRoute>
+                    <LoginPage />
+                  </LoggedInReRoute>
+                }
+              />
+              <Route
+                path="/register"
+                element={
+                  <LoggedInReRoute>
+                    <RegisterPage />
+                  </LoggedInReRoute>
+                }
+              />
+              <Route path="/*" element={<Navigate to="/home" replace />} />
+            </Routes>
+          </UserSettingsProvider>
         </AuthContextProvider>
       </BrowserRouter>
     </ThemeProvider>

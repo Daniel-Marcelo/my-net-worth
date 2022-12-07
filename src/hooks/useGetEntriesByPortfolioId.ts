@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { PortfolioEntry } from "../models";
 import { usePortfolioEntryService, usePortfolioService } from "../services";
 import { usePortfolioIdFromUrl } from "./usePortfolioIdFromUrl";
 import { useGetPortfolioById } from "./useGetPortfolioById";
-import { toast } from "react-toastify";
 import { toastConfig } from "../utils";
 
 export const useGetEntriesByPortfolioId = () => {
@@ -18,7 +18,7 @@ export const useGetEntriesByPortfolioId = () => {
       const entries = await portfolioEntryService.getAllByPortfolioId(id);
       setPortfolioEntries(entries);
     } catch (error) {
-      toast.error('Error getting portfolio entries. Please contact support!', toastConfig)
+      toast.error("Error getting portfolio entries. Please contact support!", toastConfig);
     }
   }, [id]);
 

@@ -5,13 +5,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
 import { usePortfolioService } from "../../services";
 import { CreatePortfolioModal } from "../../components/CreatePortfolioModal";
-import { usePortfolios } from "./usePortfolios";
+import { useGetPortfolios } from "./usePortfolios";
 
 export function PortfoliosPage() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const portfolioService = usePortfolioService();
-  const [portfolios, getPortfolios] = usePortfolios();
+  const [portfolios, getPortfolios] = useGetPortfolios();
 
   const onClickCreate = async (name: string) => {
     await portfolioService.create({ name });

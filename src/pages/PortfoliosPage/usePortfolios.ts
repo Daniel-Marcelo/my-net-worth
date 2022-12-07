@@ -1,15 +1,20 @@
-import { useCallback, useEffect } from "react";
-import { usePortfolioContext } from "../../context/PortfolioContext";
+import { useCallback, useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { Portfolio } from "../../models";
 import { usePortfolioService } from "../../services";
+import { toastConfig } from "../../utils";
 
-export const usePortfolios = () => {
-  const { portfolioData } = usePortfolioContext();
-  const [portfolios, setPortfolios] = portfolioData;
+export const useGetPortfolios = () => {
+  const [portfolios, setPortfolios] = useState<Portfolio[]>([]);
   const portfolioService = usePortfolioService();
 
   const getPortfolios = useCallback(async () => {
-    const myPortfolios = await portfolioService.getList();
-    setPortfolios(myPortfolios);
+    try {
+      const myPortfolios = await portfolioService.getList();
+      setPortfolios(myPortfolios);
+    } catch (error) {
+      toast.error("Failed to get list of portfolios. Please contact support!", toastConfig);
+    }
   }, []);
 
   useEffect(() => {

@@ -27,9 +27,10 @@ export const TickerSearch = forwardRef(({ setSelectedQuote, selectedQuote }: Tic
 
   const renderOption = (props: React.HTMLAttributes<HTMLLIElement>, option: Quote) => (
     <x.li {...props} key={Math.random()}>
-      <x.div px="8" display="flex" justifyContent="space-between" flex="1">
-        <x.span>{option.ticker}</x.span>
-        <x.span>{option.name}</x.span>
+      <x.div px="8" display="flex" justifyContent="space-between" flex="1" fontSize="xs">
+        <x.span p={1}>{option.ticker}</x.span>
+        <x.span p={1}>{option.name}</x.span>
+        <x.span p={1}>Exchange: {option.exchangeDisplay}</x.span>
       </x.div>
     </x.li>
   );

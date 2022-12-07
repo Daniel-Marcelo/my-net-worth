@@ -19,10 +19,10 @@ export const useLocalFinance = (): Finance => {
   };
 
   const searchForTicker = async (text: string): Promise<Quote[]> => [
-    { ticker: "APPL", name: "Apple" },
-    { ticker: "GOOG", name: "Google" },
-    { ticker: "FB", name: `FB` },
-    { ticker: `${text}`, name: `${text}-name` },
+    { ticker: "APPL", name: "Apple", exchangeDisplay: "New York" },
+    { ticker: "GOOG", name: "Google", exchangeDisplay: "New York" },
+    { ticker: "FB", name: `FB`, exchangeDisplay: "New York" },
+    { ticker: `${text}`, name: `${text}-name`, exchangeDisplay: "New York" },
   ];
 
   return {

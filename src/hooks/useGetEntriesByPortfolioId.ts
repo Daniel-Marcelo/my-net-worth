@@ -3,6 +3,8 @@ import { PortfolioEntry } from "../models";
 import { usePortfolioEntryService, usePortfolioService } from "../services";
 import { usePortfolioIdFromUrl } from "./usePortfolioIdFromUrl";
 import { useGetPortfolioById } from "./useGetPortfolioById";
+import { toast } from "react-toastify";
+import { toastConfig } from "../utils";
 
 export const useGetEntriesByPortfolioId = () => {
   const id = usePortfolioIdFromUrl();
@@ -16,7 +18,7 @@ export const useGetEntriesByPortfolioId = () => {
       const entries = await portfolioEntryService.getAllByPortfolioId(id);
       setPortfolioEntries(entries);
     } catch (error) {
-      console.log(error);
+      toast.error('Error getting portfolio entries. Please contact support!', toastConfig)
     }
   }, [id]);
 

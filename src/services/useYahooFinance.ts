@@ -24,7 +24,7 @@ export const useYahooFinance = (): Finance => {
       .map((quote) => ({
         ticker: quote.symbol,
         name: quote.shortname,
-        exchangeDisplay: quote.exchDisp
+        exchangeDisplay: quote.exchDisp,
       }));
   };
 

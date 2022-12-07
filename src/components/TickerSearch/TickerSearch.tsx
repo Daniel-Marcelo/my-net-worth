@@ -1,6 +1,7 @@
 import { Autocomplete, TextField } from "@mui/material";
 import React, { forwardRef, SyntheticEvent, useRef, useState } from "react";
 import { x } from "@xstyled/styled-components";
+import debounce from "lodash/debounce";
 import { Quote } from "../../models/Quote";
 import { useFinance } from "../../services";
 
@@ -14,12 +15,12 @@ export const TickerSearch = forwardRef(({ setSelectedQuote, selectedQuote }: Tic
   const finance = useFinance();
   const [options, setOptions] = useState([]);
 
-  const getOptions = async (event: SyntheticEvent<Element, Event>, value: string) => {
+  const getOptions = debounce(async (event: SyntheticEvent<Element, Event>, value: string) => {
     if (value && value.length && event.type !== "click") {
       const response = await finance.searchForTicker(value);
       setOptions(response);
     }
-  };
+  }, 300);
 
   const onChange = (event: SyntheticEvent<Element, Event>, value: Quote) => {
     setSelectedQuote(value);

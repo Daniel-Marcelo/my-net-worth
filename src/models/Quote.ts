@@ -8,7 +8,7 @@ export enum QuoteType {
 export interface Quote {
   ticker: string;
   name: string;
-  exchangeDisplay: string
+  exchangeDisplay: string;
 }
 
 export interface YFQuote {

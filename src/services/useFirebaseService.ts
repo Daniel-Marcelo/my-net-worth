@@ -12,10 +12,14 @@ export const useFirebaseService = <T>(collectionName: string): DBService<T> => (
   get: async (id: string) => {
     const document = await getDoc(doc(db, collectionName, id));
     const item = document.data() as T;
-    return {
-      id: document.id,
-      ...item,
-    } as T;
+
+    if (item) {
+      return {
+        id: document.id,
+        ...item,
+      } as T;
+    }
+    throw new Error("Document does not exist");
   },
   getList: async () => {
     const list = [] as T[];

@@ -1,5 +1,6 @@
 import { defaultTheme, ThemeProvider, Preflight } from "@xstyled/styled-components";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import { LoggedInReRoute } from "./components/LoggedInReRoute/LoggedInReRoute";
 import { NavBar } from "./components/NavBar/NavBar";
 import { ProtectedPage } from "./components/ProtectedPage/ProtectedPage";
@@ -13,6 +14,7 @@ import { PortfolioPage } from "./pages/PortfolioPage/PortfolioPage";
 import { PortfoliosPage } from "./pages/PortfoliosPage/PortfoliosPage";
 import { QuotePage } from "./pages/QuotePage/QuotePage";
 import { RegisterPage } from "./pages/Register/RegisterPage";
+import "react-toastify/dist/ReactToastify.css";
 
 const theme = {
   ...defaultTheme,
@@ -29,6 +31,7 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      <ToastContainer />
       <Preflight />
       <BrowserRouter>
         <AuthContextProvider>
@@ -40,9 +43,9 @@ function App() {
                 <Route
                   path="/portfolios"
                   element={
-                    // <ProtectedPage>
-                    <PortfoliosPage />
-                    // </ProtectedPage>
+                    <ProtectedPage>
+                      <PortfoliosPage />
+                    </ProtectedPage>
                   }
                 />
                 <Route path="/quote" element={<QuotePage />} />
@@ -50,9 +53,9 @@ function App() {
                 <Route
                   path="/portfolio/:id"
                   element={
-                    // <ProtectedPage>
-                    <PortfolioPage />
-                    // </ProtectedPage>
+                    <ProtectedPage>
+                      <PortfolioPage />
+                    </ProtectedPage>
                   }
                 />
                 <Route

@@ -1,15 +1,18 @@
 import { useCallback, useEffect, useState } from "react";
 import { PortfolioEntry } from "../models";
-import { usePortfolioEntryService } from "../services";
+import { usePortfolioEntryService, usePortfolioService } from "../services";
 import { usePortfolioIdFromUrl } from "./usePortfolioIdFromUrl";
+import { useGetPortfolioById } from "./useGetPortfolioById";
 
 export const useGetEntriesByPortfolioId = () => {
   const id = usePortfolioIdFromUrl();
   const portfolioEntryService = usePortfolioEntryService();
   const [portfolioEntries, setPortfolioEntries] = useState<PortfolioEntry[]>([]);
+  const getPortfolio = useGetPortfolioById();
 
   const getPortfolioEntries = useCallback(async () => {
     try {
+      await getPortfolio();
       const entries = await portfolioEntryService.getAllByPortfolioId(id);
       setPortfolioEntries(entries);
     } catch (error) {
@@ -18,8 +21,10 @@ export const useGetEntriesByPortfolioId = () => {
   }, [id]);
 
   useEffect(() => {
-    getPortfolioEntries();
-  }, [id]);
+    if (id) {
+      getPortfolioEntries();
+    }
+  }, [getPortfolioEntries, id]);
 
   return [portfolioEntries, getPortfolioEntries] as const;
 };

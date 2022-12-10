@@ -6,7 +6,7 @@ export const useGroupedEntries = (portfolioEntries: PortfolioEntry[]) => {
 
   useEffect(() => {
     if (portfolioEntries.length) {
-      const groupedEntries = portfolioEntries.reduce((acc, entry) => {
+      const groupedEntryList = portfolioEntries.reduce((acc, entry) => {
         if (acc[entry.ticker]) {
           acc[entry.ticker].totalShares += entry.numberOfShares;
           acc[entry.ticker].lastUpdated.push(entry.createdAt);
@@ -20,7 +20,7 @@ export const useGroupedEntries = (portfolioEntries: PortfolioEntry[]) => {
         }
         return acc;
       }, {});
-      setGroupedEntries(Object.values(groupedEntries));
+      setGroupedEntries(Object.values(groupedEntryList));
     }
   }, [portfolioEntries]);
 

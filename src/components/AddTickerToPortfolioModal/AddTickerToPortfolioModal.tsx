@@ -1,6 +1,6 @@
 import { Button, Dialog, DialogTitle, TextField } from "@mui/material";
 import { x } from "@xstyled/styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface AddTickerToPortfolioModalProps {
   setOpen: (value: boolean) => void;

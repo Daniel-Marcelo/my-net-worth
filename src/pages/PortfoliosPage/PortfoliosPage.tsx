@@ -58,7 +58,6 @@ export function PortfoliosPage() {
                     </Typography>
                     <x.span
                       onClick={(e: SyntheticEvent<HTMLSpanElement>) => {
-                        console.log(e);
                         e.preventDefault();
                         e.stopPropagation();
                         onClickDelete(portfolio.id);

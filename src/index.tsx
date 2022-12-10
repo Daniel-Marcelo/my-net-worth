@@ -2,14 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import { initializeApp } from "firebase/app";
-import { defaultTheme, ThemeProvider, Preflight } from "@xstyled/styled-components";
+import { Preflight } from "@xstyled/styled-components";
 import { getFirestore } from "firebase/firestore";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-
-const theme = {
-  ...defaultTheme,
-};
 
 const app = initializeApp({
   apiKey: "AIzaSyA3yFNfYzc43jEg0coAdW8aFN3wqBbCstA",

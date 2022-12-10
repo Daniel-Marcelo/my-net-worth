@@ -9,7 +9,6 @@ import { UpdatesDrawer } from "../../components/UpdatesDrawer";
 import { useGetEntriesByPortfolioId, usePortfolioIdFromUrl } from "../../hooks";
 import { PortfolioEntryCard } from "../../components/PortfolioEntryCard";
 import { useGroupedEntries } from "./useGroupedEntries";
-import { usePortfolioStatsCalculator } from "./usePortfolioStatsCalculator";
 import { PortfolioSummary } from "../../components/PortfolioSummary/PortfolioSummary";
 import { useGetTickerPrices } from "./useGetTickerPrices";
 import { TickerHistoryDialog } from "../../components/TickerHistoryDialog";
@@ -49,7 +48,6 @@ export function PortfolioPage() {
 
   return (
     <x.div p={8}>
-      <h2 />
       <TickerHistoryDialog
         ticker={selectedTicker}
         portfolioEntries={portfolioEntries}
@@ -60,11 +58,7 @@ export function PortfolioPage() {
       <x.div mb={4} textAlign="center">
         Select a ticker to add to this portfolio
       </x.div>
-      <TickerSearch
-        ref={ref}
-        setSelectedQuote={(selectedQuote) => setSelectedQuote(selectedQuote)}
-        selectedQuote={selectedQuote}
-      />
+      <TickerSearch ref={ref} setSelectedQuote={(quote) => setSelectedQuote(quote)} selectedQuote={selectedQuote} />
       <x.div mt={4} display="flex" justifyContent="end">
         <Button variant="contained" onClick={() => setUpdatesOpen(true)}>
           Updates

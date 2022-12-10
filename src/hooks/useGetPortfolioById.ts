@@ -15,7 +15,7 @@ export const useGetPortfolioById = () => {
         return await portfolioService.get(id);
       } catch (error) {
         toast.error("Portolio does not exist.");
-        navigate("/portfolios");
+        return navigate("/portfolios");
       }
     }
   }, [id]);

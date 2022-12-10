@@ -4,7 +4,6 @@ import pluralize from "pluralize";
 interface UpdateEntryProps {
   ticker: string;
   name: string;
-  date?: string;
   numberOfShares: number;
 }
 export function UpdateEntry({ ticker, name, numberOfShares }: UpdateEntryProps) {

@@ -7,7 +7,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
 import { useLogin } from "./useLogin";
 
-function validate(email) {
+function validate(email: string) {
   const re = /\S+@\S+\.\S+/;
   return re.test(email);
 }
@@ -34,7 +34,6 @@ export function LoginPage() {
   const [password, setPassword] = useState("");
   const [clickedSave, setClickedSave] = useState(false);
 
-  console.log(schema.validate("", { list: true }) as any[]);
   useEffect(() => {
     const passwordValid = schema.validate(password, { list: true }) as any[];
     setPasswordRulesValid(passwordValid);

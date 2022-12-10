@@ -16,6 +16,7 @@ export const useGroupedEntries = (portfolioEntries: PortfolioEntry[]) => {
             totalShares: entry.numberOfShares,
             name: entry.name,
             lastUpdated: [entry.createdAt],
+            website: entry.website,
           } as GroupedPortfolioEntry;
         }
         return acc;

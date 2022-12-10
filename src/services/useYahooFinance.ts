@@ -1,5 +1,7 @@
-import { PriceChartInterval, PriceChartTimeRange, Quote, QuoteType } from "../models";
+import { PriceChartInterval, PriceChartTimeRange, Quote, QuoteSummary, QuoteType, SummaryProfile } from "../models";
 import { Finance } from "./useFinance";
+
+const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
 export const useYahooFinance = (): Finance => {
   const getPriceHistory = async (
@@ -27,9 +29,16 @@ export const useYahooFinance = (): Finance => {
         exchangeDisplay: quote.exchDisp,
       }));
   };
+  const getSummaryProfile = async (stock: string): Promise<SummaryProfile> => {
+    const url = `query1.finance.yahoo.com/v10/finance/quoteSummary/${stock}?modules=summaryProfile,earningsHistory`;
+    const response = await fetch(proxyurl + url);
+    const data = await response.json();
+    return data.quoteSummary.result[0].summaryProfile;
+  };
 
   return {
     getPriceHistory,
     searchForTicker,
+    getSummaryProfile,
   } as const;
 };

@@ -9,6 +9,7 @@ import { useUserSettingsContext } from "../../context/UserSettingsContext";
 import { useFormatNumber } from "../../hooks/useFormatNumber";
 import { GroupedPortfolioEntry } from "../../models";
 import { XStyledProps } from "../../types";
+import { TickersToWebsites } from "../../const/constants";
 
 interface GroupedEntryProp {
   groupedEntry: GroupedPortfolioEntry;
@@ -101,17 +102,27 @@ export function PortfolioEntryCard({
   return (
     <Card sx={{ marginBottom: 2 }}>
       <CardContent sx={{ ":last-child": { paddingBottom: 2 } }}>
-        <CardRow>
-          <Title groupedEntry={groupedEntry} />
-          <x.div display="flex">
-            <History onClickCard={onClickCard} groupedEntry={groupedEntry} />
-            <NumberOfShares groupedEntry={groupedEntry} />
+        <x.div display="flex" alignItems="center">
+          <x.img
+            src={`${TickersToWebsites[groupedEntry.ticker] || groupedEntry.website}/favicon.ico`}
+            height="16"
+            width="16"
+            mr={4}
+          />
+          <x.div flex={1}>
+            <CardRow>
+              <Title groupedEntry={groupedEntry} />
+              <x.div display="flex">
+                <History onClickCard={onClickCard} groupedEntry={groupedEntry} />
+                <NumberOfShares groupedEntry={groupedEntry} />
+              </x.div>
+            </CardRow>
+            <CardRow mt={1}>
+              <RecentlyAddedDate groupedEntry={groupedEntry} />
+              <TotalValue groupedEntry={groupedEntry} tickerToPriceMap={tickerToPriceMap} />
+            </CardRow>
           </x.div>
-        </CardRow>
-        <CardRow mt={1}>
-          <RecentlyAddedDate groupedEntry={groupedEntry} />
-          <TotalValue groupedEntry={groupedEntry} tickerToPriceMap={tickerToPriceMap} />
-        </CardRow>
+        </x.div>
       </CardContent>
     </Card>
   );

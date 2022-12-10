@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { x } from "@xstyled/styled-components";
 import { Button } from "@mui/material";
 import { TickerSearch } from "../../components/TickerSearch";
-import { usePortfolioEntryService } from "../../services";
+import { useFinance, usePortfolioEntryService } from "../../services";
 import { FormDialog } from "../../components/AddTickerDialog";
 import { PortfolioEntry, Quote } from "../../models";
 import { UpdatesDrawer } from "../../components/UpdatesDrawer";
@@ -18,6 +18,7 @@ export function PortfolioPage() {
   const id = usePortfolioIdFromUrl();
   const [selectedQuote, setSelectedQuote] = useState<Quote>();
   const portfolioEntryService = usePortfolioEntryService();
+  const financeService = useFinance();
   const [portfolioEntries, getPortfolioEntries] = useGetEntriesByPortfolioId();
   const [updatesOpen, setUpdatesOpen] = useState(false);
   const groupedEntries = useGroupedEntries(portfolioEntries);
@@ -25,12 +26,14 @@ export function PortfolioPage() {
   const [selectedTicker, setSelectedTicker] = useState("");
 
   const onAdd = async (numberOfShares: number) => {
+    const summaryProfile = await financeService.getSummaryProfile(selectedQuote.ticker);
     const portfolioEntry = {
       ticker: selectedQuote.ticker,
       name: selectedQuote.name,
       portfolioId: `${id}`,
       createdAt: new Date().toISOString(),
       numberOfShares,
+      website: summaryProfile.website,
     } as PortfolioEntry;
     await portfolioEntryService.create(portfolioEntry);
     await getPortfolioEntries();

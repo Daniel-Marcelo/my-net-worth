@@ -6,6 +6,7 @@ export interface PortfolioEntry extends FirebaseItem {
   name: string;
   numberOfShares: number;
   createdAt: string;
+  website: string;
 }
 
 export interface GroupedPortfolioEntry extends FirebaseItem {
@@ -13,4 +14,5 @@ export interface GroupedPortfolioEntry extends FirebaseItem {
   name: string;
   totalShares: number;
   lastUpdated: string[];
+  website: string;
 }

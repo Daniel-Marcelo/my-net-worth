@@ -1,9 +1,9 @@
 import { Button, Card, CardContent, Typography } from "@mui/material";
 import { x } from "@xstyled/styled-components";
-import { SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useEffect, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
-import { usePortfolioService } from "../../services";
+import { useFinance, usePortfolioService } from "../../services";
 import { CreatePortfolioModal } from "../../components/CreatePortfolioModal";
 import { useGetPortfolios } from "./usePortfolios";
 import { DeletePortfolioDialog } from "../../components/DeletePortfolioDialog/DeletePortfolioDialog";
@@ -13,10 +13,25 @@ export function PortfoliosPage() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const portfolioService = usePortfolioService();
+  const financeService = useFinance();
   const [portfolios, getPortfolios] = useGetPortfolios();
   const [selectedPortfolio, setSelectedPortfolio] = useState<Portfolio>();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
+  useEffect(() => {
+    financeService.getSummaryProfile("AAPL").then((data) => {
+      console.log(data);
+    });
+
+    const bla = async () => {
+      const url = `apple.com/`;
+      const response = await fetch(`${proxyurl + url}favicon/ico`);
+      console.log(await response.text());
+    };
+
+    bla();
+  }, []);
   const onClickCreate = async (name: string) => {
     await portfolioService.create({ name });
     await getPortfolios();
@@ -24,7 +39,7 @@ export function PortfoliosPage() {
   };
 
   const onClickDelete = (portfolio: Portfolio) => {
-    setSelectedPortfolio(portfolio)
+    setSelectedPortfolio(portfolio);
     setDeleteDialogOpen(true);
   };
 
@@ -32,16 +47,18 @@ export function PortfoliosPage() {
     await portfolioService.delete(id);
     await getPortfolios();
     setDeleteDialogOpen(false);
-  }
+  };
 
   return (
     <x.div h="100vh" display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" p={8}>
-      {selectedPortfolio && <DeletePortfolioDialog
-        onClickConfirmDelete={onClickConfirmDelete}
-        open={deleteDialogOpen}
-        closeDialog={() => setDeleteDialogOpen(false)}
-        portfolio={selectedPortfolio}
-      />}
+      {selectedPortfolio && (
+        <DeletePortfolioDialog
+          onClickConfirmDelete={onClickConfirmDelete}
+          open={deleteDialogOpen}
+          closeDialog={() => setDeleteDialogOpen(false)}
+          portfolio={selectedPortfolio}
+        />
+      )}
       <x.div mt={4}>
         <x.div letterSpacing="5px" fontSize="32px">
           PORTFOLIOS

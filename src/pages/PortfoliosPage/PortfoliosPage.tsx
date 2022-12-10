@@ -6,12 +6,16 @@ import { useNavigate } from "react-router-dom";
 import { usePortfolioService } from "../../services";
 import { CreatePortfolioModal } from "../../components/CreatePortfolioModal";
 import { useGetPortfolios } from "./usePortfolios";
+import { DeletePortfolioDialog } from "../../components/DeletePortfolioDialog/DeletePortfolioDialog";
+import { Portfolio } from "../../models";
 
 export function PortfoliosPage() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const portfolioService = usePortfolioService();
   const [portfolios, getPortfolios] = useGetPortfolios();
+  const [selectedPortfolio, setSelectedPortfolio] = useState<Portfolio>();
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const onClickCreate = async (name: string) => {
     await portfolioService.create({ name });
@@ -19,15 +23,25 @@ export function PortfoliosPage() {
     setOpen(false);
   };
 
-  const onClickDelete = async (id?: string) => {
-    if (id) {
-      await portfolioService.delete(id);
-      await getPortfolios();
-    }
+  const onClickDelete = (portfolio: Portfolio) => {
+    setSelectedPortfolio(portfolio)
+    setDeleteDialogOpen(true);
   };
+
+  const onClickConfirmDelete = async (id: string) => {
+    await portfolioService.delete(id);
+    await getPortfolios();
+    setDeleteDialogOpen(false);
+  }
 
   return (
     <x.div h="100vh" display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" p={8}>
+      {selectedPortfolio && <DeletePortfolioDialog
+        onClickConfirmDelete={onClickConfirmDelete}
+        open={deleteDialogOpen}
+        closeDialog={() => setDeleteDialogOpen(false)}
+        portfolio={selectedPortfolio}
+      />}
       <x.div mt={4}>
         <x.div letterSpacing="5px" fontSize="32px">
           PORTFOLIOS
@@ -60,7 +74,7 @@ export function PortfoliosPage() {
                       onClick={(e: SyntheticEvent<HTMLSpanElement>) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        onClickDelete(portfolio.id);
+                        onClickDelete(portfolio);
                       }}
                       alignSelf="center"
                       cursor="pointer"

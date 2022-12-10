@@ -24,9 +24,6 @@ export const useFirebaseService = <T>(collectionName: string): DBService<T> => (
   getList: async () => {
     const list = [] as T[];
     const querySnapshot = await getDocs(collection(db, collectionName));
-    if (querySnapshot.empty) {
-      throw new Error("Documents list does not exist");
-    }
     querySnapshot.forEach((document) => {
       const item = document.data() as T;
       list.push({

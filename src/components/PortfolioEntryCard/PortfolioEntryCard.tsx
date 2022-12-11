@@ -3,8 +3,12 @@ import CardContent from "@mui/material/CardContent";
 import { x } from "@xstyled/styled-components";
 import pluralize from "pluralize";
 import HistoryIcon from "@mui/icons-material/History";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, SyntheticEvent, useEffect, useRef, useState } from "react";
 import format from "date-fns/format";
+import DeleteIcon from "@mui/icons-material/Delete";
+import LaunchIcon from "@mui/icons-material/Launch";
+import { IconButton } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { useUserSettingsContext } from "../../context/UserSettingsContext";
 import { useFormatNumber } from "../../hooks/useFormatNumber";
 import { GroupedPortfolioEntry } from "../../models";
@@ -59,6 +63,7 @@ interface PortfolioEntryCardProps {
   tickerToPriceMap: Map<string, number>;
   portfolioEntry: GroupedPortfolioEntry;
   onClickCard: (ticker: string) => void;
+  onClickDelete: () => void;
 }
 
 interface HistoryProps extends GroupedEntryProp {
@@ -87,9 +92,21 @@ function CardRow({ children, ...props }: PropsWithChildren<XStyledProps>) {
 }
 
 function Title({ groupedEntry }: GroupedEntryProp) {
+  const navigate = useNavigate();
   return (
     <x.div>
-      {groupedEntry.ticker} - {groupedEntry.name}
+      <x.span>
+        {groupedEntry.ticker} - {groupedEntry.name}
+      </x.span>
+      <IconButton
+        onClick={() => navigate(`/${groupedEntry.website}`)}
+        size="small"
+        edge="start"
+        color="primary"
+        sx={{ mr: 2 }}
+      >
+        <LaunchIcon />
+      </IconButton>
     </x.div>
   );
 }
@@ -98,12 +115,15 @@ export function PortfolioEntryCard({
   onClickCard,
   tickerToPriceMap,
   portfolioEntry: groupedEntry,
+  onClickDelete,
 }: PortfolioEntryCardProps) {
+  const ref = useRef();
   return (
     <Card sx={{ marginBottom: 2 }}>
       <CardContent sx={{ ":last-child": { paddingBottom: 2 } }}>
         <x.div display="flex" alignItems="center">
           <x.img
+            ref={ref}
             src={`${TickersToWebsites[groupedEntry.ticker] || groupedEntry.website}/favicon.ico`}
             height="16"
             width="16"
@@ -121,7 +141,19 @@ export function PortfolioEntryCard({
               <RecentlyAddedDate groupedEntry={groupedEntry} />
               <TotalValue groupedEntry={groupedEntry} tickerToPriceMap={tickerToPriceMap} />
             </CardRow>
-          </x.div>
+          </x.div>{" "}
+          <x.span
+            ml={4}
+            onClick={(e: SyntheticEvent<HTMLSpanElement>) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onClickDelete();
+            }}
+            alignSelf="center"
+            cursor="pointer"
+          >
+            <DeleteIcon color="error" />
+          </x.span>
         </x.div>
       </CardContent>
     </Card>

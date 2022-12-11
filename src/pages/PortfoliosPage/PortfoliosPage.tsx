@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useFinance, usePortfolioService } from "../../services";
 import { CreatePortfolioModal } from "../../components/CreatePortfolioModal";
 import { useGetPortfolios } from "./usePortfolios";
-import { DeletePortfolioDialog } from "../../components/DeletePortfolioDialog/DeletePortfolioDialog";
+import { DeletePortfolioDialog } from "../../components/DeletePortfolioDialog";
 import { Portfolio } from "../../models";
 
 export function PortfoliosPage() {

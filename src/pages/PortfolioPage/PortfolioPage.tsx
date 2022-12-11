@@ -4,7 +4,7 @@ import { Button } from "@mui/material";
 import { TickerSearch } from "../../components/TickerSearch";
 import { useFinance, usePortfolioEntryService } from "../../services";
 import { FormDialog } from "../../components/AddTickerDialog";
-import { PortfolioEntry, Quote } from "../../models";
+import { GroupedPortfolioEntry, PortfolioEntry, Quote } from "../../models";
 import { UpdatesDrawer } from "../../components/UpdatesDrawer";
 import { useGetEntriesByPortfolioId, usePortfolioIdFromUrl } from "../../hooks";
 import { PortfolioEntryCard } from "../../components/PortfolioEntryCard";
@@ -12,6 +12,7 @@ import { useGroupedEntries } from "./useGroupedEntries";
 import { PortfolioSummary } from "../../components/PortfolioSummary/PortfolioSummary";
 import { useGetTickerPrices } from "./useGetTickerPrices";
 import { TickerHistoryDialog } from "../../components/TickerHistoryDialog";
+import { DeletePortfolioEntryDialog } from "../../components/DeletePortfolioEntryDialog";
 
 export function PortfolioPage() {
   const ref = useRef();
@@ -21,9 +22,11 @@ export function PortfolioPage() {
   const financeService = useFinance();
   const [portfolioEntries, getPortfolioEntries] = useGetEntriesByPortfolioId();
   const [updatesOpen, setUpdatesOpen] = useState(false);
+  const [deleteEntryOpen, setDeleteEntryOpen] = useState(false);
   const groupedEntries = useGroupedEntries(portfolioEntries);
   const tickerToPriceMap = useGetTickerPrices(groupedEntries);
   const [selectedTicker, setSelectedTicker] = useState("");
+  const [selectedGroupEntry, setSelectedGroupEntry] = useState<GroupedPortfolioEntry>();
 
   const onAdd = async (numberOfShares: number) => {
     const summaryProfile = await financeService.getSummaryProfile(selectedQuote.ticker);
@@ -49,8 +52,20 @@ export function PortfolioPage() {
     setSelectedTicker(ticker);
   };
 
+  const onClickConfirmDelete = (ticker: string) => {
+    console.log(ticker);
+  };
+
   return (
     <x.div p={8}>
+      {selectedGroupEntry && (
+        <DeletePortfolioEntryDialog
+          onClickConfirmDelete={onClickConfirmDelete}
+          open={deleteEntryOpen}
+          closeDialog={() => setDeleteEntryOpen(false)}
+          ticker={selectedGroupEntry.ticker}
+        />
+      )}
       <TickerHistoryDialog
         ticker={selectedTicker}
         portfolioEntries={portfolioEntries}
@@ -70,6 +85,10 @@ export function PortfolioPage() {
       <x.div mt={4}>
         {groupedEntries.map((portfolioEntry) => (
           <PortfolioEntryCard
+            onClickDelete={() => {
+              setSelectedGroupEntry(portfolioEntry);
+              setDeleteEntryOpen(true);
+            }}
             onClickCard={onClickCard}
             tickerToPriceMap={tickerToPriceMap}
             portfolioEntry={portfolioEntry}

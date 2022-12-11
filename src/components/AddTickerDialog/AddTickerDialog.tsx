@@ -25,24 +25,29 @@ export function FormDialog({ selectedQuote, onAdd, onClose }: FormDialogProps) {
         <DialogTitle>
           How many shares of {selectedQuote?.name} ({selectedQuote?.ticker}) do you want to add?
         </DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            id="numberOfShares"
-            label="Number of Shares"
-            type="number"
-            fullWidth
-            value={numberOfShares}
-            onChange={(event) => setNumberOfShares(+event.target.value)}
-            variant="standard"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose}>Cancel</Button>
-          <Button onClick={() => onAdd(numberOfShares)} disabled={!numberOfShares}>
-            Add
-          </Button>
-        </DialogActions>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            onAdd(numberOfShares);
+          }}
+        >
+          <DialogContent>
+            <TextField
+              autoFocus
+              id="numberOfShares"
+              label="Number of Shares"
+              type="number"
+              fullWidth
+              value={numberOfShares}
+              onChange={(event) => setNumberOfShares(+event.target.value)}
+              variant="standard"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={onClose}>Cancel</Button>
+            <Button disabled={!numberOfShares}>Add</Button>
+          </DialogActions>
+        </form>
       </Dialog>
     </div>
   );

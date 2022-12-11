@@ -18,11 +18,7 @@ export function UpdatesDrawer({ portfolioEntries, open, onClose }: TemporaryDraw
             <Typography variant="h6">Updates History</Typography>
           </x.div>
           {portfolioEntries.map((portfolioEntry) => (
-            <UpdateEntry
-              ticker={portfolioEntry.ticker}
-              name={portfolioEntry.name}
-              numberOfShares={portfolioEntry.numberOfShares}
-            />
+            <UpdateEntry portfolioEntry={portfolioEntry} />
           ))}
         </x.div>
       </Box>

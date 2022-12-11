@@ -8,6 +8,7 @@ export interface DBService<T extends FirebaseItem> {
   delete: (id: string) => Promise<void>;
   get: (id: string) => Promise<T>;
   getList: () => Promise<T[]>;
+  // deleteList: () => Promise<void>
 }
 
 export const useDBService = <T>(collectionName: string): DBService<T> => {

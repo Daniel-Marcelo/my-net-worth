@@ -18,11 +18,7 @@ export function TickerHistoryDialog({ open, closeDialog, ticker, portfolioEntrie
           {portfolioEntries
             .filter((entry) => entry.ticker === ticker)
             .map((portfolioEntry) => (
-              <UpdateEntry
-                ticker={portfolioEntry.ticker}
-                name={portfolioEntry.name}
-                numberOfShares={portfolioEntry.numberOfShares}
-              />
+              <UpdateEntry portfolioEntry={portfolioEntry} />
             ))}
         </x.div>
       </DialogContent>

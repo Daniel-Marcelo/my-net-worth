@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { db } from "..";
 import { DBService } from "./useDBService";
 
@@ -33,4 +33,8 @@ export const useFirebaseService = <T>(collectionName: string): DBService<T> => (
     });
     return list;
   },
+  // deleteList: async (ids: string[]) => {
+  //   const q = delete(collection(db, collectionName), where("id", "in", ids));
+  //   await deleteDoc(doc(db, collectionName, ids));
+  // };
 });

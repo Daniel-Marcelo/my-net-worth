@@ -14,6 +14,8 @@ import { useFormatNumber } from "../../hooks/useFormatNumber";
 import { GroupedPortfolioEntry } from "../../models";
 import { XStyledProps } from "../../types";
 import { TickersToWebsites } from "../../const/constants";
+import { Image } from "../Image/Image";
+import { useInViewport } from 'react-in-viewport';
 
 interface GroupedEntryProp {
   groupedEntry: GroupedPortfolioEntry;
@@ -117,13 +119,18 @@ export function PortfolioEntryCard({
   portfolioEntry: groupedEntry,
   onClickDelete,
 }: PortfolioEntryCardProps) {
-  const ref = useRef();
+  const myRef = useRef();
+  const {
+    inViewport,
+  } = useInViewport(
+    myRef
+  );
   return (
     <Card sx={{ marginBottom: 2 }}>
       <CardContent sx={{ ":last-child": { paddingBottom: 2 } }}>
-        <x.div display="flex" alignItems="center">
-          <x.img
-            ref={ref}
+        <x.div display="flex" alignItems="center" ref={myRef}>
+          <Image
+          inViewport={inViewport}
             src={`${TickersToWebsites[groupedEntry.ticker] || groupedEntry.website}/favicon.ico`}
             height="16"
             width="16"

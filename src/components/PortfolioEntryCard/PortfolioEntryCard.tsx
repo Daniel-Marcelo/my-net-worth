@@ -131,7 +131,7 @@ export function PortfolioEntryCard({
         <x.div display="flex" alignItems="center" ref={myRef}>
           <Image
           inViewport={inViewport}
-            src={`${TickersToWebsites[groupedEntry.ticker] || groupedEntry.website}/favicon.ico`}
+            src={`${TickersToWebsites[groupedEntry.ticker] || groupedEntry.website}`}
             height="16"
             width="16"
             mr={4}

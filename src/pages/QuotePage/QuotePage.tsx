@@ -6,30 +6,22 @@ import { TickerSearch } from "../../components/TickerSearch/TickerSearch";
 import { PriceChart } from "../../components/PriceChart/PriceChart";
 import { useFinance } from "../../services";
 import { PriceChartInterval, PriceChartTimeRange, Quote } from "../../models";
+import { useChartData } from "./useChartData";
 
 export function QuotePage() {
   const [selectedQuote, setSelectedQuote] = useState<Quote>();
   const [selectedTimeframe, setSelectedTimeFrame] = useState("1d");
-  const [chartData, setChartData] = useState([]);
+  const [chartData, setChartData] = useChartData();
   const finance = useFinance();
 
   const fetchHistory = async (range = PriceChartTimeRange.OneDay, interval = PriceChartInterval.TwoMins) => {
     setSelectedTimeFrame(range);
-    const [timestamps, prices] = await finance.getTimesAndPrices(
+    const result = await finance.getPriceHistory(
       selectedQuote ? selectedQuote?.ticker || "" : "",
       range,
       interval
     );
-    const dates = timestamps.map((t) => {
-      const date = new Date(0);
-      date.setUTCSeconds(t);
-      return date;
-    });
-    const data = dates.map((date, index) => ({
-      name: format(date, "MM/dd/yyyy"),
-      price: prices[index],
-    }));
-    setChartData(data);
+    setChartData(result);
   };
 
   useEffect(() => {
@@ -45,10 +37,8 @@ export function QuotePage() {
         <x.div display="flex" flexDirection="column" flex="1" alignItems="center" mt={8}>
           <x.div mb={8}>
             <PriceChartToolbar
-              selectedTicker={selectedQuote.ticker}
-              setSelectedTimeFrame={setSelectedTimeFrame}
               selectedTimeFrame={selectedTimeframe}
-              setChartData={setChartData}
+              fetchHistory={fetchHistory}
             />
           </x.div>
           {chartData.length ? <PriceChart selectedTicker={selectedQuote.ticker} chartData={chartData} /> : ""}

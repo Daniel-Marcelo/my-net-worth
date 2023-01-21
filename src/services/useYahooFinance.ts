@@ -8,7 +8,7 @@ export const getRoundedPrices = (result: YF.Result) => {
   return result.indicators.quote[0].close.map((price) => Math.round(price * 100) / 100)
 }
 export const useYahooFinance = (): Finance => {
-  const getTimesAndPrices = async (
+  const getPriceHistory = async (
     ticker: string,
     range = PriceChartTimeRange.OneDay,
     interval = PriceChartInterval.FifteenMins
@@ -17,8 +17,15 @@ export const useYahooFinance = (): Finance => {
       `/chart/${ticker}?range=${range}&includePrePost=false&interval=${interval}&corsDomain=finance.yahoo.com&.tsrc=finance`
     );
     const data: YF.PriceHistoryResponse = (await response.json());
-    console.log(data)
     const result = data.chart.result[0];
+    return result;
+  };
+  const getTimesAndPrices = async (
+    ticker: string,
+    range = PriceChartTimeRange.OneDay,
+    interval = PriceChartInterval.FifteenMins
+  ) => {
+    const result = await getPriceHistory(ticker, range, interval);
     return [result.timestamp, getRoundedPrices(result)];
   };
 
@@ -41,6 +48,7 @@ export const useYahooFinance = (): Finance => {
   };
 
   return {
+    getPriceHistory,
     getTimesAndPrices,
     searchForTicker,
     getSummaryProfile,

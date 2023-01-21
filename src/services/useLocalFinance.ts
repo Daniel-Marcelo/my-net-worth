@@ -10,6 +10,11 @@ const getMockPrices = () => {
 export const useLocalFinance = (): Finance => {
   const getPriceHistory = async () => {
     const data = JSON.parse(JSON.stringify(mockPriceHistory));
+    const result = data.chart.result[0];
+    return result;
+  };
+  const getTimesAndPrices = async () => {
+    const data = JSON.parse(JSON.stringify(mockPriceHistory));
     const timestamps = data.chart.result[0].timestamp as number[];
     const prices = getMockPrices();
     const randomNumber = Math.round(Math.random());
@@ -26,7 +31,8 @@ export const useLocalFinance = (): Finance => {
   ];
 
   return {
-    getTimesAndPrices: getPriceHistory,
+    getPriceHistory,
+    getTimesAndPrices,
     searchForTicker,
     getSummaryProfile: (stock: string) =>
       Promise.resolve({

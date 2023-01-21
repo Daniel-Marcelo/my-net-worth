@@ -4,7 +4,7 @@ import { useLocalFinance } from "./useLocalFinance";
 import { useYahooFinance } from "./useYahooFinance";
 
 export interface Finance {
-  getPriceHistory: (ticker: string, range?: PriceChartTimeRange, interval?: PriceChartInterval) => Promise<number[][]>;
+  getTimesAndPrices: (ticker: string, range?: PriceChartTimeRange, interval?: PriceChartInterval) => Promise<number[][]>;
   searchForTicker: (text: string) => Promise<Quote[]>;
   getSummaryProfile: (stock: string) => Promise<SummaryProfile>;
 }

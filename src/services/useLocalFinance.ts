@@ -26,7 +26,7 @@ export const useLocalFinance = (): Finance => {
   ];
 
   return {
-    getPriceHistory,
+    getTimesAndPrices: getPriceHistory,
     searchForTicker,
     getSummaryProfile: (stock: string) =>
       Promise.resolve({

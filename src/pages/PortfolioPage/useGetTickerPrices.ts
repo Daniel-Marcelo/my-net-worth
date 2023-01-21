@@ -7,7 +7,7 @@ export const useGetTickerPrices = (groupedEntries: GroupedPortfolioEntry[]) => {
   const financeApi = useFinance();
 
   const setMostRecentPrice = async (values: Map<string, number>, ticker: string, tickers: string[]) => {
-    const [, prices] = await financeApi.getPriceHistory(ticker);
+    const [, prices] = await financeApi.getTimesAndPrices(ticker);
     values.set(ticker, prices[0]);
     if (tickers.indexOf(ticker) === tickers.length - 1) {
       setTickerToPriceMap(values);

@@ -1,10 +1,14 @@
 import { PriceChartInterval, PriceChartTimeRange, Quote, QuoteSummary, QuoteType, SummaryProfile } from "../models";
+import { YF } from "../types/yahoo-finance";
 import { Finance } from "./useFinance";
 
 const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
+export const getRoundedPrices = (result: YF.Result) => {
+  return result.indicators.quote[0].close.map((price) => Math.round(price * 100) / 100)
+}
 export const useYahooFinance = (): Finance => {
-  const getPriceHistory = async (
+  const getTimesAndPrices = async (
     ticker: string,
     range = PriceChartTimeRange.OneDay,
     interval = PriceChartInterval.FifteenMins
@@ -12,10 +16,10 @@ export const useYahooFinance = (): Finance => {
     const response = await fetch(
       `/chart/${ticker}?range=${range}&includePrePost=false&interval=${interval}&corsDomain=finance.yahoo.com&.tsrc=finance`
     );
-    const data = await response.json();
-    const timestamps = data.chart.result[0].timestamp as number[];
-    const prices = data.chart.result[0].indicators.quote[0].close as number[];
-    return [timestamps, prices.map((price) => Math.round(price * 100) / 100)];
+    const data: YF.PriceHistoryResponse = (await response.json());
+    console.log(data)
+    const result = data.chart.result[0];
+    return [result.timestamp, getRoundedPrices(result)];
   };
 
   const searchForTicker = async (text: string): Promise<Quote[]> => {
@@ -37,7 +41,7 @@ export const useYahooFinance = (): Finance => {
   };
 
   return {
-    getPriceHistory,
+    getTimesAndPrices,
     searchForTicker,
     getSummaryProfile,
   } as const;

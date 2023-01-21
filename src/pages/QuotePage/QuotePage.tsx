@@ -15,7 +15,7 @@ export function QuotePage() {
 
   const fetchHistory = async (range = PriceChartTimeRange.OneDay, interval = PriceChartInterval.TwoMins) => {
     setSelectedTimeFrame(range);
-    const [timestamps, prices] = await finance.getPriceHistory(
+    const [timestamps, prices] = await finance.getTimesAndPrices(
       selectedQuote ? selectedQuote?.ticker || "" : "",
       range,
       interval

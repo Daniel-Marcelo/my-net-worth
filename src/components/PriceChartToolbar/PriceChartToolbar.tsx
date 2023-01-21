@@ -19,7 +19,7 @@ export function PriceChartToolbar({
 
   const fetchHistory = async (range = Range.OneDay, interval = Interval.OneMonth) => {
     setSelectedTimeFrame(range);
-    const [timestamps, prices] = await yahooFinance.getPriceHistory(selectedTicker, range, interval);
+    const [timestamps, prices] = await yahooFinance.getTimesAndPrices(selectedTicker, range, interval);
     const dates = timestamps.map((t) => {
       const date = new Date(0);
       date.setUTCSeconds(t);

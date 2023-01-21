@@ -5,10 +5,7 @@ interface PriceChartToolbarProps {
   selectedTimeFrame: string;
   fetchHistory: (range?: Range, interval?: Interval) => Promise<void>;
 }
-export function PriceChartToolbar({
-  selectedTimeFrame,
-  fetchHistory,
-}: PriceChartToolbarProps) {
+export function PriceChartToolbar({ selectedTimeFrame, fetchHistory }: PriceChartToolbarProps) {
   const isActive = (range: Range) => selectedTimeFrame === range;
 
   return (

@@ -45,7 +45,9 @@ export function FormDialog({ selectedQuote, onAdd, onClose }: FormDialogProps) {
           </DialogContent>
           <DialogActions>
             <Button onClick={onClose}>Cancel</Button>
-            <Button type="submit" value="Submit" disabled={!numberOfShares}>Add</Button>
+            <Button type="submit" value="Submit" disabled={!numberOfShares}>
+              Add
+            </Button>
           </DialogActions>
         </form>
       </Dialog>

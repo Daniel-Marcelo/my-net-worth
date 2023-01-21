@@ -34,7 +34,7 @@ export const useLocalFinance = (): Finance => {
     getPriceHistory,
     getTimesAndPrices,
     searchForTicker,
-    getSummaryProfile: (stock: string) =>
+    getSummaryProfile: () =>
       Promise.resolve({
         address1: "One Apple Park Way",
         city: "Cupertino",

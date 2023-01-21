@@ -4,9 +4,8 @@ import { Finance } from "./useFinance";
 
 const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
-export const getRoundedPrices = (result: YF.Result) => {
-  return result.indicators.quote[0].close.map((price) => Math.round(price * 100) / 100)
-}
+export const getRoundedPrices = (result: YF.Result) =>
+  result.indicators.quote[0].close.map((price) => Math.round(price * 100) / 100);
 export const useYahooFinance = (): Finance => {
   const getPriceHistory = async (
     ticker: string,
@@ -16,7 +15,7 @@ export const useYahooFinance = (): Finance => {
     const response = await fetch(
       `/chart/${ticker}?range=${range}&includePrePost=false&interval=${interval}&corsDomain=finance.yahoo.com&.tsrc=finance`
     );
-    const data: YF.PriceHistoryResponse = (await response.json());
+    const data: YF.PriceHistoryResponse = await response.json();
     const result = data.chart.result[0];
     return result;
   };

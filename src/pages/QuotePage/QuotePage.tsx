@@ -1,4 +1,3 @@
-import format from "date-fns/format";
 import { x } from "@xstyled/styled-components";
 import { useEffect, useState } from "react";
 import { PriceChartToolbar } from "../../components/PriceChartToolbar";
@@ -16,11 +15,7 @@ export function QuotePage() {
 
   const fetchHistory = async (range = PriceChartTimeRange.OneDay, interval = PriceChartInterval.TwoMins) => {
     setSelectedTimeFrame(range);
-    const result = await finance.getPriceHistory(
-      selectedQuote ? selectedQuote?.ticker || "" : "",
-      range,
-      interval
-    );
+    const result = await finance.getPriceHistory(selectedQuote ? selectedQuote?.ticker || "" : "", range, interval);
     setChartData(result);
   };
 
@@ -36,10 +31,7 @@ export function QuotePage() {
       {selectedQuote && (
         <x.div display="flex" flexDirection="column" flex="1" alignItems="center" mt={8}>
           <x.div mb={8}>
-            <PriceChartToolbar
-              selectedTimeFrame={selectedTimeframe}
-              fetchHistory={fetchHistory}
-            />
+            <PriceChartToolbar selectedTimeFrame={selectedTimeframe} fetchHistory={fetchHistory} />
           </x.div>
           {chartData.length ? <PriceChart selectedTicker={selectedQuote.ticker} chartData={chartData} /> : ""}
         </x.div>

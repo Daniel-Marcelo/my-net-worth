@@ -41,7 +41,10 @@ export function PriceChartToolbar({
       <PriceChartTimePeriod isActive={isActive} range={Range.OneMonth} onClick={fetchHistory} />
       <PriceChartTimePeriod isActive={isActive} range={Range.SixMonths} onClick={fetchHistory} />
       <PriceChartTimePeriod isActive={isActive} range={Range.YearToDate} onClick={fetchHistory} />
+      <PriceChartTimePeriod isActive={isActive} range={Range.OneYear} onClick={fetchHistory} />
+      <PriceChartTimePeriod isActive={isActive} range={Range.TwoYears} onClick={fetchHistory} />
       <PriceChartTimePeriod isActive={isActive} range={Range.FiveYears} onClick={fetchHistory} />
+      <PriceChartTimePeriod isActive={isActive} range={Range.TenYears} onClick={fetchHistory} />
       <PriceChartTimePeriod isActive={isActive} range={Range.Max} onClick={fetchHistory} />
     </>
   );

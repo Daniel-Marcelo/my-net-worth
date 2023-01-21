@@ -36,8 +36,10 @@ const rangeToInterval = new Map([
   [Range.OneMonth, Interval.OneHour],
   [Range.SixMonths, Interval.OneDay],
   [Range.YearToDate, Interval.OneDay],
-  [Range.OneYear, Interval.OneWeek],
+  [Range.OneYear, Interval.OneDay],
+  [Range.TwoYears, Interval.OneDay],
   [Range.FiveYears, Interval.OneMonth],
+  [Range.TenYears, Interval.OneMonth],
   [Range.Max, Interval.OneMonth],
 ]);
 
@@ -48,7 +50,9 @@ const rangeToLabel = new Map([
   [Range.SixMonths, "6M"],
   [Range.YearToDate, "YTD"],
   [Range.OneYear, "1Y"],
+  [Range.TwoYears, "2Y"],
   [Range.FiveYears, "5Y"],
+  [Range.TenYears, "10Y"],
   [Range.Max, "MAX"],
 ]);
 

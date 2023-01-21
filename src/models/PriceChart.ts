@@ -5,7 +5,9 @@ export const enum PriceChartTimeRange {
   SixMonths = "6mo",
   YearToDate = "ytd",
   OneYear = "1y",
+  TwoYears = "2y",
   FiveYears = "5y",
+  TenYears = "10y",
   Max = "max",
 }
 

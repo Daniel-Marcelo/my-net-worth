@@ -1,5 +1,13 @@
-import { PriceChartInterval, PriceChartTimeRange, Quote, QuoteSummary, QuoteType, SummaryProfile } from "../models";
-import { YF } from "../types/yahoo-finance";
+import {
+  Modules,
+  PriceChartInterval,
+  PriceChartTimeRange,
+  Quote,
+  QuoteSummary,
+  QuoteType,
+  SummaryProfile,
+} from "../models";
+import { YF, YFModule } from "../types/yahoo-finance";
 import { Finance } from "./useFinance";
 
 const proxyurl = "https://cors-anywhere.herokuapp.com/";
@@ -39,10 +47,16 @@ export const useYahooFinance = (): Finance => {
         exchangeDisplay: quote.exchDisp,
       }));
   };
-  const getSummaryProfile = async (stock: string): Promise<SummaryProfile> => {
-    const url = `query1.finance.yahoo.com/v10/finance/quoteSummary/${stock}?modules=summaryProfile,earningsHistory`;
+
+  const getModules = async (stock: string): Promise<YFModule.RootObject> => {
+    const url = `query1.finance.yahoo.com/v10/finance/quoteSummary/${stock}?modules=${Modules.join(",")}`;
     const response = await fetch(proxyurl + url);
-    const data = await response.json();
+    return await response.json();
+  };
+
+  const getSummaryProfile = async (stock: string): Promise<SummaryProfile> => {
+    const data = await getModules(stock);
+    console.log(data);
     return data.quoteSummary.result[0].summaryProfile;
   };
 
@@ -51,5 +65,6 @@ export const useYahooFinance = (): Finance => {
     getTimesAndPrices,
     searchForTicker,
     getSummaryProfile,
+    getModules,
   } as const;
 };

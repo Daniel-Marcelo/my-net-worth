@@ -1,5 +1,6 @@
 import { x } from "@xstyled/styled-components";
 import { useEffect, useState } from "react";
+import { Box, Divider, List, ListItem, ListItemText, Typography } from "@mui/material";
 import { PriceChartToolbar } from "../../components/PriceChartToolbar";
 import { TickerSearch } from "../../components/TickerSearch/TickerSearch";
 import { PriceChart } from "../../components/PriceChart/PriceChart";
@@ -15,8 +16,11 @@ export function QuotePage() {
 
   const fetchHistory = async (range = PriceChartTimeRange.OneDay, interval = PriceChartInterval.TwoMins) => {
     setSelectedTimeFrame(range);
-    const result = await finance.getPriceHistory(selectedQuote ? selectedQuote?.ticker || "" : "", range, interval);
-    setChartData(result);
+    if(selectedQuote?.ticker) {
+      const result = await finance.getPriceHistory(selectedQuote.ticker, range, interval);
+      setChartData(result);
+    }
+
   };
 
   useEffect(() => {
@@ -36,6 +40,19 @@ export function QuotePage() {
           {chartData.length ? <PriceChart selectedTicker={selectedQuote.ticker} chartData={chartData} /> : ""}
         </x.div>
       )}
+
+      {/* <Typography variant="subtitle1">Dividend Data</Typography> */}
+      {/* <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
+        <List sx={{ p: 0 }}>
+          <ListItem sx={{ "&:hover": { bgcolor: "red" } }}>
+            <ListItemText primary="Trash" />
+          </ListItem>
+          <Divider />
+          <ListItem>
+            <ListItemText primary="Trash" />
+          </ListItem>
+        </List>
+      </Box> */}
     </x.div>
   );
 }

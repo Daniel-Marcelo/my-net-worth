@@ -24,13 +24,13 @@ export function PortfoliosPage() {
       console.log(data);
     });
 
-    const bla = async () => {
-      const url = `apple.com/`;
-      const response = await fetch(`${proxyurl + url}favicon/ico`);
-      console.log(await response.text());
-    };
+    // const bla = async () => {
+    //   const url = `apple.com/`;
+    //   const response = await fetch(`${proxyurl + url}favicon/ico`);
+    //   console.log(await response.text());
+    // };
 
-    bla();
+    // bla();
   }, []);
   const onClickCreate = async (name: string) => {
     await portfolioService.create({ name });

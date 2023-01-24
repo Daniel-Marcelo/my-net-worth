@@ -7,8 +7,9 @@ import {
   QuoteType,
   SummaryProfile,
 } from "../models";
-import { YF, YFModule } from "../types/yahoo-finance";
+import { YF, YFDividendHistory, YFModule } from "../types/yahoo-finance";
 import { Finance } from "./useFinance";
+import * as mockDividendHistory from "./dividend-history.json";
 
 const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
@@ -60,11 +61,25 @@ export const useYahooFinance = (): Finance => {
     return data.quoteSummary.result[0].summaryProfile;
   };
 
+  const getEvents = async(stock: string): Promise<YFDividendHistory.RootObject> => {
+    // const url = `query1.finance.yahoo.com/v8/finance/chart/${stock}?interval=1d&period1=0&period2=1674432000&events=div`;
+    // const response = await fetch(proxyurl + url);
+    // return await response.json();
+    return mockDividendHistory;
+  }
+
+  const getDividendHistory = async (stock: string) => {
+    const data = await getEvents(stock);
+    return data.chart.result[0].events.dividends;
+  }
+
   return {
     getPriceHistory,
     getTimesAndPrices,
     searchForTicker,
     getSummaryProfile,
     getModules,
+    getEvents,
+    getDividendHistory
   } as const;
 };

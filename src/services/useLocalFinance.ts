@@ -2,7 +2,8 @@ import { Quote } from "../models";
 import { Finance } from "./useFinance";
 import * as mockPriceHistory from "./price-history.json";
 import * as mockModules from "./finance-modules.json";
-import { YFModule } from "../types/yahoo-finance";
+import * as mockDividendHistory from "./dividend-history.json";
+import { YFDividendHistory, YFModule } from "../types/yahoo-finance";
 
 const getMockPrices = () => {
   const data = JSON.parse(JSON.stringify(mockPriceHistory));
@@ -41,5 +42,10 @@ export const useLocalFinance = (): Finance => {
       const response = mockModules as YFModule.RootObject;
       return response.quoteSummary.result[0].summaryProfile;
     },
+    getEvents: ()=> Promise.resolve(mockDividendHistory as YFDividendHistory.RootObject),
+    getDividendHistory: async () => {
+      const response = mockDividendHistory as YFDividendHistory.RootObject;
+      return response.chart.result[0].events.dividends
+    }
   } as const;
 };

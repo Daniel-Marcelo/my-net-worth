@@ -12,7 +12,7 @@ import { DividendDiscountModel } from "../../components/DividendDiscountModel";
 function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
   };
 }
 
@@ -42,7 +42,6 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-
 export function QuotePage() {
   const [value, setValue] = useState(0);
   const [selectedQuote, setSelectedQuote] = useState<Quote>();
@@ -62,7 +61,6 @@ export function QuotePage() {
     setValue(newValue);
   };
 
-
   useEffect(() => {
     if (selectedQuote) {
       fetchHistory();
@@ -74,8 +72,8 @@ export function QuotePage() {
       <TickerSearch setSelectedQuote={setSelectedQuote} selectedQuote={selectedQuote} />
 
       {selectedQuote && (
-        <Box sx={{ width: '100%', marginTop: '1rem' }}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Box sx={{ width: "100%", marginTop: "1rem" }}>
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
               <Tab label="Chart" {...a11yProps(0)} />
               <Tab label="DDM" {...a11yProps(1)} />
@@ -90,7 +88,9 @@ export function QuotePage() {
             </x.div>
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <DividendDiscountModel ticker={selectedQuote.ticker}/>
+            <x.div display="flex" flexDirection="column" flex="1" alignItems="center" mt={8}>
+              <DividendDiscountModel ticker={selectedQuote.ticker} />
+            </x.div>
           </TabPanel>
         </Box>
       )}

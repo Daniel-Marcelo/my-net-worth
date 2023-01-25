@@ -8,8 +8,10 @@ export const useChartData = () => {
   const updateChartData = (result: YF.Result) => {
     const prices = result.indicators.quote[0].close.map((price) => Math.round(price * 100) / 100);
     const dates = result.timestamp.map((t) => {
-      const date = new Date(0);
-      date.setUTCSeconds(t);
+      const date = new Date(1970, 0, 1);
+      // console.log(t)
+      date.setSeconds(t);
+      // console.log(date)
       return date;
     });
     const data = dates.map((date, index) => ({

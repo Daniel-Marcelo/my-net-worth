@@ -1,1 +1,1 @@
-export * from './DividendDiscountModel';
+export * from "./DividendDiscountModel";

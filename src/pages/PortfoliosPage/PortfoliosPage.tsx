@@ -17,7 +17,6 @@ export function PortfoliosPage() {
   const [portfolios, getPortfolios] = useGetPortfolios();
   const [selectedPortfolio, setSelectedPortfolio] = useState<Portfolio>();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
   useEffect(() => {
     financeService.getSummaryProfile("AAPL").then((data) => {
@@ -25,6 +24,7 @@ export function PortfoliosPage() {
     });
 
     // const bla = async () => {
+    // const proxyurl = "https://cors-anywhere.herokuapp.com/";
     //   const url = `apple.com/`;
     //   const response = await fetch(`${proxyurl + url}favicon/ico`);
     //   console.log(await response.text());

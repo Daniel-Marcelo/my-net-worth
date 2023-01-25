@@ -16,5 +16,13 @@ function abc(app) {
       changeOrigin: true,
     })
   );
+
+  app.use(
+    "/quoteSummary",
+    createProxyMiddleware({
+      target: "https://query1.finance.yahoo.com/v10/finance",
+      changeOrigin: true,
+    })
+  );
 }
 module.exports = abc;

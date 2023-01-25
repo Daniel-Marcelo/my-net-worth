@@ -50,8 +50,8 @@ export const useYahooFinance = (): Finance => {
   };
 
   const getModules = async (stock: string): Promise<YFModule.RootObject> => {
-    const url = `query1.finance.yahoo.com/v10/finance/quoteSummary/${stock}?modules=${Modules.join(",")}`;
-    const response = await fetch(proxyurl + url);
+    const url = `/quoteSummary/${stock}?modules=${Modules.join(",")}`;
+    const response = await fetch(url);
     return await response.json();
   };
 
@@ -61,17 +61,16 @@ export const useYahooFinance = (): Finance => {
     return data.quoteSummary.result[0].summaryProfile;
   };
 
-  const getEvents = async(stock: string): Promise<YFDividendHistory.RootObject> => {
-    // const url = `query1.finance.yahoo.com/v8/finance/chart/${stock}?interval=1d&period1=0&period2=1674432000&events=div`;
-    // const response = await fetch(proxyurl + url);
-    // return await response.json();
-    return mockDividendHistory;
-  }
+  const getEvents = async (stock: string): Promise<YFDividendHistory.RootObject> => {
+    const url = `/chart/${stock}?interval=1d&period1=0&period2=1674432000&events=div`;
+    const response = await fetch(url);
+    return await response.json();
+  };
 
   const getDividendHistory = async (stock: string) => {
     const data = await getEvents(stock);
     return data.chart.result[0].events.dividends;
-  }
+  };
 
   return {
     getPriceHistory,
@@ -80,6 +79,6 @@ export const useYahooFinance = (): Finance => {
     getSummaryProfile,
     getModules,
     getEvents,
-    getDividendHistory
+    getDividendHistory,
   } as const;
 };

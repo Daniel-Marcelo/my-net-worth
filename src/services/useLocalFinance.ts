@@ -42,10 +42,10 @@ export const useLocalFinance = (): Finance => {
       const response = mockModules as YFModule.RootObject;
       return response.quoteSummary.result[0].summaryProfile;
     },
-    getEvents: ()=> Promise.resolve(mockDividendHistory as YFDividendHistory.RootObject),
+    getEvents: () => Promise.resolve(mockDividendHistory as YFDividendHistory.RootObject),
     getDividendHistory: async () => {
       const response = mockDividendHistory as YFDividendHistory.RootObject;
-      return response.chart.result[0].events.dividends
-    }
+      return response.chart.result[0].events.dividends;
+    },
   } as const;
 };

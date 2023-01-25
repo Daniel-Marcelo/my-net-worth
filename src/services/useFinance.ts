@@ -15,7 +15,7 @@ export interface Finance {
   getSummaryProfile: (stock: string) => Promise<SummaryProfile>;
   getModules: (stock: string) => Promise<YFModule.RootObject>;
   getEvents: (stock: string) => Promise<YFDividendHistory.RootObject>;
-  getDividendHistory: (stock: string) => Promise<YFDividendHistory.Dividends>
+  getDividendHistory: (stock: string) => Promise<YFDividendHistory.Dividends>;
 }
 export const useFinance = (): Finance => {
   const yahooFinance = useYahooFinance();

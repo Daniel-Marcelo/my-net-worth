@@ -16,14 +16,13 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
   const finance = useFinance();
   const [history, setHistory] = useState<YFDividendHistory.HistoryList[]>([]);
   const [filteredHistory, setFilteredHistory] = useState<YFDividendHistory.HistoryList[]>([]);
-  const [selectedTimeFrame, setSelectedTimeFrame] = useState(Range.OneYear);
+  const [selectedTimeFrame, setSelectedTimeFrame] = useState(Range.FiveYears);
   const getHistory = useCallback(async () => {
     const data = await finance.getDividendHistory(ticker);
     setHistory(
       Object.entries(data).map(([key, value]) => {
         const t = new Date(1970, 0, 1);
         t.setSeconds(+key);
-        // console.log(value.amount)
         return {
           date: t,
           dateString: format(t, "MMM yyyy"),

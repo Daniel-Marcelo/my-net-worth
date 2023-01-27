@@ -27,7 +27,7 @@ function Button({ onClick, children, isActive }: ButtonProps) {
 interface PriceChartTimePeriodProps {
   isActive: (range: Range) => boolean;
   range: Range;
-  onClick: (range?: Range, interval?: Interval) => Promise<void>;
+  onClick: (range?: Range, interval?: Interval) => Promise<void> | void;
 }
 
 const rangeToInterval = new Map([

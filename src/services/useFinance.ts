@@ -1,4 +1,5 @@
 import { PriceChartInterval, PriceChartTimeRange, Quote, SummaryProfile } from "../models";
+import { FinanceModule } from "../types";
 import { YF, YFDividendHistory, YFModule } from "../types/yahoo-finance";
 import { LocalStorageUtil } from "../utils/localStorage";
 import { useLocalFinance } from "./useLocalFinance";
@@ -13,7 +14,8 @@ export interface Finance {
   ) => Promise<number[][]>;
   searchForTicker: (text: string) => Promise<Quote[]>;
   getSummaryProfile: (stock: string) => Promise<SummaryProfile>;
-  getModules: (stock: string) => Promise<YFModule.RootObject>;
+  getIncomeSheet: (stock: string) => Promise<YFModule.IncomeStatementHistory2[]>
+  getModules: (stock: string, modules?: FinanceModule[]) => Promise<YFModule.RootObject>;
   getEvents: (stock: string) => Promise<YFDividendHistory.RootObject>;
   getDividendHistory: (stock: string) => Promise<YFDividendHistory.Dividends>;
 }

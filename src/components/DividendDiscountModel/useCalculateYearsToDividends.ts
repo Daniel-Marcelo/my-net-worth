@@ -17,6 +17,8 @@ export const useCalculateYearsToDividends = () => {
         yearToDividends[year] = currentDividendForYear + historyItem.amount;
       }
     });
+    console.log(yearToDividends);
+    yearToDividends[2023]= undefined;
     return yearToDividends;
   };
 

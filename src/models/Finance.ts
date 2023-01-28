@@ -22,36 +22,3 @@ export interface QuoteSummary {
 export interface Module {
   summaryProfile?: SummaryProfile;
 }
-
-export const Modules = [
-  "assetProfile",
-  "summaryProfile",
-  "summaryDetail",
-  "esgScores",
-  "price",
-  "incomeStatementHistory",
-  "incomeStatementHistoryQuarterly",
-  "balanceSheetHistory",
-  "balanceSheetHistoryQuarterly",
-  "cashflowStatementHistory",
-  "cashflowStatementHistoryQuarterly",
-  "defaultKeyStatistics",
-  "financialData",
-  "calendarEvents",
-  "secFilings",
-  "recommendationTrend",
-  "upgradeDowngradeHistory",
-  "institutionOwnership",
-  "fundOwnership",
-  "majorDirectHolders",
-  "majorHoldersBreakdown",
-  "insiderTransactions",
-  "insiderHolders",
-  "netSharePurchaseActivity",
-  "earnings",
-  "earningsHistory",
-  "earningsTrend",
-  "industryTrend",
-  "indexTrend",
-  "sectorTrend",
-];

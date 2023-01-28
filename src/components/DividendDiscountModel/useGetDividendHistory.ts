@@ -48,7 +48,7 @@ export const useGetDividendHistory = (ticker: string, selectedTimeFrame: Range, 
     const mostRecentYear = yearsToDividends[currentYear] ? currentYear : currentYear - 1;
     const mostRecentDividend = yearsToDividends[mostRecentYear];
     const compoundedDivDiff = yearsAgo.reduce((acc, ago) => {
-      console.log(ago);
+      // console.log(ago);
       const value = (
         ((mostRecentDividend - yearsToDividends[mostRecentYear - ago]) / yearsToDividends[mostRecentYear - ago]) *
         100

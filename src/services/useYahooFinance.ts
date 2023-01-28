@@ -1,15 +1,13 @@
 import {
-  Modules,
   PriceChartInterval,
   PriceChartTimeRange,
   Quote,
-  QuoteSummary,
   QuoteType,
   SummaryProfile,
 } from "../models";
 import { YF, YFDividendHistory, YFModule } from "../types/yahoo-finance";
 import { Finance } from "./useFinance";
-import * as mockDividendHistory from "./dividend-history.json";
+import { FinanceModule, FinanceModules } from "../types";
 
 const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
@@ -49,16 +47,20 @@ export const useYahooFinance = (): Finance => {
       }));
   };
 
-  const getModules = async (stock: string): Promise<YFModule.RootObject> => {
-    const url = `/quoteSummary/${stock}?modules=${Modules.join(",")}`;
+  const getModules = async (stock: string, modules = FinanceModules): Promise<YFModule.RootObject> => {
+    const url = `/quoteSummary/${stock}?modules=${modules.join(",")}`;
     const response = await fetch(url);
     return await response.json();
   };
 
   const getSummaryProfile = async (stock: string): Promise<SummaryProfile> => {
-    const data = await getModules(stock);
-    console.log(data);
+    const data = await getModules(stock, [FinanceModule.summaryProfile]);
     return data.quoteSummary.result[0].summaryProfile;
+  };
+
+  const getIncomeSheet = async (stock: string): Promise<YFModule.IncomeStatementHistory2[]> => {
+    const data = await getModules(stock, [FinanceModule.incomeStatementHistory]);
+    return data.quoteSummary.result[0].incomeStatementHistory.incomeStatementHistory;
   };
 
   const getEvents = async (stock: string): Promise<YFDividendHistory.RootObject> => {
@@ -80,5 +82,6 @@ export const useYahooFinance = (): Finance => {
     getModules,
     getEvents,
     getDividendHistory,
+    getIncomeSheet,
   } as const;
 };

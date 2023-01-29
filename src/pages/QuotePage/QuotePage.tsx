@@ -1,14 +1,11 @@
 import { x } from "@xstyled/styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Box, Divider, List, ListItem, ListItemText, Tab, Tabs, Typography } from "@mui/material";
-import { PriceChartToolbar } from "../../components/PriceChartToolbar";
 import { TickerSearch } from "../../components/TickerSearch/TickerSearch";
-import { PriceChart } from "../../components/PriceChart/PriceChart";
-import { useFinance } from "../../services";
-import { PriceChartInterval, PriceChartTimeRange, Quote } from "../../models";
-import { useChartData } from "./useChartData";
+import { Quote } from "../../models";
 import { DividendDiscountModel } from "../../components/DividendDiscountModel";
 import { useLoadFinanceModules } from "../../hooks/useLoadFinanceModules";
+import { TickerSummaryTab } from "../../components/TickerSummaryTab";
 
 function a11yProps(index: number) {
   return {
@@ -46,47 +43,22 @@ function TabPanel(props: TabPanelProps) {
 export function QuotePage() {
   const [value, setValue] = useState(0);
   const [selectedQuote, setSelectedQuote] = useState<Quote>();
-  const [selectedTimeframe, setSelectedTimeFrame] = useState("1d");
-  const [chartData, setChartData] = useChartData();
-  const finance = useFinance();
   useLoadFinanceModules(selectedQuote?.ticker);
-
-  const fetchHistory = async (range = PriceChartTimeRange.OneDay, interval = PriceChartInterval.TwoMins) => {
-    setSelectedTimeFrame(range);
-    if (selectedQuote?.ticker) {
-      const result = await finance.getPriceHistory(selectedQuote.ticker, range, interval);
-      setChartData(result);
-    }
-  };
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
-
-  useEffect(() => {
-    if (selectedQuote) {
-      fetchHistory();
-    }
-  }, [selectedQuote]);
 
   return (
     <x.div p={8}>
       <TickerSearch setSelectedQuote={setSelectedQuote} selectedQuote={selectedQuote} />
-
       {selectedQuote && (
         <Box sx={{ width: "100%", marginTop: "1rem" }}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+            <Tabs value={value} onChange={(e, value) => setValue(value)} aria-label="basic tabs example">
               <Tab label="Chart" {...a11yProps(0)} />
               <Tab label="DDM" {...a11yProps(1)} />
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
             <x.div display="flex" flexDirection="column" flex="1" alignItems="center" mt={8}>
-              <x.div mb={8}>
-                <PriceChartToolbar selectedTimeFrame={selectedTimeframe} fetchHistory={fetchHistory} />
-              </x.div>
-              {chartData.length ? <PriceChart selectedTicker={selectedQuote.ticker} chartData={chartData} /> : ""}
+            {selectedQuote?.ticker && <TickerSummaryTab ticker={selectedQuote.ticker}/>}
             </x.div>
           </TabPanel>
           <TabPanel value={value} index={1}>

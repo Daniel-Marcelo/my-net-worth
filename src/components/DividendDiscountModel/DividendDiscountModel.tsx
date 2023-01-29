@@ -26,17 +26,17 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
 
   useEffect(() => {
     // console.log(averageAnnualIncrease)
-    const averageDividendGrowthRateLast10Years = averageAnnualIncrease && averageAnnualIncrease[10]
-    if(ticker && averageDividendGrowthRateLast10Years) {
-      console.log(averageDividendGrowthRateLast10Years)
-      const last4Dividends = filteredHistory.slice(filteredHistory.length - 5, filteredHistory.length -1);
-      const total = last4Dividends.reduce((acc, div) => acc+ div.amount, 0)
-      console.log(total)
+    const averageDividendGrowthRateLast10Years = averageAnnualIncrease && averageAnnualIncrease[10];
+    if (ticker && averageDividendGrowthRateLast10Years) {
+      console.log(averageDividendGrowthRateLast10Years);
+      const last4Dividends = filteredHistory.slice(filteredHistory.length - 5, filteredHistory.length - 1);
+      const total = last4Dividends.reduce((acc, div) => acc + div.amount, 0);
+      console.log(total);
 
-      console.log(((averageDividendGrowthRateLast10Years - 1.09)/100));
-      console.log(formula(total, ((averageDividendGrowthRateLast10Years - 1.09)/100) ))
+      console.log((averageDividendGrowthRateLast10Years - 1.09) / 100);
+      console.log(formula(total, (averageDividendGrowthRateLast10Years - 1.09) / 100));
     }
-  }, [ticker, averageAnnualIncrease])
+  }, [ticker, averageAnnualIncrease]);
 
   const isActive = (range: Range) => selectedTimeFrame === range;
 

@@ -18,7 +18,7 @@ export const useCalculateYearsToDividends = () => {
       }
     });
     console.log(yearToDividends);
-    yearToDividends[2023]= undefined;
+    yearToDividends[2023] = undefined;
     return yearToDividends;
   };
 

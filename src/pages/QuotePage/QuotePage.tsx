@@ -8,6 +8,7 @@ import { useFinance } from "../../services";
 import { PriceChartInterval, PriceChartTimeRange, Quote } from "../../models";
 import { useChartData } from "./useChartData";
 import { DividendDiscountModel } from "../../components/DividendDiscountModel";
+import { useLoadFinanceModules } from "../../hooks/useLoadFinanceModules";
 
 function a11yProps(index: number) {
   return {
@@ -48,6 +49,7 @@ export function QuotePage() {
   const [selectedTimeframe, setSelectedTimeFrame] = useState("1d");
   const [chartData, setChartData] = useChartData();
   const finance = useFinance();
+  useLoadFinanceModules(selectedQuote?.ticker);
 
   const fetchHistory = async (range = PriceChartTimeRange.OneDay, interval = PriceChartInterval.TwoMins) => {
     setSelectedTimeFrame(range);

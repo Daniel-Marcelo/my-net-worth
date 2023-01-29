@@ -14,7 +14,7 @@ export interface Finance {
   ) => Promise<number[][]>;
   searchForTicker: (text: string) => Promise<Quote[]>;
   getSummaryProfile: (stock: string) => Promise<SummaryProfile>;
-  getIncomeSheet: (stock: string) => Promise<YFModule.IncomeStatementHistory2[]>
+  getIncomeSheet: (stock: string) => Promise<YFModule.IncomeStatementHistory2[]>;
   getModules: (stock: string, modules?: FinanceModule[]) => Promise<YFModule.RootObject>;
   getEvents: (stock: string) => Promise<YFDividendHistory.RootObject>;
   getDividendHistory: (stock: string) => Promise<YFDividendHistory.Dividends>;

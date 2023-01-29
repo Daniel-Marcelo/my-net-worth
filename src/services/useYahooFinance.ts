@@ -1,10 +1,4 @@
-import {
-  PriceChartInterval,
-  PriceChartTimeRange,
-  Quote,
-  QuoteType,
-  SummaryProfile,
-} from "../models";
+import { PriceChartInterval, PriceChartTimeRange, Quote, QuoteType, SummaryProfile } from "../models";
 import { YF, YFDividendHistory, YFModule } from "../types/yahoo-finance";
 import { Finance } from "./useFinance";
 import { FinanceModule, FinanceModules } from "../types";

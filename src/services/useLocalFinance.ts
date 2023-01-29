@@ -42,7 +42,7 @@ export const useLocalFinance = (): Finance => {
       const response = mockModules as YFModule.RootObject;
       return response.quoteSummary.result[0].summaryProfile;
     },
-    getIncomeSheet:async () => {
+    getIncomeSheet: async () => {
       const response = mockModules as YFModule.RootObject;
       return response.quoteSummary.result[0].incomeStatementHistory.incomeStatementHistory;
     },

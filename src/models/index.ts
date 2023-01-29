@@ -5,4 +5,4 @@ export * from "./Firebase";
 export * from "./Portfolio";
 export * from "./PortfolioEntry";
 export * from "./Finance";
-export * from './Dividend';
+export * from "./Dividend";

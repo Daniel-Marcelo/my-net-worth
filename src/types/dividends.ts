@@ -8,4 +8,3 @@ export const enum ViewType {
 export type YearToNumber = {
   [key in Year]: number;
 };
-

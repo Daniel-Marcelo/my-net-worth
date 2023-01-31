@@ -8,6 +8,7 @@ import { PriceChartTimeRange as Range } from "../../models";
 import { useGetDividendHistory } from "./useGetDividendHistory";
 import { ViewType } from "../../types";
 import { useDDMFormula } from "./useDDMFormula";
+import { useCalculateDividendFrequency } from "./useCalculateDividendFrequency";
 
 interface DividendDiscountModelProps {
   ticker: string;
@@ -16,11 +17,12 @@ interface DividendDiscountModelProps {
 export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
   const [viewType, setViewType] = useState(ViewType.Normal);
   const [selectedTimeFrame, setSelectedTimeFrame] = useState(Range.FiveYears);
-  const { averageAnnualIncrease, compoundedAnnualIncrease, filteredHistory } = useGetDividendHistory(
+  const { averageAnnualIncrease, compoundedAnnualIncrease, history, filteredHistory } = useGetDividendHistory(
     ticker,
     selectedTimeFrame,
     viewType
   );
+  const dividendFrequency = useCalculateDividendFrequency(history)
 
   const formula = useDDMFormula();
 
@@ -42,46 +44,47 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
 
   return (
     <>
-      <x.div mb={12}>
-        <ToggleButtonGroup
-          color="primary"
-          value={viewType}
-          exclusive
-          onChange={(event, newValue?: ViewType) => newValue && setViewType(newValue)}
-          aria-label="Platform"
-        >
-          <ToggleButton value="normal" sx={{ background: "white" }}>
-            Standard
-          </ToggleButton>
-          <ToggleButton value="yearly" sx={{ background: "white" }}>
-            Yearly
-          </ToggleButton>
-        </ToggleButtonGroup>
+      <x.div display="flex" alignItems="center" mb={12}>
+        <x.div mr={16}>
+          <ToggleButtonGroup
+            color="primary"
+            value={viewType}
+            exclusive
+            onChange={(event, newValue?: ViewType) => newValue && setViewType(newValue)}
+            aria-label="Platform"
+          >
+            <ToggleButton value="normal" sx={{ background: "white" }}>
+              Standard
+            </ToggleButton>
+            <ToggleButton value="yearly" sx={{ background: "white" }}>
+              Yearly
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </x.div>
+        <x.div>
+          <PriceChartTimePeriod
+            isActive={isActive}
+            range={Range.OneYear}
+            onClick={(range) => setSelectedTimeFrame(range)}
+          />
+          <PriceChartTimePeriod
+            isActive={isActive}
+            range={Range.TwoYears}
+            onClick={(range) => setSelectedTimeFrame(range)}
+          />
+          <PriceChartTimePeriod
+            isActive={isActive}
+            range={Range.FiveYears}
+            onClick={(range) => setSelectedTimeFrame(range)}
+          />
+          <PriceChartTimePeriod
+            isActive={isActive}
+            range={Range.TenYears}
+            onClick={(range) => setSelectedTimeFrame(range)}
+          />
+          <PriceChartTimePeriod isActive={isActive} range={Range.Max} onClick={(range) => setSelectedTimeFrame(range)} />
+        </x.div>
       </x.div>
-      <x.div mb={8}>
-        <PriceChartTimePeriod
-          isActive={isActive}
-          range={Range.OneYear}
-          onClick={(range) => setSelectedTimeFrame(range)}
-        />
-        <PriceChartTimePeriod
-          isActive={isActive}
-          range={Range.TwoYears}
-          onClick={(range) => setSelectedTimeFrame(range)}
-        />
-        <PriceChartTimePeriod
-          isActive={isActive}
-          range={Range.FiveYears}
-          onClick={(range) => setSelectedTimeFrame(range)}
-        />
-        <PriceChartTimePeriod
-          isActive={isActive}
-          range={Range.TenYears}
-          onClick={(range) => setSelectedTimeFrame(range)}
-        />
-        <PriceChartTimePeriod isActive={isActive} range={Range.Max} onClick={(range) => setSelectedTimeFrame(range)} />
-      </x.div>
-
       <Example history={filteredHistory} />
 
       <Box sx={{ width: "100%", bgcolor: "background.paper", marginBottom: "2rem", marginTop: "2rem" }}>

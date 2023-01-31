@@ -8,3 +8,10 @@ export const enum ViewType {
 export type YearToNumber = {
   [key in Year]: number;
 };
+
+export const enum DividendFrequency {
+  Monthly = 'Monthly',
+  Quarterly = 'Quarterly',
+  BiAnnually = 'Bi-Annually',
+  Annually = 'Annually'
+}

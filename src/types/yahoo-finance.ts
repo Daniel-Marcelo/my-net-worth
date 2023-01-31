@@ -2763,6 +2763,7 @@ export namespace YFDividendHistory {
     dateString: string;
     amount: number;
     date: Date;
+    year: string;
   }
   export interface Pre {
     timezone: string;

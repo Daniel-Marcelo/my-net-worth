@@ -29,7 +29,8 @@ export const useGetDividendHistory = (ticker: string, selectedTimeFrame: Range, 
         date: t,
         dateString: format(t, "MMM yyyy"),
         amount: value.amount,
-      };
+        year: format(t, 'yyyy')
+      } as YFDividendHistory.HistoryList;
     });
     setHistory(freshHistory);
   }, [ticker]);
@@ -97,15 +98,17 @@ export const useGetDividendHistory = (ticker: string, selectedTimeFrame: Range, 
   const setFilteredHistoryBasedOnYear = (timeframe: Range) => {
     const minimumYear = new Date().getFullYear() - rangeToYearsMap.get(timeframe);
     const yearsToDividends = calcYearsToDividends(history);
+    console.log(yearsToDividends)
     const yearlyHistory = Object.entries(yearsToDividends).map(
       ([key, value]) =>
         ({
           dateString: key,
+          year: key,
           amount: +value.toFixed(3),
         } as YFDividendHistory.HistoryList)
     );
     setFilteredHistory([...yearlyHistory.filter((item) => +item.dateString >= minimumYear)]);
   };
 
-  return { averageAnnualIncrease, compoundedAnnualIncrease, filteredHistory };
+  return { averageAnnualIncrease, compoundedAnnualIncrease, history, filteredHistory } as const;
 };

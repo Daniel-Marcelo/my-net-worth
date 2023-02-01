@@ -10,8 +10,8 @@ export type YearToNumber = {
 };
 
 export const enum DividendFrequency {
-  Monthly = 'Monthly',
-  Quarterly = 'Quarterly',
-  BiAnnually = 'Bi-Annually',
-  Annually = 'Annually'
+  Monthly = "Monthly",
+  Quarterly = "Quarterly",
+  BiAnnually = "Bi-Annually",
+  Annually = "Annually",
 }

@@ -22,7 +22,7 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
     selectedTimeFrame,
     viewType
   );
-  const dividendFrequency = useCalculateDividendFrequency(history)
+  const dividendFrequency = useCalculateDividendFrequency(history);
 
   const formula = useDDMFormula();
 
@@ -82,7 +82,11 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
             range={Range.TenYears}
             onClick={(range) => setSelectedTimeFrame(range)}
           />
-          <PriceChartTimePeriod isActive={isActive} range={Range.Max} onClick={(range) => setSelectedTimeFrame(range)} />
+          <PriceChartTimePeriod
+            isActive={isActive}
+            range={Range.Max}
+            onClick={(range) => setSelectedTimeFrame(range)}
+          />
         </x.div>
       </x.div>
       <Example history={filteredHistory} />

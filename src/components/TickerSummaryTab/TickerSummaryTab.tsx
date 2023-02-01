@@ -1,22 +1,22 @@
-import { marginLeft, x } from '@xstyled/styled-components';
-import { useEffect, useState } from 'react';
-import { PriceChartInterval, PriceChartTimeRange } from '../../models';
-import { useChartData } from '../../pages/QuotePage/useChartData';
-import { useFinance } from '../../services';
-import { PriceChart } from '../PriceChart';
-import { PriceChartToolbar } from '../PriceChartToolbar';
+import { marginLeft, x } from "@xstyled/styled-components";
+import { useEffect, useState } from "react";
 import { Box, Divider, List, ListItem, ListItemText, Tab, Tabs, Typography } from "@mui/material";
-import { useFinanceStore } from '../../stores/finance.store';
-import { PriceRangeBar } from '../PriceRangeBar';
+import { PriceChartInterval, PriceChartTimeRange } from "../../models";
+import { useChartData } from "../../pages/QuotePage/useChartData";
+import { useFinance } from "../../services";
+import { PriceChart } from "../PriceChart";
+import { PriceChartToolbar } from "../PriceChartToolbar";
+import { useFinanceStore } from "../../stores/finance.store";
+import { PriceRangeBar } from "../PriceRangeBar";
 
 interface TickerSummaryTabProps {
   ticker: string;
 }
-export const TickerSummaryTab = ({ ticker }: TickerSummaryTabProps) => {
+export function TickerSummaryTab({ ticker }: TickerSummaryTabProps) {
   const [selectedTimeframe, setSelectedTimeFrame] = useState("1d");
   const [chartData, setChartData] = useChartData();
   const finance = useFinance();
-  const { tickerSummaryItems1, tickerSummaryItems2 } = useFinanceStore(state => state)
+  const { tickerSummaryItems1, tickerSummaryItems2 } = useFinanceStore((state) => state);
 
   useEffect(() => {
     if (ticker) {
@@ -32,7 +32,6 @@ export const TickerSummaryTab = ({ ticker }: TickerSummaryTabProps) => {
     }
   };
 
-
   return (
     <x.div display="flex">
       <x.div display="flex" flexDirection="column" flex={1}>
@@ -45,49 +44,51 @@ export const TickerSummaryTab = ({ ticker }: TickerSummaryTabProps) => {
       </x.div>
       <x.div display="flex" flex={1} flexDirection="column">
         <x.div mb={8}>
-        <PriceRangeBar />
+          <PriceRangeBar />
         </x.div>
 
         <x.div display="flex" flex={1} justifyContent="center">
-          <Box sx={{ marginLeft: '2rem' }}>
+          <Box sx={{ marginLeft: "2rem" }}>
             <List sx={{ p: 0 }}>
-              {tickerSummaryItems1.map(item =>
+              {tickerSummaryItems1.map((item) => (
                 <>
                   <ListItem sx={{ bgcolor: "background.paper" }}>
                     <ListItemText>
                       <x.div display="flex" justifyContent="space-between">
-                      <x.div fontSize="sm" pr={12}>{item.label}</x.div>
+                        <x.div fontSize="sm" pr={12}>
+                          {item.label}
+                        </x.div>
                         <x.div fontSize="sm">{item.value}</x.div>
                       </x.div>
                     </ListItemText>
                   </ListItem>
                   <Divider />
                 </>
-              )}
+              ))}
             </List>
           </Box>
 
-          <Box sx={{ marginLeft: '4rem' }}>
-
+          <Box sx={{ marginLeft: "4rem" }}>
             <List sx={{ p: 0 }}>
-              {tickerSummaryItems2.map(item =>
+              {tickerSummaryItems2.map((item) => (
                 <>
                   <ListItem sx={{ bgcolor: "background.paper" }}>
                     <ListItemText>
                       <x.div display="flex" justifyContent="space-between">
-                        <x.div fontSize="sm" pr={12}>{item.label}</x.div>
+                        <x.div fontSize="sm" pr={12}>
+                          {item.label}
+                        </x.div>
                         <x.div fontSize="sm">{item.value}</x.div>
                       </x.div>
                     </ListItemText>
                   </ListItem>
                   <Divider />
                 </>
-              )}
+              ))}
             </List>
           </Box>
         </x.div>
-
       </x.div>
     </x.div>
-  )
+  );
 }

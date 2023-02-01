@@ -42,7 +42,7 @@ function TabPanel(props: TabPanelProps) {
 
 export function QuotePage() {
   const [value, setValue] = useState(0);
-  const { selectedQuote, setSelectedQuote } = useQuoteStore(state => state);
+  const { selectedQuote, setSelectedQuote } = useQuoteStore((state) => state);
   useLoadFinanceModules(selectedQuote?.ticker);
 
   return (

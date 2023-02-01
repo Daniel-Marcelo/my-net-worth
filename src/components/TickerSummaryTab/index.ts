@@ -1,1 +1,1 @@
-export * from './TickerSummaryTab';
+export * from "./TickerSummaryTab";

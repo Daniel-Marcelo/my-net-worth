@@ -11,13 +11,23 @@ export const PriceRangeBar = () => {
     const [width, setWidth] = useState(0)
     const ref = useRef<HTMLDivElement>();
 
-    useEffect(() => {
+    const applyWidth = () => {
         const hasWidth = ref && ref.current && ref?.current?.clientWidth;
         if (hasWidth && rangeData?.currentValue && selectedQuote?.ticker) {
             setWidth(ref?.current?.clientWidth * (rangeData.currentValue / 100));
         }
+    }
+    useEffect(() => {
+        applyWidth();
 
-    }, [ref, selectedQuote, rangeData])
+    }, [ref, selectedQuote, rangeData]);
+
+    useEffect(() => {
+        window.addEventListener('resize', () => applyWidth())
+        return () => {
+            window.removeEventListener('resize', () => applyWidth());
+        }
+    }, [])
     return (
         <Box sx={{ width: '100%' }}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>

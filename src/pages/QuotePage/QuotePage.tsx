@@ -6,6 +6,8 @@ import { Quote } from "../../models";
 import { DividendDiscountModel } from "../../components/DividendDiscountModel";
 import { useLoadFinanceModules } from "../../hooks/useLoadFinanceModules";
 import { TickerSummaryTab } from "../../components/TickerSummaryTab";
+import { useFinanceStore } from "../../stores/finance.store";
+import {PriceRangeBar} from "../../components/PriceRangeBar";
 
 function a11yProps(index: number) {
   return {
@@ -44,6 +46,7 @@ export function QuotePage() {
   const [value, setValue] = useState(0);
   const [selectedQuote, setSelectedQuote] = useState<Quote>();
   useLoadFinanceModules(selectedQuote?.ticker);
+  const { tickerSummaryItems } = useFinanceStore(state => state)
 
   return (
     <x.div p={8}>
@@ -58,7 +61,27 @@ export function QuotePage() {
           </Box>
           <TabPanel value={value} index={0}>
             <x.div display="flex" flexDirection="column" flex="1" alignItems="center" mt={8}>
-            {selectedQuote?.ticker && <TickerSummaryTab ticker={selectedQuote.ticker}/>}
+              {selectedQuote?.ticker && <TickerSummaryTab ticker={selectedQuote.ticker} />}
+              <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
+                <List sx={{ p: 0 }}>
+                  {tickerSummaryItems.map(item =>
+                    <>
+                      <ListItem>
+                        <ListItemText>
+                          <x.div display="flex" justifyContent="space-between">
+                            <x.span>{item.label}</x.span>
+                            <x.span>{item.value}</x.span>
+                          </x.div>
+                        </ListItemText>
+                      </ListItem>
+                      <Divider />
+                    </>
+
+                  )}
+                </List>
+              </Box>
+
+              <PriceRangeBar />
             </x.div>
           </TabPanel>
           <TabPanel value={value} index={1}>

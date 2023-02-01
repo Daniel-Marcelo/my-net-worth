@@ -2,12 +2,12 @@ import { x } from "@xstyled/styled-components";
 import { useState } from "react";
 import { Box, Divider, List, ListItem, ListItemText, Tab, Tabs, Typography } from "@mui/material";
 import { TickerSearch } from "../../components/TickerSearch/TickerSearch";
-import { Quote } from "../../models";
 import { DividendDiscountModel } from "../../components/DividendDiscountModel";
 import { useLoadFinanceModules } from "../../hooks/useLoadFinanceModules";
 import { TickerSummaryTab } from "../../components/TickerSummaryTab";
 import { useFinanceStore } from "../../stores/finance.store";
-import {PriceRangeBar} from "../../components/PriceRangeBar";
+import { PriceRangeBar } from "../../components/PriceRangeBar";
+import { useQuoteStore } from "../../stores/quote.store";
 
 function a11yProps(index: number) {
   return {
@@ -44,14 +44,14 @@ function TabPanel(props: TabPanelProps) {
 
 export function QuotePage() {
   const [value, setValue] = useState(0);
-  const [selectedQuote, setSelectedQuote] = useState<Quote>();
+  const { selectedQuote, setSelectedQuote } = useQuoteStore(state => state);
   useLoadFinanceModules(selectedQuote?.ticker);
   const { tickerSummaryItems } = useFinanceStore(state => state)
 
   return (
     <x.div p={8}>
       <TickerSearch setSelectedQuote={setSelectedQuote} selectedQuote={selectedQuote} />
-      {selectedQuote && (
+      {selectedQuote?.ticker && (
         <Box sx={{ width: "100%", marginTop: "1rem" }}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <Tabs value={value} onChange={(e, value) => setValue(value)} aria-label="basic tabs example">
@@ -76,11 +76,9 @@ export function QuotePage() {
                       </ListItem>
                       <Divider />
                     </>
-
                   )}
                 </List>
               </Box>
-
               <PriceRangeBar />
             </x.div>
           </TabPanel>
@@ -91,19 +89,6 @@ export function QuotePage() {
           </TabPanel>
         </Box>
       )}
-
-      {/* <Typography variant="subtitle1">Dividend Data</Typography> */}
-      {/* <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
-        <List sx={{ p: 0 }}>
-          <ListItem sx={{ "&:hover": { bgcolor: "red" } }}>
-            <ListItemText primary="Trash" />
-          </ListItem>
-          <Divider />
-          <ListItem>
-            <ListItemText primary="Trash" />
-          </ListItem>
-        </List>
-      </Box> */}
     </x.div>
   );
 }

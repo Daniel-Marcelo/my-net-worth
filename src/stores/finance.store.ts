@@ -10,7 +10,8 @@ interface RangeData {
 interface FinanceStoreData {
   moduleData?: YFModule.Result;
   setModuleData: (moduleData: YFModule.Result) => void;
-  tickerSummaryItems: TickerSummaryItem[],
+  tickerSummaryItems1: TickerSummaryItem[],
+  tickerSummaryItems2: TickerSummaryItem[],
   rangeData: RangeData,
 }
 
@@ -36,21 +37,26 @@ export const useFinanceStore = create<FinanceStoreData>((set) => ({
     } as RangeData
 
     set({rangeData})
-    set({ tickerSummaryItems: [ 
+    set({ tickerSummaryItems1: [ 
+      new TickerSummaryItem('Current Price', financialData.currentPrice.fmt),
       new TickerSummaryItem('Previous Close', summaryDetail.previousClose.fmt),
       new TickerSummaryItem('Open', summaryDetail.open.fmt),
       new TickerSummaryItem('Days Range', `${summaryDetail.dayLow.fmt} - ${summaryDetail.dayHigh.fmt}`),
       new TickerSummaryItem('52 Week Range', `${summaryDetail.fiftyTwoWeekLow.fmt} - ${summaryDetail.fiftyTwoWeekHigh.fmt}`),
       new TickerSummaryItem('Market Cap', summaryDetail.marketCap.fmt),
       new TickerSummaryItem('Beta', summaryDetail.beta.fmt),
+    ]})
+
+    set({ tickerSummaryItems2: [ 
       new TickerSummaryItem('PE', summaryDetail.trailingPE.fmt),
       new TickerSummaryItem('EPS', defaultKeyStatistics.trailingEps.fmt),
       new TickerSummaryItem('Dividend Yield', summaryDetail.dividendYield.fmt),
       new TickerSummaryItem('Ex. Dividend Date', summaryDetail.exDividendDate.fmt),
       new TickerSummaryItem('Dividend Rate', summaryDetail.dividendRate.fmt),
-      new TickerSummaryItem('Five year average dividend yield', summaryDetail.fiveYearAvgDividendYield.fmt),
-      new TickerSummaryItem('Trailing Annual dividend yield', summaryDetail.trailingAnnualDividendYield.fmt),
+      new TickerSummaryItem('5 yr Average Div Yield', summaryDetail.fiveYearAvgDividendYield.fmt),
+      new TickerSummaryItem('Trailing Annual Div Yield', summaryDetail.trailingAnnualDividendYield.fmt),
     ]})
   },
-  tickerSummaryItems: [],
+  tickerSummaryItems1: [],
+  tickerSummaryItems2: [],
 }));

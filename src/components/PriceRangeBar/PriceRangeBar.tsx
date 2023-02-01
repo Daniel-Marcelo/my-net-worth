@@ -30,7 +30,10 @@ export const PriceRangeBar = () => {
     }, [])
     return (
         <Box sx={{ width: '100%' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                         <Box sx={{ display: 'flex', justifyContent: 'center'}}>
+                    <Typography variant="body2" color="text.secondary">52 week range</Typography>
+                </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', paddingLeft: '2rem', paddingRight: '2rem'}}>
                 <Box sx={{ minWidth: 35, marginRight: '1rem' }}>
                     <Typography variant="body2" color="text.secondary">{`${rangeData?.start}`}</Typography>
                 </Box>

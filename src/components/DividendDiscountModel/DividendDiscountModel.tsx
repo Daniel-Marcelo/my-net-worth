@@ -9,6 +9,7 @@ import { useGetDividendHistory } from "./useGetDividendHistory";
 import { ViewType } from "../../types";
 import { useDDMFormula } from "./useDDMFormula";
 import { useCalculateDividendFrequency } from "./useCalculateDividendFrequency";
+import { useWACC } from "../../hooks/useWACC";
 
 interface DividendDiscountModelProps {
   ticker: string;
@@ -23,6 +24,7 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
     viewType
   );
   const dividendFrequency = useCalculateDividendFrequency(history);
+  const waccFormula = useWACC();
 
   const formula = useDDMFormula();
 

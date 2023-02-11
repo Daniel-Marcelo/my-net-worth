@@ -6,7 +6,6 @@ import passwordValidator from "password-validator";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
 import { useLogin } from "../Login/useLogin";
-import { useAuthService } from "../../services/AuthService";
 import { useRegister } from "./useRegister";
 
 function validate(email) {
@@ -30,8 +29,8 @@ schema
   .oneOf(["Passw0rd", "Password123"]);
 
 export function RegisterPage() {
-  const [passwordRulesValid, setPasswordRulesValid] = useState(schema.validate("", { list: true }) as any[]);
-  const [loginWithGoogle, loginWithEmailPassword] = useLogin();
+  const [passwordRulesValid, setPasswordRulesValid] = useState(schema.validate("", { list: true }) as string[]);
+  const [loginWithGoogle] = useLogin();
   const registerService = useRegister();
   // const authService = useAuthService();
   const [email, setEmail] = useState("");
@@ -42,7 +41,7 @@ export function RegisterPage() {
 
   // console.log(schema.validate("", { list: true }) as any[]);
   useEffect(() => {
-    const passwordValid = schema.validate(password, { list: true }) as any[];
+    const passwordValid = schema.validate(password, { list: true }) as string[];
     setPasswordRulesValid(passwordValid);
   }, [password]);
 

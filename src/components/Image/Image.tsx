@@ -1,7 +1,5 @@
-import handleViewport, { useInViewport } from "react-in-viewport";
 import { x } from "@xstyled/styled-components";
-import { Ref, useEffect, useRef, useState } from "react";
-import { LazyLoadImage } from "react-lazy-load-image-component";
+import { useEffect, useState } from "react";
 import { XStyledProps } from "../../types";
 
 interface MyImageProps {
@@ -15,7 +13,6 @@ const iconPathOne = (url: string) => `google.com/s2/favicons?domain_url=${url}`;
 const iconPathTwo = (url: string) => `icons.duckduckgo.com/ip2/${url}.ico`;
 
 export function Image({ src, width, height, inViewport, ...props }: MyImageProps & XStyledProps) {
-  const [loading, setLoading] = useState(false);
   const [url, setUrl] = useState("");
   const [urls, setUrls] = useState([]);
 
@@ -27,10 +24,11 @@ export function Image({ src, width, height, inViewport, ...props }: MyImageProps
   }, [src]);
 
   const imageLoaded = (e) => {
+    // eslint-disable-next-line no-console
     console.log(e);
   };
 
-  const onError = (e) => {
+  const onError = () => {
     if (urls.length) {
       setUrl(urls.pop());
     }

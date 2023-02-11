@@ -1,4 +1,4 @@
-export namespace YF {
+declare module "YF" {
   export interface Pre {
     timezone: string;
     end: number;

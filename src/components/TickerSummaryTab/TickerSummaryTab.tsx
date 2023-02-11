@@ -1,6 +1,6 @@
-import { marginLeft, x } from "@xstyled/styled-components";
+import { x } from "@xstyled/styled-components";
 import { useEffect, useState } from "react";
-import { Box, Divider, List, ListItem, ListItemText, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Divider, List, ListItem, ListItemText } from "@mui/material";
 import { PriceChartInterval, PriceChartTimeRange } from "../../models";
 import { useChartData } from "../../pages/QuotePage/useChartData";
 import { useFinance } from "../../services";
@@ -18,12 +18,6 @@ export function TickerSummaryTab({ ticker }: TickerSummaryTabProps) {
   const finance = useFinance();
   const { tickerSummaryItems1, tickerSummaryItems2 } = useFinanceStore((state) => state);
 
-  useEffect(() => {
-    if (ticker) {
-      fetchHistory();
-    }
-  }, [ticker]);
-
   const fetchHistory = async (range = PriceChartTimeRange.OneDay, interval = PriceChartInterval.TwoMins) => {
     setSelectedTimeFrame(range);
     if (ticker) {
@@ -31,6 +25,12 @@ export function TickerSummaryTab({ ticker }: TickerSummaryTabProps) {
       setChartData(result);
     }
   };
+
+  useEffect(() => {
+    if (ticker) {
+      fetchHistory();
+    }
+  }, [ticker]);
 
   return (
     <x.div display="flex">

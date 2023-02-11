@@ -28,14 +28,14 @@ schema
   .oneOf(["Passw0rd", "Password123"]);
 
 export function LoginPage() {
-  const [passwordRulesValid, setPasswordRulesValid] = useState(schema.validate("", { list: true }) as any[]);
+  const [passwordRulesValid, setPasswordRulesValid] = useState(schema.validate("", { list: true }) as string[]);
   const [loginWithGoogle, loginWithEmailPassword] = useLogin();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [clickedSave, setClickedSave] = useState(false);
 
   useEffect(() => {
-    const passwordValid = schema.validate(password, { list: true }) as any[];
+    const passwordValid = schema.validate(password, { list: true }) as string[];
     setPasswordRulesValid(passwordValid);
   }, [password]);
 

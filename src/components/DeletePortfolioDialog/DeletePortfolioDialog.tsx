@@ -4,13 +4,18 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Portfolio } from "../../models";
 
-interface DeletePortfolioDialog {
+interface DeletePortfolioDialogProps {
   open: boolean;
   portfolio: Portfolio;
   closeDialog: () => void;
   onClickConfirmDelete: (id: string) => void;
 }
-export function DeletePortfolioDialog({ portfolio, open, closeDialog, onClickConfirmDelete }: DeletePortfolioDialog) {
+export function DeletePortfolioDialog({
+  portfolio,
+  open,
+  closeDialog,
+  onClickConfirmDelete,
+}: DeletePortfolioDialogProps) {
   return (
     <div>
       <Dialog open={open} onClose={closeDialog}>

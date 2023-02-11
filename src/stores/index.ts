@@ -1,3 +1,3 @@
-export * from './finance.store';
-export * from './quote.store';
-export * from './riskFreeRate.store';
+export * from "./finance.store";
+export * from "./quote.store";
+export * from "./riskFreeRate.store";

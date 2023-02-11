@@ -1,6 +1,6 @@
 import { PriceChartInterval, PriceChartTimeRange, Quote, SummaryProfile } from "../models";
 import { FinanceModule } from "../types";
-import { YF, YFDividendHistory, YFModule } from "../types/yahoo-finance";
+import { YF, YFDividendHistory, YFModule } from "../types/yahoo-finance.d";
 import { LocalStorageUtil } from "../utils/localStorage";
 import { useLocalFinance } from "./useLocalFinance";
 import { useYahooFinance } from "./useYahooFinance";

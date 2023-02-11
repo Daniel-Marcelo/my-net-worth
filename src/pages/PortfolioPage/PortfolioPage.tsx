@@ -53,6 +53,7 @@ export function PortfolioPage() {
   };
 
   const onClickConfirmDelete = (ticker: string) => {
+    // eslint-disable-next-line no-console
     console.log(ticker);
   };
 

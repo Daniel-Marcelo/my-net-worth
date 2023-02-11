@@ -14,11 +14,11 @@ export interface SummaryProfile {
   zip: string;
 }
 
+export interface Module {
+  summaryProfile?: SummaryProfile;
+}
+
 export interface QuoteSummary {
   error?: Error;
   result: [Module];
-}
-
-export interface Module {
-  summaryProfile?: SummaryProfile;
 }

@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -31,7 +32,6 @@ const useLocalAuthService = (): AuthService => ({
       } as LocalUser;
       users.push(newUser);
       LocalStorageUtil.Set(collection, users);
-    } else {
     }
     return {} as UserCredential;
   },
@@ -40,7 +40,7 @@ const useLocalAuthService = (): AuthService => ({
     const isValid = users.some((user) => user.email === email && user.password === password);
     return isValid;
   },
-  login: (): void => {},
+  login: (): void => null,
 });
 
 const useGoogleAuthService = (): AuthService => ({
@@ -52,17 +52,17 @@ const useGoogleAuthService = (): AuthService => ({
     const result = await signInWithPopup(auth, provider);
 
     // This gives you a Google Access Token. You can use it to access the Google API.
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    console.log(credential);
-    console.log(auth);
+    GoogleAuthProvider.credentialFromResult(result);
   },
   createWithEmailAndPassword: async (email: string, password: string): Promise<UserCredential> => {
     const auth = getAuth();
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    return {} as UserCredential;
+    return createUserWithEmailAndPassword(auth, email, password);
   },
-  loginWithEmailPassword: async (email: string, password: string): Promise<UserCredential> => ({} as UserCredential),
-  login: (): void => {},
+  loginWithEmailPassword: async (email: string, password: string): Promise<UserCredential> => {
+    const auth = getAuth();
+    return createUserWithEmailAndPassword(auth, email, password);
+  },
+  login: (): void => null,
 });
 
 export const useAuthService = (): AuthService => {

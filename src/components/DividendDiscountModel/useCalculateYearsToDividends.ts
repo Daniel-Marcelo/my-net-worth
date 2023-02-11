@@ -1,7 +1,7 @@
 import range from "lodash/range";
 import { PriceChartTimeRange as Range, rangeToYearsMap } from "../../models";
 import { YearToNumber } from "../../types";
-import { YFDividendHistory } from "../../types/yahoo-finance";
+import { YFDividendHistory } from "../../types/yahoo-finance.d";
 
 export const useCalculateYearsToDividends = () => {
   const currentYear = new Date().getFullYear();

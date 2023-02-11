@@ -3,7 +3,7 @@ import { x } from "@xstyled/styled-components";
 import { SyntheticEvent, useEffect, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
-import { useFinance, usePortfolioService } from "../../services";
+import { usePortfolioService } from "../../services";
 import { CreatePortfolioModal } from "../../components/CreatePortfolioModal";
 import { useGetPortfolios } from "./usePortfolios";
 import { DeletePortfolioDialog } from "../../components/DeletePortfolioDialog";
@@ -13,23 +13,17 @@ export function PortfoliosPage() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const portfolioService = usePortfolioService();
-  const financeService = useFinance();
   const [portfolios, getPortfolios] = useGetPortfolios();
   const [selectedPortfolio, setSelectedPortfolio] = useState<Portfolio>();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   useEffect(() => {
-    financeService.getSummaryProfile("AAPL").then((data) => {
-      console.log(data);
-    });
-
     // const bla = async () => {
     // const proxyurl = "https://cors-anywhere.herokuapp.com/";
     //   const url = `apple.com/`;
     //   const response = await fetch(`${proxyurl + url}favicon/ico`);
     //   console.log(await response.text());
     // };
-
     // bla();
   }, []);
   const onClickCreate = async (name: string) => {

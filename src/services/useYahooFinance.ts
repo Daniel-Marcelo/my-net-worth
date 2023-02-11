@@ -1,9 +1,7 @@
 import { PriceChartInterval, PriceChartTimeRange, Quote, QuoteType, SummaryProfile } from "../models";
-import { YF, YFDividendHistory, YFModule } from "../types/yahoo-finance";
+import { YF, YFDividendHistory, YFModule } from "../types/yahoo-finance.d";
 import { Finance } from "./useFinance";
 import { FinanceModule, FinanceModules } from "../types";
-
-const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
 export const getRoundedPrices = (result: YF.Result) =>
   result.indicators.quote[0].close.map((price) => Math.round(price * 100) / 100);
@@ -44,7 +42,7 @@ export const useYahooFinance = (): Finance => {
   const getModules = async (stock: string, modules = FinanceModules): Promise<YFModule.RootObject> => {
     const url = `/quoteSummary/${stock}?modules=${modules.join(",")}`;
     const response = await fetch(url);
-    return await response.json();
+    return response.json();
   };
 
   const getSummaryProfile = async (stock: string): Promise<SummaryProfile> => {
@@ -60,7 +58,7 @@ export const useYahooFinance = (): Finance => {
   const getEvents = async (stock: string): Promise<YFDividendHistory.RootObject> => {
     const url = `/chart/${stock}?interval=1d&period1=0&period2=1674432000&events=div`;
     const response = await fetch(url);
-    return await response.json();
+    return response.json();
   };
 
   const getDividendHistory = async (stock: string) => {

@@ -38,6 +38,7 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
   return (
     <AuthContext.Provider
       value={
+        // eslint-disable-next-line react/jsx-no-constructed-context-values
         {
           login: [isLoggedIn],
         } as const

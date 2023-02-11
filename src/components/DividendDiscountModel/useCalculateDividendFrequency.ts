@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { YFDividendHistory } from "../../types/yahoo-finance";
+import { YFDividendHistory } from "../../types/yahoo-finance.d";
 import { DividendFrequency } from "../../types";
 import { DividendFrequencyToDisplay } from "../../models";
 
@@ -17,7 +17,7 @@ export const useCalculateDividendFrequency = (history: YFDividendHistory.History
     );
 
     const data: { [key: number]: number } = Object.entries(updatedYearToDividendCount).reduce(
-      (acc, [key, value]) => ({
+      (acc, [, value]) => ({
         ...acc,
         [value]: acc[value] ? acc[value] + 1 : 1,
       }),

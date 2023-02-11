@@ -25,12 +25,12 @@ function abc(app) {
     })
   );
 
-    app.use(
-      "/quote",
-      createProxyMiddleware({
-        target: "https://finance.yahoo.com/",
-        changeOrigin: true,
-      })
-    );
+  app.use(
+    "/quote",
+    createProxyMiddleware({
+      target: "https://finance.yahoo.com/",
+      changeOrigin: true,
+    })
+  );
 }
 module.exports = abc;

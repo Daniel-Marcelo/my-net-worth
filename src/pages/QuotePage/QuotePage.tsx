@@ -1,5 +1,5 @@
 import { x } from "@xstyled/styled-components";
-import { useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 import { Box, Tab, Tabs, Typography } from "@mui/material";
 import { TickerSearch } from "../../components/TickerSearch/TickerSearch";
 import { DividendDiscountModel } from "../../components/DividendDiscountModel";
@@ -7,7 +7,6 @@ import { useLoadFinanceModules } from "../../hooks/useLoadFinanceModules";
 import { TickerSummaryTab } from "../../components/TickerSummaryTab";
 import { useQuoteStore } from "../../stores/quote.store";
 import { useGetRiskFreeRate } from "../../hooks";
-import { useGetSimilarCompanies } from "../../hooks/useGetSimilarCompanies";
 
 function a11yProps(index: number) {
   return {
@@ -17,7 +16,7 @@ function a11yProps(index: number) {
 }
 
 interface TabPanelProps {
-  children?: React.ReactNode;
+  children?: ReactNode;
   index: number;
   value: number;
 }
@@ -47,18 +46,14 @@ export function QuotePage() {
   const { selectedQuote, setSelectedQuote } = useQuoteStore((state) => state);
   useLoadFinanceModules(selectedQuote?.ticker);
   useGetRiskFreeRate();
-  const get = useGetSimilarCompanies();
 
-  useEffect(() => {
-    get();
-  }, []) 
   return (
     <x.div p={8}>
       <TickerSearch setSelectedQuote={setSelectedQuote} selectedQuote={selectedQuote} />
       {selectedQuote?.ticker && (
         <Box sx={{ width: "100%", marginTop: "1rem" }}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <Tabs value={value} onChange={(e, value) => setValue(value)} aria-label="basic tabs example">
+            <Tabs value={value} onChange={(e, v) => setValue(v)} aria-label="basic tabs example">
               <Tab label="Chart" {...a11yProps(0)} />
               <Tab label="DDM" {...a11yProps(1)} />
             </Tabs>

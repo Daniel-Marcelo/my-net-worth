@@ -1,6 +1,6 @@
 import { useState } from "react";
 import format from "date-fns/format";
-import { YF } from "../../types/yahoo-finance";
+import { YF } from "../../types/yahoo-finance.d";
 
 export const useChartData = () => {
   const [chartData, setChartData] = useState([]);

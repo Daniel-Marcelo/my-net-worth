@@ -18,6 +18,7 @@ export const useGetPortfolioById = () => {
         return navigate("/portfolios");
       }
     }
+    return null;
   }, [id]);
 
   return getPortfolio;

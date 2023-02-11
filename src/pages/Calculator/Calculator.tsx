@@ -176,7 +176,6 @@ export function Calculator() {
             step: "1",
           }}
           onChange={(event) => {
-            console.log(`Setting years to ${event.target.value}`);
             setYears(+event.target.value);
           }}
           label="Years to Grow"
@@ -211,30 +210,28 @@ export function Calculator() {
             <Bar dataKey="interest" stackId="a" fill={calculatorColours.interest} />
           </BarChart>
         ) : null}
-        {true ? (
-          <x.div ml={12} display="flex" flexDirection="column" justifyContent="center">
-            <PieChart width={200} height={200}>
-              <Pie data={pieData} cx="50%" cy="50%" outerRadius={80} fill="#8884d8" dataKey="value">
-                {pieData.map((entry) => (
-                  <Cell key={entry.key} fill={calculatorColours[entry.key]} />
-                ))}
-              </Pie>
-              <Tooltip
-                formatter={(value: number, name: string, props) => (
-                  // console.log(value)
-                  // console.log(name)
-                  // console.log(props)
-                  <x.span color={calculatorColours[props.payload.key]}>
-                    {currency}
-                    {format(value)}
-                  </x.span>
-                )}
-              />
-            </PieChart>
-          </x.div>
-        ) : (
-          ""
-        )}
+        <x.div ml={12} display="flex" flexDirection="column" justifyContent="center">
+          <PieChart width={200} height={200}>
+            <Pie data={pieData} cx="50%" cy="50%" outerRadius={80} fill="#8884d8" dataKey="value">
+              {pieData.map((entry) => (
+                <Cell key={entry.key} fill={calculatorColours[entry.key]} />
+              ))}
+            </Pie>
+            <Tooltip
+              // eslint-disable-next-line react/no-unstable-nested-components
+              formatter={(value: number, name: string, props) => (
+                // console.log(value)
+                // console.log(name)
+                // console.log(props)
+                // eslint-disable-next-line react/prop-types
+                <x.span color={calculatorColours[props.payload.key]}>
+                  {currency}
+                  {format(value)}
+                </x.span>
+              )}
+            />
+          </PieChart>
+        </x.div>
       </x.div>
     </x.div>
   );

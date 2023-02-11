@@ -3,7 +3,7 @@ import { Finance } from "./useFinance";
 import * as mockPriceHistory from "./price-history.json";
 import * as mockModules from "./finance-modules.json";
 import * as mockDividendHistory from "./dividend-history.json";
-import { YFDividendHistory, YFModule } from "../types/yahoo-finance";
+import { YFDividendHistory, YFModule } from "../types/yahoo-finance.d";
 
 const getMockPrices = () => {
   const data = JSON.parse(JSON.stringify(mockPriceHistory));

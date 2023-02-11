@@ -26,17 +26,17 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
     selectedTimeFrame,
     viewType
   );
-  const dividendFrequency = useCalculateDividendFrequency(history);
+  useCalculateDividendFrequency(history);
   const waccFormula = useWACC();
   const { moduleData, waccData } = useFinanceStore();
   const wacc = waccFormula();
   const [g, setG] = useState<number>();
   const [r, setR] = useState<number>();
   const [trueValue, setTrueValue] = useState<number>();
-  const [priceDifference, setPriceDifference] = useState<number>()
+  const [priceDifference, setPriceDifference] = useState<number>();
   const capmFormula = useCAPM();
 
-  const currentPrice = moduleData.financialData.currentPrice.raw
+  const currentPrice = moduleData.financialData.currentPrice.raw;
   // useEffect(() => {
   //   if (wacc) {
   //     setR(+wacc.toFixed(2))
@@ -44,17 +44,17 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
   // }, [wacc]);
 
   useEffect(() => {
-    if(waccData?.beta) {
-      console.log('CAPM '+capmFormula(waccData.beta))
-      setR(capmFormula(waccData.beta))
+    if (waccData?.beta) {
+      console.log(`CAPM ${capmFormula(waccData.beta)}`);
+      setR(capmFormula(waccData.beta));
     }
-  }, [waccData])
-  
+  }, [waccData]);
+
   useEffect(() => {
-    if(trueValue) {
-        setPriceDifference(((trueValue-currentPrice)/trueValue)*100)
+    if (trueValue) {
+      setPriceDifference(((trueValue - currentPrice) / trueValue) * 100);
     }
-  },[trueValue])
+  }, [trueValue]);
 
   // if(waccData?.beta) {
   //   console.log('WithCAPM as R');
@@ -63,24 +63,21 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
 
   useEffect(() => {
     if (averageAnnualIncrease && averageAnnualIncrease[5]) {
-      setG(+((averageAnnualIncrease[5] / 100)*.66).toFixed(3))
+      setG(+((averageAnnualIncrease[5] / 100) * 0.66).toFixed(3));
     }
   }, [averageAnnualIncrease]);
 
-  console.log('Wacc ' + wacc);
-x
+  console.log(`Wacc ${wacc}`);
   const formula = useDDMFormula();
 
   const onBlur = () => {
     const last4Dividends = filteredHistory.slice(filteredHistory.length - 5, filteredHistory.length - 1);
     const total = last4Dividends.reduce((acc, div) => acc + div.amount, 0);
 
+    console.log(`**************DDM PRICE ${formula(total, g, r)}`);
 
-    console.log('**************DDM PRICE ' + formula(total, g, r));
-
-    setTrueValue(formula(total, g, r))
-
-  }
+    setTrueValue(formula(total, g, r));
+  };
 
   // useEffect(() => {
   //   // console.log(averageAnnualIncrease)
@@ -91,7 +88,6 @@ x
   //     console.log('last4Dividends '+last4Dividends)
   //     const total = last4Dividends.reduce((acc, div) => acc + div.amount, 0);
   //     console.log('total last 4 dividends ' +total);
-
 
   //     console.log('averageDividendGrowthRateLast10Years ' + (averageDividendGrowthRateLast10Years) / 100);
   //     console.log('**************DDM PRICE '+formula(total,  averageDividendGrowthRateLast10Years/100, wacc));
@@ -179,30 +175,32 @@ x
         <x.div display="flex" flexDirection="column">
           <WACC onBlur={onBlur} g={g} r={r} setG={setG} setR={setR} />
           <Box sx={{ bgcolor: "background.paper" }}>
-          <List sx={{ p: 0, borderRadius: 8 }}>
-            <ListItem sx={{ "&:hover": { bgcolor: "gray" } }}>
-              <ListItemText>
-                <x.span mr={16}>Current price</x.span>
-                <x.span float="right">{moduleData.financialData.currentPrice.fmt}</x.span>
-              </ListItemText>
-            </ListItem>
-            {trueValue &&
-            <>
+            <List sx={{ p: 0, borderRadius: 8 }}>
               <ListItem sx={{ "&:hover": { bgcolor: "gray" } }}>
                 <ListItemText>
-                  <x.span mr={16}>True Value</x.span>
-                  <x.span float="right">{trueValue.toFixed(2)}</x.span>
+                  <x.span mr={16}>Current price</x.span>
+                  <x.span float="right">{moduleData.financialData.currentPrice.fmt}</x.span>
                 </ListItemText>
               </ListItem>
-              {priceDifference && 
-              <ListItem sx={{ "&:hover": { bgcolor: "gray" } }}>
-                <ListItemText>
-                  <x.span mr={16}>Difference</x.span>
-                  <x.span float="right">{priceDifference.toFixed(2)}%</x.span>
-                </ListItemText>
-              </ListItem>}
-              </>}
-          </List>
+              {trueValue && (
+                <>
+                  <ListItem sx={{ "&:hover": { bgcolor: "gray" } }}>
+                    <ListItemText>
+                      <x.span mr={16}>True Value</x.span>
+                      <x.span float="right">{trueValue.toFixed(2)}</x.span>
+                    </ListItemText>
+                  </ListItem>
+                  {priceDifference && (
+                    <ListItem sx={{ "&:hover": { bgcolor: "gray" } }}>
+                      <ListItemText>
+                        <x.span mr={16}>Difference</x.span>
+                        <x.span float="right">{priceDifference.toFixed(2)}%</x.span>
+                      </ListItemText>
+                    </ListItem>
+                  )}
+                </>
+              )}
+            </List>
           </Box>
         </x.div>
         <x.div>

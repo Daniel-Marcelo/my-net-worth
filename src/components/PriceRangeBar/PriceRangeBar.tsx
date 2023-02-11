@@ -14,7 +14,7 @@ export function PriceRangeBar() {
   const applyWidth = () => {
     const hasWidth = ref && ref.current && ref?.current?.clientWidth;
     if (hasWidth && rangeData?.currentValue && selectedQuote?.ticker) {
-      setWidth(ref?.current?.clientWidth * (rangeData.currentValue / 100));
+      setWidth(ref?.current?.clientWidth || 0 * (rangeData.currentValue / 100));
     }
   };
   useEffect(() => {

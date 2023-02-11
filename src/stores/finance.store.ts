@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { YFModule } from "../types/yahoo-finance";
+import { YFModule } from "../types/yahoo-finance.d";
 
 interface RangeData {
   start: number;
@@ -22,6 +22,16 @@ interface WaccData {
   dividendPerShare: number;
   currentPrice: number;
 }
+class TickerSummaryItem {
+  public label: string;
+
+  public value: string;
+
+  constructor(label: string, value: string) {
+    this.label = label;
+    this.value = value;
+  }
+}
 interface FinanceStoreData {
   moduleData?: YFModule.Result;
   setModuleData: (moduleData: YFModule.Result) => void;
@@ -31,17 +41,12 @@ interface FinanceStoreData {
   waccData: WaccData;
 }
 
-
-class TickerSummaryItem {
-  constructor(public label: string, public value: string) { }
-}
-
 const getBalanceSheet = (statements: YFModule.BalanceSheetStatement[]) => {
   if (statements[0].shortLongTermDebt) {
-    return statements[0]
+    return statements[0];
   }
-  return statements[1]
-}
+  return statements[1];
+};
 export const useFinanceStore = create<FinanceStoreData>((set) => ({
   rangeData: null,
   waccData: {
@@ -57,15 +62,13 @@ export const useFinanceStore = create<FinanceStoreData>((set) => ({
     rateOfInterest: null,
     calculatedEffectiveTaxRate: null,
     dividendPerShare: null,
-    currentPrice: null
+    currentPrice: null,
   },
   setModuleData: (moduleData) => {
     const { summaryDetail, defaultKeyStatistics, financialData } = moduleData;
     const balanceSheet = getBalanceSheet(moduleData?.balanceSheetHistory?.balanceSheetStatements);
     const incomeStatement = moduleData?.incomeStatementHistory?.incomeStatementHistory[0];
-    console.log(moduleData);
     const highLowDiff = summaryDetail.fiftyTwoWeekHigh.raw - summaryDetail.fiftyTwoWeekLow.raw;
-    console.log(((financialData.currentPrice.raw - summaryDetail.fiftyTwoWeekLow.raw) / highLowDiff) * 100);
     const rangeData = {
       start: summaryDetail.fiftyTwoWeekLow.raw,
       end: summaryDetail.fiftyTwoWeekHigh.raw,
@@ -75,7 +78,7 @@ export const useFinanceStore = create<FinanceStoreData>((set) => ({
 
     const incomeBeforeTax = incomeStatement.incomeBeforeTax.raw;
     const incomeTaxExpense = incomeStatement.incomeTaxExpense.raw;
-    const calculatedEffectiveTaxRate = Math.abs((incomeTaxExpense / incomeBeforeTax) * 100)
+    const calculatedEffectiveTaxRate = Math.abs((incomeTaxExpense / incomeBeforeTax) * 100);
     const interestExpense = incomeStatement.interestExpense.raw;
     const totalDebt = balanceSheet.shortLongTermDebt.raw + balanceSheet.longTermDebt.raw;
     const marketCap = summaryDetail.marketCap.raw;
@@ -83,18 +86,18 @@ export const useFinanceStore = create<FinanceStoreData>((set) => ({
     const rateOfInterest = interestExpense ? Math.abs((interestExpense / totalDebt) * 100) : 0;
     set({
       waccData: {
-      marketCap,
-      rateOfInterest,
-      calculatedEffectiveTaxRate,
-      totalDebt,
-      beta: summaryDetail.beta.raw,
-      interestExpense: incomeStatement.interestExpense.raw || 0,
-      incomeBeforeTax: incomeStatement.incomeBeforeTax.raw,
-      incomeTaxExpense: incomeStatement.incomeTaxExpense.raw,
-      weightOfDebt: (totalDebt / totalAmount) * 100,
-      weightOfEquity: (marketCap / totalAmount) * 100,
-      dividendPerShare: summaryDetail.dividendRate.raw,
-      currentPrice: financialData.currentPrice.raw,
+        marketCap,
+        rateOfInterest,
+        calculatedEffectiveTaxRate,
+        totalDebt,
+        beta: summaryDetail.beta.raw,
+        interestExpense: incomeStatement.interestExpense.raw || 0,
+        incomeBeforeTax: incomeStatement.incomeBeforeTax.raw,
+        incomeTaxExpense: incomeStatement.incomeTaxExpense.raw,
+        weightOfDebt: (totalDebt / totalAmount) * 100,
+        weightOfEquity: (marketCap / totalAmount) * 100,
+        dividendPerShare: summaryDetail.dividendRate.raw,
+        currentPrice: financialData.currentPrice.raw,
       },
       rangeData,
       moduleData,

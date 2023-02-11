@@ -7,26 +7,63 @@ interface RangeData {
   currentValue: number;
   currentValueLabel: string;
 }
+
+interface WaccData {
+  beta: number;
+  totalDebt: number;
+  interestExpense: number;
+  incomeBeforeTax: number;
+  incomeTaxExpense: number;
+  marketCap: number;
+  weightOfDebt: number;
+  weightOfEquity: number;
+  rateOfInterest: number;
+  calculatedEffectiveTaxRate: number;
+  dividendPerShare: number;
+  currentPrice: number;
+}
 interface FinanceStoreData {
   moduleData?: YFModule.Result;
   setModuleData: (moduleData: YFModule.Result) => void;
   tickerSummaryItems1: TickerSummaryItem[];
   tickerSummaryItems2: TickerSummaryItem[];
   rangeData: RangeData;
+  waccData: WaccData;
 }
 
+
 class TickerSummaryItem {
-  constructor(public label: string, public value: string) {}
+  constructor(public label: string, public value: string) { }
+}
+
+const getBalanceSheet = (statements: YFModule.BalanceSheetStatement[]) => {
+  if (statements[0].shortLongTermDebt) {
+    return statements[0]
+  }
+  return statements[1]
 }
 export const useFinanceStore = create<FinanceStoreData>((set) => ({
-  moduleData: null,
   rangeData: null,
+  waccData: {
+    moduleData: null,
+    beta: null,
+    totalDebt: null,
+    interestExpense: null,
+    incomeBeforeTax: null,
+    incomeTaxExpense: null,
+    marketCap: null,
+    weightOfDebt: null,
+    weightOfEquity: null,
+    rateOfInterest: null,
+    calculatedEffectiveTaxRate: null,
+    dividendPerShare: null,
+    currentPrice: null
+  },
   setModuleData: (moduleData) => {
-    const { summaryDetail } = moduleData;
-    const { defaultKeyStatistics } = moduleData;
-    const { financialData } = moduleData;
+    const { summaryDetail, defaultKeyStatistics, financialData } = moduleData;
+    const balanceSheet = getBalanceSheet(moduleData?.balanceSheetHistory?.balanceSheetStatements);
+    const incomeStatement = moduleData?.incomeStatementHistory?.incomeStatementHistory[0];
     console.log(moduleData);
-    set({ moduleData });
     const highLowDiff = summaryDetail.fiftyTwoWeekHigh.raw - summaryDetail.fiftyTwoWeekLow.raw;
     console.log(((financialData.currentPrice.raw - summaryDetail.fiftyTwoWeekLow.raw) / highLowDiff) * 100);
     const rangeData = {
@@ -36,8 +73,31 @@ export const useFinanceStore = create<FinanceStoreData>((set) => ({
       currentValueLabel: financialData.currentPrice.fmt,
     } as RangeData;
 
-    set({ rangeData });
+    const incomeBeforeTax = incomeStatement.incomeBeforeTax.raw;
+    const incomeTaxExpense = incomeStatement.incomeTaxExpense.raw;
+    const calculatedEffectiveTaxRate = Math.abs((incomeTaxExpense / incomeBeforeTax) * 100)
+    const interestExpense = incomeStatement.interestExpense.raw;
+    const totalDebt = balanceSheet.shortLongTermDebt.raw + balanceSheet.longTermDebt.raw;
+    const marketCap = summaryDetail.marketCap.raw;
+    const totalAmount = marketCap + totalDebt;
+    const rateOfInterest = interestExpense ? Math.abs((interestExpense / totalDebt) * 100) : 0;
     set({
+      waccData: {
+      marketCap,
+      rateOfInterest,
+      calculatedEffectiveTaxRate,
+      totalDebt,
+      beta: summaryDetail.beta.raw,
+      interestExpense: incomeStatement.interestExpense.raw || 0,
+      incomeBeforeTax: incomeStatement.incomeBeforeTax.raw,
+      incomeTaxExpense: incomeStatement.incomeTaxExpense.raw,
+      weightOfDebt: (totalDebt / totalAmount) * 100,
+      weightOfEquity: (marketCap / totalAmount) * 100,
+      dividendPerShare: summaryDetail.dividendRate.raw,
+      currentPrice: financialData.currentPrice.raw,
+      },
+      rangeData,
+      moduleData,
       tickerSummaryItems1: [
         new TickerSummaryItem("Current Price", financialData.currentPrice.fmt),
         new TickerSummaryItem("Previous Close", summaryDetail.previousClose.fmt),
@@ -50,9 +110,6 @@ export const useFinanceStore = create<FinanceStoreData>((set) => ({
         new TickerSummaryItem("Market Cap", summaryDetail.marketCap.fmt),
         new TickerSummaryItem("Beta", summaryDetail.beta.fmt),
       ],
-    });
-
-    set({
       tickerSummaryItems2: [
         new TickerSummaryItem("PE", summaryDetail.trailingPE.fmt),
         new TickerSummaryItem("EPS", defaultKeyStatistics.trailingEps.fmt),

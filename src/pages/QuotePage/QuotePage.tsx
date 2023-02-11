@@ -1,11 +1,13 @@
 import { x } from "@xstyled/styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Tab, Tabs, Typography } from "@mui/material";
 import { TickerSearch } from "../../components/TickerSearch/TickerSearch";
 import { DividendDiscountModel } from "../../components/DividendDiscountModel";
 import { useLoadFinanceModules } from "../../hooks/useLoadFinanceModules";
 import { TickerSummaryTab } from "../../components/TickerSummaryTab";
 import { useQuoteStore } from "../../stores/quote.store";
+import { useGetRiskFreeRate } from "../../hooks";
+import { useGetSimilarCompanies } from "../../hooks/useGetSimilarCompanies";
 
 function a11yProps(index: number) {
   return {
@@ -44,7 +46,12 @@ export function QuotePage() {
   const [value, setValue] = useState(0);
   const { selectedQuote, setSelectedQuote } = useQuoteStore((state) => state);
   useLoadFinanceModules(selectedQuote?.ticker);
+  useGetRiskFreeRate();
+  const get = useGetSimilarCompanies();
 
+  useEffect(() => {
+    get();
+  }, []) 
   return (
     <x.div p={8}>
       <TickerSearch setSelectedQuote={setSelectedQuote} selectedQuote={selectedQuote} />

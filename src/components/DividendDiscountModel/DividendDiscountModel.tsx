@@ -32,9 +32,9 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
   const [dividendGrowthRate, setDividendGrowthRate] = useState<number>();
   const [requiredRateOfReturn, setRequiredRateOfReturn] = useState<number>();
   const [trueValue, setTrueValue] = useState<number>();
-  const [priceDifference, setPriceDifference] = useState<number>();
   const capmFormula = useCAPM();
   const DDMFormula = useDDMFormula();
+  const currentPrice = moduleData.financialData.currentPrice.raw;
 
   useEffect(() => {
     if (waccData?.beta) {
@@ -42,13 +42,6 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
       setRequiredRateOfReturn(capmFormula(waccData.beta));
     }
   }, [waccData]);
-
-  useEffect(() => {
-    if (trueValue) {
-      const currentPrice = moduleData.financialData.currentPrice.raw;
-      setPriceDifference(((trueValue - currentPrice) / trueValue) * 100);
-    }
-  }, [trueValue]);
 
   useEffect(() => {
     if (averageAnnualIncrease && averageAnnualIncrease[5]) {
@@ -116,11 +109,11 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
                       <x.span float="right">{trueValue.toFixed(2)}</x.span>
                     </ListItemText>
                   </ListItem>
-                  {priceDifference && (
+                  {trueValue && currentPrice && (
                     <ListItem sx={{ "&:hover": { bgcolor: "gray" } }}>
                       <ListItemText>
                         <x.span mr={16}>Difference</x.span>
-                        <x.span float="right">{priceDifference.toFixed(2)}%</x.span>
+                        <x.span float="right">{(((trueValue - currentPrice) / trueValue) * 100).toFixed(2)}%</x.span>
                       </ListItemText>
                     </ListItem>
                   )}

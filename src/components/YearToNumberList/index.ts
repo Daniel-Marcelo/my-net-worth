@@ -1,1 +1,1 @@
-export * from './YearToNumberList';
+export * from "./YearToNumberList";

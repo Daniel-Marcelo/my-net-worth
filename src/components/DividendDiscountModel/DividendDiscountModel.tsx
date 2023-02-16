@@ -1,7 +1,6 @@
-import { Box, Divider, List, ListItem, ListItemText, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import { Box, Divider, List, ListItem, ListItemText, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { useEffect, useState } from "react";
 import { x } from "@xstyled/styled-components";
-import pluralize from "pluralize";
 import { Example } from "../DividendHistoryChart";
 import { PriceChartTimeRange as Range } from "../../models";
 import { useGetDividendHistory } from "./useGetDividendHistory";
@@ -12,6 +11,7 @@ import { WACC } from "../WACC/WACC";
 import { useCAPM } from "../../hooks/useCAPM";
 import { useFinanceStore } from "../../stores";
 import { PriceChartToolbar } from "../PriceChartToolbar";
+import { YearToNumberList } from "../YearToNumberList";
 
 interface DividendDiscountModelProps {
   ticker: string;
@@ -65,22 +65,21 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
   return (
     <>
       <x.div display="flex" alignItems="center" mb={12}>
-        <x.div mr={16}>
-          <ToggleButtonGroup
-            color="primary"
-            value={viewType}
-            exclusive
-            onChange={(event, newValue?: ViewType) => newValue && setViewType(newValue)}
-            aria-label="Platform"
-          >
-            <ToggleButton value="normal" sx={{ background: "white" }}>
-              Standard
-            </ToggleButton>
-            <ToggleButton value="yearly" sx={{ background: "white" }}>
-              Yearly
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </x.div>
+        <ToggleButtonGroup
+          color="primary"
+          value={viewType}
+          exclusive
+          sx={{ marginRight: 4 }}
+          onChange={(event, newValue?: ViewType) => newValue && setViewType(newValue)}
+          aria-label="Platform"
+        >
+          <ToggleButton value="normal" sx={{ background: "white" }}>
+            Standard
+          </ToggleButton>
+          <ToggleButton value="yearly" sx={{ background: "white" }}>
+            Yearly
+          </ToggleButton>
+        </ToggleButtonGroup>
         <PriceChartToolbar
           ranges={chartRanges}
           selectedTimeFrame={selectedTimeFrame}
@@ -88,33 +87,11 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
         />
       </x.div>
       <Example history={filteredHistory} />
-
-      <Box sx={{ width: "100%", bgcolor: "background.paper", marginBottom: "2rem", marginTop: "2rem" }}>
+      <Box sx={{ width: "100%", bgcolor: "background.paper", marginBottom: 8, marginTop: 8 }}>
         <Divider variant="middle" />
       </Box>
-
       <x.div display="flex" justifyContent="space-between" w="100%">
-        <x.div>
-          <Typography textAlign="center" variant="subtitle1" mb={2}>
-            Average Annual Growth
-          </Typography>
-          <Box sx={{ bgcolor: "background.paper" }}>
-            <List sx={{ p: 0 }}>
-              {Object.entries(averageAnnualIncrease).map(([key, value]) => (
-                <>
-                  <ListItem sx={{ "&:hover": { bgcolor: "gray" } }}>
-                    <ListItemText>
-                      <x.span mr={16}>{`${key} ${pluralize("Year", +key)}`}</x.span>
-                      <x.span float="right">{value}%</x.span>
-                    </ListItemText>
-                  </ListItem>
-                  <Divider />
-                </>
-              ))}
-            </List>
-          </Box>
-        </x.div>
-
+        <YearToNumberList title="Average Annual Growth" yearToNumber={averageAnnualIncrease} />
         <x.div display="flex" flexDirection="column">
           <WACC
             onBlur={onBlur}
@@ -152,26 +129,7 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
             </List>
           </Box>
         </x.div>
-        <x.div>
-          <Typography textAlign="center" variant="subtitle1" mb={2}>
-            Compounded Dividends
-          </Typography>
-          <Box sx={{ bgcolor: "background.paper" }}>
-            <List sx={{ p: 0, borderRadius: 8 }}>
-              {Object.entries(compoundedAnnualIncrease).map(([key, value]) => (
-                <>
-                  <ListItem sx={{ "&:hover": { bgcolor: "gray" } }}>
-                    <ListItemText>
-                      <x.span mr={16}>{`${key} ${pluralize("Year", +key)}`}</x.span>
-                      <x.span float="right">{value}%</x.span>
-                    </ListItemText>
-                  </ListItem>
-                  <Divider />
-                </>
-              ))}
-            </List>
-          </Box>
-        </x.div>
+        <YearToNumberList title="Compounded Dividends" yearToNumber={compoundedAnnualIncrease} />
       </x.div>
     </>
   );

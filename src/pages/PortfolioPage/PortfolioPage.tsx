@@ -97,7 +97,7 @@ export function PortfolioPage() {
         ))}
       </x.div>
       <UpdatesDrawer portfolioEntries={portfolioEntries} open={updatesOpen} onClose={onUpdatesDrawerClose} />
-      <FormDialog onClose={() => setSelectedQuote(undefined)} selectedQuote={selectedQuote} onAdd={onAdd} />
+      <FormDialog onAdd={onAdd} />
     </x.div>
   );
 }

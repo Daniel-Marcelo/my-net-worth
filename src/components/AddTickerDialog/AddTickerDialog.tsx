@@ -1,56 +1,49 @@
-import * as React from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { Quote } from "../../models";
+import { useQuoteStore } from "../../stores";
+import { useNumberOfShares } from "./useNumberOfShares";
 
 interface FormDialogProps {
-  selectedQuote: Quote;
   onAdd: (numberOfShares: number) => void;
-  onClose: () => void;
 }
-export function FormDialog({ selectedQuote, onAdd, onClose }: FormDialogProps) {
-  const [numberOfShares, setNumberOfShares] = React.useState<number>();
-
-  React.useEffect(() => {
-    setNumberOfShares(undefined);
-  }, [selectedQuote]);
+export function FormDialog({ onAdd }: FormDialogProps) {
+  const [numberOfShares, setNumberOfShares] = useNumberOfShares();
+  const { selectedQuote, setSelectedQuote } = useQuoteStore((state) => state);
 
   return (
-    <div>
-      <Dialog open={!!selectedQuote} onClose={onClose}>
-        <DialogTitle>
-          How many shares of {selectedQuote?.name} ({selectedQuote?.ticker}) do you want to add?
-        </DialogTitle>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            onAdd(numberOfShares);
-          }}
-        >
-          <DialogContent>
-            <TextField
-              autoFocus
-              id="numberOfShares"
-              label="Number of Shares"
-              type="number"
-              fullWidth
-              value={numberOfShares}
-              onChange={(event) => setNumberOfShares(+event.target.value)}
-              variant="standard"
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={onClose}>Cancel</Button>
-            <Button type="submit" value="Submit" disabled={!numberOfShares}>
-              Add
-            </Button>
-          </DialogActions>
-        </form>
-      </Dialog>
-    </div>
+    <Dialog open={!!selectedQuote} onClose={() => setSelectedQuote(undefined)}>
+      <DialogTitle>
+        How many shares of {selectedQuote?.name} ({selectedQuote?.ticker}) do you want to add?
+      </DialogTitle>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          onAdd(numberOfShares);
+        }}
+      >
+        <DialogContent>
+          <TextField
+            autoFocus
+            id="numberOfShares"
+            label="Number of Shares"
+            type="number"
+            fullWidth
+            value={numberOfShares}
+            onChange={(event) => setNumberOfShares(+event.target.value)}
+            variant="standard"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setSelectedQuote(undefined)}>Cancel</Button>
+          <Button type="submit" value="Submit" disabled={!numberOfShares}>
+            Add
+          </Button>
+        </DialogActions>
+      </form>
+    </Dialog>
   );
 }

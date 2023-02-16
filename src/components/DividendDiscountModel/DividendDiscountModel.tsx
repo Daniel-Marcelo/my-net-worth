@@ -3,20 +3,21 @@ import { useEffect, useState } from "react";
 import { x } from "@xstyled/styled-components";
 import pluralize from "pluralize";
 import { Example } from "../DividendHistoryChart";
-import { PriceChartTimePeriod } from "../PriceChartTimePeriod";
 import { PriceChartTimeRange as Range } from "../../models";
 import { useGetDividendHistory } from "./useGetDividendHistory";
 import { ViewType } from "../../types";
 import { useDDMFormula } from "./useDDMFormula";
 import { useCalculateDividendFrequency } from "./useCalculateDividendFrequency";
-import { useWACC } from "../../hooks/useWACC";
 import { WACC } from "../WACC/WACC";
 import { useCAPM } from "../../hooks/useCAPM";
 import { useFinanceStore } from "../../stores";
+import { PriceChartToolbar } from "../PriceChartToolbar";
 
 interface DividendDiscountModelProps {
   ticker: string;
 }
+
+const chartRanges = [Range.OneYear, Range.TwoYears, Range.FiveYears, Range.TenYears, Range.Max];
 
 export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
   const [viewType, setViewType] = useState(ViewType.Normal);
@@ -27,75 +28,39 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
     viewType
   );
   useCalculateDividendFrequency(history);
-  const waccFormula = useWACC();
   const { moduleData, waccData } = useFinanceStore();
-  const wacc = waccFormula();
-  const [g, setG] = useState<number>();
-  const [r, setR] = useState<number>();
+  const [dividendGrowthRate, setDividendGrowthRate] = useState<number>();
+  const [requiredRateOfReturn, setRequiredRateOfReturn] = useState<number>();
   const [trueValue, setTrueValue] = useState<number>();
   const [priceDifference, setPriceDifference] = useState<number>();
   const capmFormula = useCAPM();
-
-  const currentPrice = moduleData.financialData.currentPrice.raw;
-  // useEffect(() => {
-  //   if (wacc) {
-  //     setR(+wacc.toFixed(2))
-  //   }
-  // }, [wacc]);
+  const DDMFormula = useDDMFormula();
 
   useEffect(() => {
     if (waccData?.beta) {
       console.log(`CAPM ${capmFormula(waccData.beta)}`);
-      setR(capmFormula(waccData.beta));
+      setRequiredRateOfReturn(capmFormula(waccData.beta));
     }
   }, [waccData]);
 
   useEffect(() => {
     if (trueValue) {
+      const currentPrice = moduleData.financialData.currentPrice.raw;
       setPriceDifference(((trueValue - currentPrice) / trueValue) * 100);
     }
   }, [trueValue]);
 
-  // if(waccData?.beta) {
-  //   console.log('WithCAPM as R');
-
-  // }
-
   useEffect(() => {
     if (averageAnnualIncrease && averageAnnualIncrease[5]) {
-      setG(+((averageAnnualIncrease[5] / 100) * 0.66).toFixed(3));
+      setDividendGrowthRate(+(averageAnnualIncrease[5] / 100).toFixed(3));
     }
   }, [averageAnnualIncrease]);
-
-  console.log(`Wacc ${wacc}`);
-  const formula = useDDMFormula();
 
   const onBlur = () => {
     const last4Dividends = filteredHistory.slice(filteredHistory.length - 5, filteredHistory.length - 1);
     const total = last4Dividends.reduce((acc, div) => acc + div.amount, 0);
-
-    console.log(`**************DDM PRICE ${formula(total, g, r)}`);
-
-    setTrueValue(formula(total, g, r));
+    setTrueValue(DDMFormula(total, dividendGrowthRate, requiredRateOfReturn));
   };
-
-  // useEffect(() => {
-  //   // console.log(averageAnnualIncrease)
-  //   const averageDividendGrowthRateLast10Years = averageAnnualIncrease && averageAnnualIncrease[10];
-  //   if (ticker && averageDividendGrowthRateLast10Years) {
-  //     console.log('averageDividendGrowthRateLast10Years ' +averageDividendGrowthRateLast10Years);
-  //     const last4Dividends = filteredHistory.slice(filteredHistory.length - 5, filteredHistory.length - 1);
-  //     console.log('last4Dividends '+last4Dividends)
-  //     const total = last4Dividends.reduce((acc, div) => acc + div.amount, 0);
-  //     console.log('total last 4 dividends ' +total);
-
-  //     console.log('averageDividendGrowthRateLast10Years ' + (averageDividendGrowthRateLast10Years) / 100);
-  //     console.log('**************DDM PRICE '+formula(total,  averageDividendGrowthRateLast10Years/100, wacc));
-  //     console.log(' ')
-  //   }
-  // }, [ticker, averageAnnualIncrease]);
-
-  const isActive = (range: Range) => selectedTimeFrame === range;
 
   return (
     <>
@@ -116,33 +81,11 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
             </ToggleButton>
           </ToggleButtonGroup>
         </x.div>
-        <x.div>
-          <PriceChartTimePeriod
-            isActive={isActive}
-            range={Range.OneYear}
-            onClick={(range) => setSelectedTimeFrame(range)}
-          />
-          <PriceChartTimePeriod
-            isActive={isActive}
-            range={Range.TwoYears}
-            onClick={(range) => setSelectedTimeFrame(range)}
-          />
-          <PriceChartTimePeriod
-            isActive={isActive}
-            range={Range.FiveYears}
-            onClick={(range) => setSelectedTimeFrame(range)}
-          />
-          <PriceChartTimePeriod
-            isActive={isActive}
-            range={Range.TenYears}
-            onClick={(range) => setSelectedTimeFrame(range)}
-          />
-          <PriceChartTimePeriod
-            isActive={isActive}
-            range={Range.Max}
-            onClick={(range) => setSelectedTimeFrame(range)}
-          />
-        </x.div>
+        <PriceChartToolbar
+          ranges={chartRanges}
+          selectedTimeFrame={selectedTimeFrame}
+          onClick={(range) => setSelectedTimeFrame(range)}
+        />
       </x.div>
       <Example history={filteredHistory} />
 
@@ -173,7 +116,13 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
         </x.div>
 
         <x.div display="flex" flexDirection="column">
-          <WACC onBlur={onBlur} g={g} r={r} setG={setG} setR={setR} />
+          <WACC
+            onBlur={onBlur}
+            g={dividendGrowthRate}
+            r={requiredRateOfReturn}
+            setG={setDividendGrowthRate}
+            setR={setRequiredRateOfReturn}
+          />
           <Box sx={{ bgcolor: "background.paper" }}>
             <List sx={{ p: 0, borderRadius: 8 }}>
               <ListItem sx={{ "&:hover": { bgcolor: "gray" } }}>

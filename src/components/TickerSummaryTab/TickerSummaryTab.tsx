@@ -36,7 +36,7 @@ export function TickerSummaryTab({ ticker }: TickerSummaryTabProps) {
     <x.div display="flex">
       <x.div display="flex" flexDirection="column" flex={1}>
         <x.div mb={8} display="flex" justifyContent="center">
-          <PriceChartToolbar selectedTimeFrame={selectedTimeframe} fetchHistory={fetchHistory} />
+          <PriceChartToolbar selectedTimeFrame={selectedTimeframe} onClick={fetchHistory} />
         </x.div>
         <x.div ml={-6} flex={1}>
           {chartData.length ? <PriceChart selectedTicker={ticker} chartData={chartData} /> : ""}

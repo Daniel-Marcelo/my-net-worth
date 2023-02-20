@@ -6,7 +6,7 @@ interface DDMProps {
   setG: (g: number) => void;
   r: number;
   setR: (r: number) => void;
-  onBlur: () => void;
+  onBlur: (d?: number, r?: number) => void;
 }
 export function WACC({ g, setG, r, setR, onBlur }: DDMProps) {
   return (
@@ -16,21 +16,25 @@ export function WACC({ g, setG, r, setR, onBlur }: DDMProps) {
           %
         </x.span>
         <TextField
-          onBlur={onBlur}
           label="Predicted average annual dividend growth rate"
           value={g}
           type="number"
-          onChange={(e) => setG(+e.target.value)}
+          onChange={(e) => {
+            setG(+e.target.value);
+            onBlur(+e.target.value);
+          }}
         />
       </x.div>
 
       <x.div mb={4}>
         <TextField
-          onBlur={onBlur}
           label="Required rate of return"
           value={r}
           type="number"
-          onChange={(e) => setR(+e.target.value)}
+          onChange={(e) => {
+            setR(+e.target.value);
+            onBlur(undefined, +e.target.value);
+          }}
         />
       </x.div>
     </x.div>

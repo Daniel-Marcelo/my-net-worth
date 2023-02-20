@@ -1,5 +1,6 @@
 import { defaultTheme, ThemeProvider, Preflight } from "@xstyled/styled-components";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
 import { LoggedInReRoute } from "./components/LoggedInReRoute/LoggedInReRoute";
 import { NavBar } from "./components/NavBar/NavBar";
@@ -23,6 +24,7 @@ const theme = {
   ...defaultTheme,
 };
 
+const queryClient = new QueryClient();
 function App() {
   useAuthContext();
 
@@ -37,49 +39,51 @@ function App() {
       <ToastContainer />
       <Preflight />
       <BrowserRouter>
-        <AuthContextProvider>
-          <UserSettingsProvider>
-            <NavBar />
-            <Routes>
-              <Route path="/home" element={<HomePage />} />
-              <Route
-                path="/portfolios"
-                element={
-                  <ProtectedPage>
-                    <PortfoliosPage />
-                  </ProtectedPage>
-                }
-              />
-              <Route path="/quote" element={<QuotePage />} />
-              <Route path="/calc" element={<Calculator />} />
-              <Route
-                path="/portfolio/:id"
-                element={
-                  <ProtectedPage>
-                    <PortfolioPage />
-                  </ProtectedPage>
-                }
-              />
-              <Route
-                path="/login"
-                element={
-                  <LoggedInReRoute>
-                    <LoginPage />
-                  </LoggedInReRoute>
-                }
-              />
-              <Route
-                path="/register"
-                element={
-                  <LoggedInReRoute>
-                    <RegisterPage />
-                  </LoggedInReRoute>
-                }
-              />
-              <Route path="/*" element={<Navigate to="/home" replace />} />
-            </Routes>
-          </UserSettingsProvider>
-        </AuthContextProvider>
+        <QueryClientProvider client={queryClient}>
+          <AuthContextProvider>
+            <UserSettingsProvider>
+              <NavBar />
+              <Routes>
+                <Route path="/home" element={<HomePage />} />
+                <Route
+                  path="/portfolios"
+                  element={
+                    <ProtectedPage>
+                      <PortfoliosPage />
+                    </ProtectedPage>
+                  }
+                />
+                <Route path="/quote" element={<QuotePage />} />
+                <Route path="/calc" element={<Calculator />} />
+                <Route
+                  path="/portfolio/:id"
+                  element={
+                    <ProtectedPage>
+                      <PortfolioPage />
+                    </ProtectedPage>
+                  }
+                />
+                <Route
+                  path="/login"
+                  element={
+                    <LoggedInReRoute>
+                      <LoginPage />
+                    </LoggedInReRoute>
+                  }
+                />
+                <Route
+                  path="/register"
+                  element={
+                    <LoggedInReRoute>
+                      <RegisterPage />
+                    </LoggedInReRoute>
+                  }
+                />
+                <Route path="/*" element={<Navigate to="/home" replace />} />
+              </Routes>
+            </UserSettingsProvider>
+          </AuthContextProvider>
+        </QueryClientProvider>
       </BrowserRouter>
     </ThemeProvider>
   );

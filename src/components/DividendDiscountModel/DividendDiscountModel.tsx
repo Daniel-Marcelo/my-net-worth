@@ -3,15 +3,21 @@ import { useEffect, useState } from "react";
 import { x } from "@xstyled/styled-components";
 import { Example } from "../DividendHistoryChart";
 import { PriceChartTimeRange as Range } from "../../models";
-import { useGetDividendHistory } from "./useGetDividendHistory";
 import { ViewType } from "../../types";
 import { useDDMFormula } from "./useDDMFormula";
 import { useCalculateDividendFrequency } from "./useCalculateDividendFrequency";
 import { WACC } from "../WACC/WACC";
-import { useCAPM } from "../../hooks/useCAPM";
 import { useFinanceStore } from "../../stores";
 import { PriceChartToolbar } from "../PriceChartToolbar";
 import { YearToNumberList } from "../YearToNumberList";
+import {
+  useCalculateAverageAnnualDividendIncrease,
+  useCalculateCompoundedAnnualDividendIncrease,
+  useCalculateFilteredDividendHistory,
+  useDividendGrowthRate,
+} from "../../hooks";
+import { useGetHistoryQuery } from "../../hooks/useGetHistoryQuery";
+import { useDDMRequiredRateOfReturn } from "../../hooks/useDDMRequiredRateOfReturn";
 
 interface DividendDiscountModelProps {
   ticker: string;
@@ -22,37 +28,35 @@ const chartRanges = [Range.OneYear, Range.TwoYears, Range.FiveYears, Range.TenYe
 export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
   const [viewType, setViewType] = useState(ViewType.Normal);
   const [selectedTimeFrame, setSelectedTimeFrame] = useState(Range.FiveYears);
-  const { averageAnnualIncrease, compoundedAnnualIncrease, history, filteredHistory } = useGetDividendHistory(
-    ticker,
-    selectedTimeFrame,
-    viewType
-  );
-  useCalculateDividendFrequency(history);
-  const { moduleData, waccData } = useFinanceStore();
-  const [dividendGrowthRate, setDividendGrowthRate] = useState<number>();
+  const history = useGetHistoryQuery(ticker);
+  const filteredHistory = useCalculateFilteredDividendHistory(history, viewType, selectedTimeFrame);
+  const compoundedAnnualIncrease = useCalculateCompoundedAnnualDividendIncrease(history);
+  const averageAnnualIncrease = useCalculateAverageAnnualDividendIncrease(history);
+  const [dividendGrowthRate, setDividendGrowthRate] = useDividendGrowthRate(averageAnnualIncrease, 5);
+  const requiredRateOfReturnFormula = useDDMRequiredRateOfReturn();
+
+  const { moduleData } = useFinanceStore();
   const [requiredRateOfReturn, setRequiredRateOfReturn] = useState<number>();
   const [trueValue, setTrueValue] = useState<number>();
-  const capmFormula = useCAPM();
   const DDMFormula = useDDMFormula();
+  useCalculateDividendFrequency(history);
+
   const currentPrice = moduleData.financialData.currentPrice.raw;
+  const last4DividendsTotal = history
+    .slice(history.length - 5, history.length - 1)
+    .reduce((acc, div) => acc + div.amount, 0);
 
   useEffect(() => {
-    if (waccData?.beta) {
-      console.log(`CAPM ${capmFormula(waccData.beta)}`);
-      setRequiredRateOfReturn(capmFormula(waccData.beta));
-    }
-  }, [waccData]);
+    console.log(
+      "requiredRateOfReturnFormula",
+      requiredRateOfReturnFormula(last4DividendsTotal, currentPrice, dividendGrowthRate)
+    );
+    setRequiredRateOfReturn(requiredRateOfReturnFormula(last4DividendsTotal, currentPrice, dividendGrowthRate));
+  }, [history]);
 
-  useEffect(() => {
-    if (averageAnnualIncrease && averageAnnualIncrease[5]) {
-      setDividendGrowthRate(+(averageAnnualIncrease[5] / 100).toFixed(3));
-    }
-  }, [averageAnnualIncrease]);
-
-  const onBlur = () => {
-    const last4Dividends = filteredHistory.slice(filteredHistory.length - 5, filteredHistory.length - 1);
-    const total = last4Dividends.reduce((acc, div) => acc + div.amount, 0);
-    setTrueValue(DDMFormula(total, dividendGrowthRate, requiredRateOfReturn));
+  const onBlur = (d?: number, r = requiredRateOfReturn) => {
+    console.log(last4DividendsTotal, d || dividendGrowthRate, r);
+    setTrueValue(DDMFormula(last4DividendsTotal, d || dividendGrowthRate, r));
   };
 
   return (

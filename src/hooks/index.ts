@@ -2,3 +2,8 @@ export * from "./usePortfolioIdFromUrl";
 export * from "./useGetEntriesByPortfolioId";
 export * from "./useGetPortfolioById";
 export * from "./useGetRiskFreeRate";
+export * from "./useMyQuery";
+export * from "./useCalculateFilteredDividendHistory";
+export * from "./useCalculateCompoundedAnnualDividendIncrease";
+export * from "./useCalculateAverageAnnualDividendIncrease";
+export * from "./useDividendGrowthRate";

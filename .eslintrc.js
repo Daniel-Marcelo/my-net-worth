@@ -40,6 +40,7 @@ module.exports = {
     "@typescript-eslint/no-shadow": ["error"],
     "@typescript-eslint/no-var-requires": 0,
     "react/jsx-filename-extension": [2, { extensions: [".js", ".jsx", ".ts", ".tsx"] }],
+    // "react/function-component-definition": [2, { namedComponents: "arrow-function" }],
     "import/extensions": [
       "error",
       "ignorePackages",

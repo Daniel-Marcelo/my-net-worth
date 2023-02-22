@@ -5,6 +5,7 @@ export const useDividendGrowthRate = (averageAnnualIncrease: YearToNumber, year:
   const [dividendGrowthRate, setDividendGrowthRate] = useState<number>();
 
   useEffect(() => {
+    console.log("use effect growth");
     if (averageAnnualIncrease && averageAnnualIncrease[year]) {
       setDividendGrowthRate(+(averageAnnualIncrease[year] / 100).toFixed(3));
     }

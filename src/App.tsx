@@ -24,7 +24,13 @@ const theme = {
   ...defaultTheme,
 };
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false, // default: true
+    },
+  },
+});
 function App() {
   useAuthContext();
 

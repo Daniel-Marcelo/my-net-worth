@@ -1,5 +1,9 @@
 import { QueryKey, useQuery, UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 
+type MyQueryResult<TQueryFnData = unknown, TError = unknown, TData = TQueryFnData> = {
+  isInFlight: boolean;
+} & UseQueryResult<TData, TError>;
+
 export const useMyQuery = <
   TQueryFnData = unknown,
   TError = unknown,
@@ -9,13 +13,12 @@ export const useMyQuery = <
   options: Omit<UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>, "initialData"> & {
     initialData?: () => undefined;
   }
-): UseQueryResult<TData, TError> & { isInFlight: boolean } => {
+): MyQueryResult => {
   const query = useQuery({
     ...options,
   });
 
-  return {
-    ...query,
-    isInFlight: query.fetchStatus === "fetching" && query.status === "loading",
-  };
+  const myQuery = query as MyQueryResult;
+  myQuery.isInFlight = query.fetchStatus === "fetching" && query.status === "loading";
+  return myQuery;
 };

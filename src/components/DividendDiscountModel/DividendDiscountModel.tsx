@@ -1,12 +1,11 @@
-import { Box, Divider, List, ListItem, ListItemText, ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, Divider, List, ListItem, ListItemText, TextField, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { useState } from "react";
 import { x } from "@xstyled/styled-components";
 import { Example } from "../DividendHistoryChart";
 import { PriceChartTimeRange as Range } from "../../models";
 import { ViewType } from "../../types";
 import { useDDMFormula } from "./useDDMFormula";
 import { useCalculateDividendFrequency } from "./useCalculateDividendFrequency";
-import { WACC } from "../WACC/WACC";
 import { useFinanceStore } from "../../stores";
 import { PriceChartToolbar } from "../PriceChartToolbar";
 import { YearToNumberList } from "../YearToNumberList";
@@ -17,7 +16,6 @@ import {
   useDividendGrowthRate,
 } from "../../hooks";
 import { useGetHistoryQuery } from "../../hooks/useGetHistoryQuery";
-import { useDDMRequiredRateOfReturn } from "../../hooks/useDDMRequiredRateOfReturn";
 
 interface DividendDiscountModelProps {
   ticker: string;
@@ -33,11 +31,11 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
   const compoundedAnnualIncrease = useCalculateCompoundedAnnualDividendIncrease(history);
   const averageAnnualIncrease = useCalculateAverageAnnualDividendIncrease(history);
   const [dividendGrowthRate, setDividendGrowthRate] = useDividendGrowthRate(averageAnnualIncrease, 5);
-  const requiredRateOfReturnFormula = useDDMRequiredRateOfReturn();
 
   const { moduleData } = useFinanceStore();
-  const [requiredRateOfReturn, setRequiredRateOfReturn] = useState<number>();
+  const [requiredRateOfReturn, setRequiredRateOfReturn] = useState<number>(0.08);
   const [trueValue, setTrueValue] = useState<number>();
+  const [marginOfSafety, setMarginOfSafety] = useState<number>(0.1);
   const DDMFormula = useDDMFormula();
   useCalculateDividendFrequency(history);
 
@@ -46,17 +44,16 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
     .slice(history.length - 5, history.length - 1)
     .reduce((acc, div) => acc + div.amount, 0);
 
-  useEffect(() => {
-    console.log(
-      "requiredRateOfReturnFormula",
-      requiredRateOfReturnFormula(last4DividendsTotal, currentPrice, dividendGrowthRate)
-    );
-    setRequiredRateOfReturn(requiredRateOfReturnFormula(last4DividendsTotal, currentPrice, dividendGrowthRate));
-  }, [history]);
+  const onChangeDividendGrowthRate = (newGrowthRate: number) => {
+    setDividendGrowthRate(newGrowthRate);
+    const trueV = DDMFormula(last4DividendsTotal, newGrowthRate, requiredRateOfReturn);
+    setTrueValue(trueV);
+  };
 
-  const onBlur = (d?: number, r = requiredRateOfReturn) => {
-    console.log(last4DividendsTotal, d || dividendGrowthRate, r);
-    setTrueValue(DDMFormula(last4DividendsTotal, d || dividendGrowthRate, r));
+  const onChangeRequiredRateOfReturn = (newRateOfReturn: number) => {
+    setRequiredRateOfReturn(newRateOfReturn);
+    const trueV = DDMFormula(last4DividendsTotal, dividendGrowthRate, newRateOfReturn);
+    setTrueValue(trueV);
   };
 
   return (
@@ -90,13 +87,39 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
       <x.div display="flex" justifyContent="space-between" w="100%">
         <YearToNumberList title="Average Annual Growth" yearToNumber={averageAnnualIncrease} />
         <x.div display="flex" flexDirection="column">
-          <WACC
-            onBlur={onBlur}
-            g={dividendGrowthRate}
-            r={requiredRateOfReturn}
-            setG={setDividendGrowthRate}
-            setR={setRequiredRateOfReturn}
-          />
+          <x.div display="flex" flexDirection="column" position="relative">
+            <x.div mb={4}>
+              <TextField
+                label="Predicted average annual dividend growth rate"
+                value={dividendGrowthRate}
+                type="number"
+                onChange={(e) => {
+                  onChangeDividendGrowthRate(+e.target.value);
+                }}
+              />
+            </x.div>
+
+            <x.div mb={4}>
+              <TextField
+                label="Required rate of return"
+                value={requiredRateOfReturn}
+                type="number"
+                onChange={(e) => {
+                  onChangeRequiredRateOfReturn(+e.target.value);
+                }}
+              />
+            </x.div>
+            <x.div mb={4}>
+              <TextField
+                label="Margin of safety"
+                value={marginOfSafety}
+                type="number"
+                onChange={(e) => {
+                  setMarginOfSafety(+e.target.value);
+                }}
+              />
+            </x.div>
+          </x.div>
           <Box sx={{ bgcolor: "background.paper" }}>
             <List sx={{ p: 0, borderRadius: 8 }}>
               <ListItem sx={{ "&:hover": { bgcolor: "gray" } }}>
@@ -113,11 +136,31 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
                       <x.span float="right">{trueValue.toFixed(2)}</x.span>
                     </ListItemText>
                   </ListItem>
-                  {trueValue && currentPrice && (
+                  {currentPrice && (
                     <ListItem sx={{ "&:hover": { bgcolor: "gray" } }}>
                       <ListItemText>
                         <x.span mr={16}>Difference</x.span>
                         <x.span float="right">{(((trueValue - currentPrice) / trueValue) * 100).toFixed(2)}%</x.span>
+                      </ListItemText>
+                    </ListItem>
+                  )}
+                  <ListItem sx={{ "&:hover": { bgcolor: "gray" } }}>
+                    <ListItemText>
+                      <x.span mr={16}>True Value (M.o.S)</x.span>
+                      <x.span float="right">{(trueValue * (1 - marginOfSafety)).toFixed(2)}</x.span>
+                    </ListItemText>
+                  </ListItem>
+                  {currentPrice && (
+                    <ListItem sx={{ "&:hover": { bgcolor: "gray" } }}>
+                      <ListItemText>
+                        <x.span mr={16}>Difference (M.o.S)</x.span>
+                        <x.span float="right">
+                          {(
+                            ((trueValue * (1 - marginOfSafety) - currentPrice) / (trueValue * (1 - marginOfSafety))) *
+                            100
+                          ).toFixed(2)}
+                          %
+                        </x.span>
                       </ListItemText>
                     </ListItem>
                   )}

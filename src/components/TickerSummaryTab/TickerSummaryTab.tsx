@@ -1,6 +1,5 @@
 import { x } from "@xstyled/styled-components";
 import { useEffect, useState } from "react";
-import { Box, Divider, List, ListItem, ListItemText } from "@mui/material";
 import { PriceChartInterval, PriceChartTimeRange } from "../../models";
 import { useChartData } from "../../pages/QuotePage/useChartData";
 import { useFinance } from "../../services";
@@ -8,6 +7,7 @@ import { PriceChart } from "../PriceChart";
 import { PriceChartToolbar } from "../PriceChartToolbar";
 import { useFinanceStore } from "../../stores/finance.store";
 import { PriceRangeBar } from "../PriceRangeBar";
+import { LabelValueList } from "../LabelValueList";
 
 interface TickerSummaryTabProps {
   ticker: string;
@@ -47,46 +47,9 @@ export function TickerSummaryTab({ ticker }: TickerSummaryTabProps) {
           <PriceRangeBar />
         </x.div>
 
-        <x.div display="flex" flex={1} justifyContent="center">
-          <Box sx={{ marginLeft: "2rem" }}>
-            <List sx={{ p: 0 }}>
-              {tickerSummaryItems1.map((item) => (
-                <>
-                  <ListItem sx={{ bgcolor: "background.paper" }}>
-                    <ListItemText>
-                      <x.div display="flex" justifyContent="space-between">
-                        <x.div fontSize="sm" pr={12}>
-                          {item.label}
-                        </x.div>
-                        <x.div fontSize="sm">{item.value}</x.div>
-                      </x.div>
-                    </ListItemText>
-                  </ListItem>
-                  <Divider />
-                </>
-              ))}
-            </List>
-          </Box>
-
-          <Box sx={{ marginLeft: "4rem" }}>
-            <List sx={{ p: 0 }}>
-              {tickerSummaryItems2.map((item) => (
-                <>
-                  <ListItem sx={{ bgcolor: "background.paper" }}>
-                    <ListItemText>
-                      <x.div display="flex" justifyContent="space-between">
-                        <x.div fontSize="sm" pr={12}>
-                          {item.label}
-                        </x.div>
-                        <x.div fontSize="sm">{item.value}</x.div>
-                      </x.div>
-                    </ListItemText>
-                  </ListItem>
-                  <Divider />
-                </>
-              ))}
-            </List>
-          </Box>
+        <x.div display="flex" justifyContent="center">
+          <LabelValueList list={tickerSummaryItems1} cardProps={{ marginLeft: "2rem" }} />
+          <LabelValueList list={tickerSummaryItems2} cardProps={{ marginLeft: "4rem" }} />
         </x.div>
       </x.div>
     </x.div>

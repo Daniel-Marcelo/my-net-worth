@@ -1,14 +1,15 @@
 import { Box, Divider, List, ListItem, ListItemText, TextField, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { useState } from "react";
 import { x } from "@xstyled/styled-components";
+import pluralize from "pluralize";
 import { Example } from "../DividendHistoryChart";
 import { PriceChartTimeRange as Range } from "../../models";
-import { ViewType } from "../../types";
+import { ViewType, YearToNumber } from "../../types";
 import { useDDMFormula } from "./useDDMFormula";
 import { useCalculateDividendFrequency } from "./useCalculateDividendFrequency";
 import { useFinanceStore } from "../../stores";
 import { PriceChartToolbar } from "../PriceChartToolbar";
-import { YearToNumberList } from "../YearToNumberList";
+import { LabelValueList } from "../LabelValueList";
 import {
   useCalculateAverageAnnualDividendIncrease,
   useCalculateCompoundedAnnualDividendIncrease,
@@ -56,6 +57,12 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
     setTrueValue(trueV);
   };
 
+  const createYearToNumberLabelValueList = (yearToNumber: YearToNumber) =>
+    Object.entries(yearToNumber).map(([key, value]) => ({
+      label: `${key} ${pluralize("Year", +key)}`,
+      value,
+    }));
+
   return (
     <>
       <x.div display="flex" alignItems="center" mb={12}>
@@ -85,7 +92,7 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
         <Divider variant="middle" />
       </Box>
       <x.div display="flex" justifyContent="space-between" w="100%">
-        <YearToNumberList title="Average Annual Growth" yearToNumber={averageAnnualIncrease} />
+        <LabelValueList title="Average Annual Growth" list={createYearToNumberLabelValueList(averageAnnualIncrease)} />
         <x.div display="flex" flexDirection="column">
           <x.div display="flex" flexDirection="column" position="relative">
             <x.div mb={4}>
@@ -171,7 +178,10 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
             </List>
           </Box>
         </x.div>
-        <YearToNumberList title="Compounded Dividends" yearToNumber={compoundedAnnualIncrease} />
+        <LabelValueList
+          title="Compounded Dividends"
+          list={createYearToNumberLabelValueList(compoundedAnnualIncrease)}
+        />
       </x.div>
     </>
   );

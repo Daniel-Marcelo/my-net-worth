@@ -119,7 +119,7 @@ export const useFinanceStore = create<FinanceStoreData>((set) => ({
         new TickerSummaryItem("Dividend Yield", summaryDetail.dividendYield.fmt),
         new TickerSummaryItem("Ex. Dividend Date", summaryDetail.exDividendDate.fmt),
         new TickerSummaryItem("Dividend Rate", summaryDetail.dividendRate.fmt),
-        new TickerSummaryItem("5 yr Average Div Yield", summaryDetail.fiveYearAvgDividendYield.fmt),
+        new TickerSummaryItem("5 yr Average Div Yield", `${summaryDetail.fiveYearAvgDividendYield.fmt}%`),
         new TickerSummaryItem("Trailing Annual Div Yield", summaryDetail.trailingAnnualDividendYield.fmt),
       ],
     });

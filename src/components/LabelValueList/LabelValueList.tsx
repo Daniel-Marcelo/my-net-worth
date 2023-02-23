@@ -13,7 +13,7 @@ export function LabelValueList({ title, list, cardProps = {} }: YearToNumberList
   return (
     <Card variant="outlined" sx={{ ...cardProps }}>
       {title && (
-        <Typography textAlign="center" variant="subtitle1" my={2} sx={{ fontWeight: "medium" }}>
+        <Typography textAlign="center" variant="subtitle1" p={2} sx={{ fontWeight: "medium" }}>
           {title}
         </Typography>
       )}

@@ -1,3 +1,4 @@
+import { ButtonGroup } from "@mui/material";
 import { PriceChartInterval as Interval, PriceChartTimeRange as Range } from "../../models";
 import { PriceChartTimePeriod } from "../PriceChartTimePeriod";
 
@@ -23,10 +24,10 @@ export function PriceChartToolbar({ selectedTimeFrame, onClick, ranges = default
   const isActive = (range: Range) => selectedTimeFrame === range;
 
   return (
-    <>
+    <ButtonGroup variant="outlined" aria-label="outlined button group">
       {ranges.map((range) => (
         <PriceChartTimePeriod isActive={isActive} range={range} onClick={onClick} />
       ))}
-    </>
+    </ButtonGroup>
   );
 }

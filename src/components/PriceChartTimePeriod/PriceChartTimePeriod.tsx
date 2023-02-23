@@ -1,28 +1,5 @@
-import { ReactNode } from "react";
-import { x } from "@xstyled/styled-components";
+import { Button } from "@mui/material";
 import { PriceChartInterval as Interval, PriceChartTimeRange as Range } from "../../models";
-
-interface ButtonProps {
-  isActive: boolean;
-  children: ReactNode;
-  onClick: () => void;
-}
-
-function Button({ onClick, children, isActive }: ButtonProps) {
-  return (
-    <x.span
-      mr={4}
-      p={4}
-      cursor="pointer"
-      bg={{ _: isActive ? "#1976d2" : "#fff", hover: "#1976d2" }}
-      color={{ hover: "#fff", _: isActive ? "#fff" : "black" }}
-      borderRadius={5}
-      onClick={onClick}
-    >
-      <x.span>{children}</x.span>
-    </x.span>
-  );
-}
 
 interface PriceChartTimePeriodProps {
   isActive: (range: Range) => boolean;
@@ -60,7 +37,7 @@ export function PriceChartTimePeriod({ isActive, range, onClick }: PriceChartTim
   const interval = rangeToInterval.get(range);
   const label = rangeToLabel.get(range);
   return (
-    <Button isActive={isActive(range)} onClick={() => onClick(range, interval)}>
+    <Button variant={isActive(range) ? "contained" : "outlined"} onClick={() => onClick(range, interval)}>
       {label}
     </Button>
   );

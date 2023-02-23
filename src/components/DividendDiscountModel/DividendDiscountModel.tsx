@@ -89,14 +89,16 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
         <x.div display="flex" flexDirection="column">
           <x.div display="flex" flexDirection="column" position="relative">
             <x.div mb={4}>
-              <TextField
-                label="Predicted average annual dividend growth rate"
-                value={dividendGrowthRate}
-                type="number"
-                onChange={(e) => {
-                  onChangeDividendGrowthRate(+e.target.value);
-                }}
-              />
+              {dividendGrowthRate && (
+                <TextField
+                  label="Predicted average annual dividend growth rate"
+                  value={dividendGrowthRate}
+                  type="number"
+                  onChange={(e) => {
+                    onChangeDividendGrowthRate(+e.target.value);
+                  }}
+                />
+              )}
             </x.div>
 
             <x.div mb={4}>
@@ -122,7 +124,7 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
           </x.div>
           <Box sx={{ bgcolor: "background.paper" }}>
             <List sx={{ p: 0, borderRadius: 8 }}>
-              <ListItem sx={{ "&:hover": { bgcolor: "gray" } }}>
+              <ListItem>
                 <ListItemText>
                   <x.span mr={16}>Current price</x.span>
                   <x.span float="right">{moduleData.financialData.currentPrice.fmt}</x.span>
@@ -130,28 +132,28 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
               </ListItem>
               {trueValue && (
                 <>
-                  <ListItem sx={{ "&:hover": { bgcolor: "gray" } }}>
+                  <ListItem>
                     <ListItemText>
                       <x.span mr={16}>True Value</x.span>
                       <x.span float="right">{trueValue.toFixed(2)}</x.span>
                     </ListItemText>
                   </ListItem>
                   {currentPrice && (
-                    <ListItem sx={{ "&:hover": { bgcolor: "gray" } }}>
+                    <ListItem>
                       <ListItemText>
                         <x.span mr={16}>Difference</x.span>
                         <x.span float="right">{(((trueValue - currentPrice) / trueValue) * 100).toFixed(2)}%</x.span>
                       </ListItemText>
                     </ListItem>
                   )}
-                  <ListItem sx={{ "&:hover": { bgcolor: "gray" } }}>
+                  <ListItem>
                     <ListItemText>
                       <x.span mr={16}>True Value (M.o.S)</x.span>
                       <x.span float="right">{(trueValue * (1 - marginOfSafety)).toFixed(2)}</x.span>
                     </ListItemText>
                   </ListItem>
                   {currentPrice && (
-                    <ListItem sx={{ "&:hover": { bgcolor: "gray" } }}>
+                    <ListItem>
                       <ListItemText>
                         <x.span mr={16}>Difference (M.o.S)</x.span>
                         <x.span float="right">

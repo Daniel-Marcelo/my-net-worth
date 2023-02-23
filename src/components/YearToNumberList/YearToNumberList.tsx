@@ -1,4 +1,4 @@
-import { Box, Divider, List, ListItem, ListItemText, Typography } from "@mui/material";
+import { Box, Card, Divider, List, ListItem, ListItemButton, ListItemText, Typography } from "@mui/material";
 import { x } from "@xstyled/styled-components";
 import pluralize from "pluralize";
 import { YearToNumber } from "../../types";
@@ -9,25 +9,24 @@ interface YearToNumberListProps {
 }
 export function YearToNumberList({ yearToNumber, title }: YearToNumberListProps) {
   return (
-    <x.div>
-      <Typography textAlign="center" variant="subtitle1" mb={2}>
+    <Card variant="outlined">
+      <Typography textAlign="center" variant="subtitle1" my={2} sx={{ fontWeight: "medium" }}>
         {title}
       </Typography>
       <Box sx={{ bgcolor: "background.paper" }}>
         <List sx={{ p: 0, borderRadius: 8 }}>
           {Object.entries(yearToNumber).map(([key, value]) => (
             <>
-              <ListItem sx={{ "&:hover": { bgcolor: "gray" } }}>
+              <ListItem>
                 <ListItemText>
                   <x.span mr={16}>{`${key} ${pluralize("Year", +key)}`}</x.span>
                   <x.span float="right">{value}%</x.span>
                 </ListItemText>
               </ListItem>
-              <Divider />
             </>
           ))}
         </List>
       </Box>
-    </x.div>
+    </Card>
   );
 }

@@ -60,7 +60,7 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
   const createYearToNumberLabelValueList = (yearToNumber: YearToNumber) =>
     Object.entries(yearToNumber).map(([key, value]) => ({
       label: `${key} ${pluralize("Year", +key)}`,
-      value,
+      value: `${value}%`,
     }));
 
   return (
@@ -94,40 +94,36 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
       <x.div display="flex" justifyContent="space-between" w="100%">
         <LabelValueList title="Average Annual Growth" list={createYearToNumberLabelValueList(averageAnnualIncrease)} />
         <x.div display="flex" flexDirection="column">
-          <x.div display="flex" flexDirection="column" position="relative">
-            <x.div mb={4}>
-              {dividendGrowthRate && (
-                <TextField
-                  label="Predicted average annual dividend growth rate"
-                  value={dividendGrowthRate}
-                  type="number"
-                  onChange={(e) => {
-                    onChangeDividendGrowthRate(+e.target.value);
-                  }}
-                />
-              )}
-            </x.div>
-
-            <x.div mb={4}>
+          <x.div display="flex" flexDirection="column" position="relative" justifyContent="center">
+            {!Number.isNaN(dividendGrowthRate) && (
               <TextField
-                label="Required rate of return"
-                value={requiredRateOfReturn}
+                sx={{ marginBottom: 4 }}
+                label="Predicted average annual dividend growth rate"
+                value={dividendGrowthRate}
                 type="number"
                 onChange={(e) => {
-                  onChangeRequiredRateOfReturn(+e.target.value);
+                  onChangeDividendGrowthRate(+e.target.value);
                 }}
               />
-            </x.div>
-            <x.div mb={4}>
-              <TextField
-                label="Margin of safety"
-                value={marginOfSafety}
-                type="number"
-                onChange={(e) => {
-                  setMarginOfSafety(+e.target.value);
-                }}
-              />
-            </x.div>
+            )}
+            <TextField
+              sx={{ marginBottom: 4 }}
+              label="Required rate of return"
+              value={requiredRateOfReturn}
+              type="number"
+              onChange={(e) => {
+                onChangeRequiredRateOfReturn(+e.target.value);
+              }}
+            />
+            <TextField
+              sx={{ marginBottom: 4 }}
+              label="Margin of safety"
+              value={marginOfSafety}
+              type="number"
+              onChange={(e) => {
+                setMarginOfSafety(+e.target.value);
+              }}
+            />
           </x.div>
           <Box sx={{ bgcolor: "background.paper" }}>
             <List sx={{ p: 0, borderRadius: 8 }}>

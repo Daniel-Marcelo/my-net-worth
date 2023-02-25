@@ -65,34 +65,49 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
 
   return (
     <>
-      <x.div display="flex" alignItems="center" mb={12}>
-        <ToggleButtonGroup
-          color="primary"
-          value={viewType}
-          exclusive
-          sx={{ marginRight: 4 }}
-          onChange={(event, newValue?: ViewType) => newValue && setViewType(newValue)}
-          aria-label="Platform"
-        >
-          <ToggleButton value="normal" sx={{ background: "white" }}>
-            Standard
-          </ToggleButton>
-          <ToggleButton value="yearly" sx={{ background: "white" }}>
-            Yearly
-          </ToggleButton>
-        </ToggleButtonGroup>
-        <PriceChartToolbar
-          ranges={chartRanges}
-          selectedTimeFrame={selectedTimeFrame}
-          onClick={(range) => setSelectedTimeFrame(range)}
-        />
+      <x.div display="flex">
+        <x.div>
+          <x.div display="flex" justifyContent="center" mb={4}>
+            <ToggleButtonGroup
+              color="primary"
+              value={viewType}
+              exclusive
+              sx={{ marginRight: 4 }}
+              onChange={(event, newValue?: ViewType) => newValue && setViewType(newValue)}
+              aria-label="Platform"
+            >
+              <ToggleButton value="normal" sx={{ background: "white" }}>
+                Standard
+              </ToggleButton>
+              <ToggleButton value="yearly" sx={{ background: "white" }}>
+                Yearly
+              </ToggleButton>
+            </ToggleButtonGroup>
+            <PriceChartToolbar
+              ranges={chartRanges}
+              selectedTimeFrame={selectedTimeFrame}
+              onClick={(range) => setSelectedTimeFrame(range)}
+            />
+          </x.div>
+          <Example history={filteredHistory} />
+        </x.div>
+
+        <x.div display="flex" flex={1}>
+          <LabelValueList
+            title="Average Annual Growth"
+            list={createYearToNumberLabelValueList(averageAnnualIncrease)}
+          />
+          <LabelValueList
+            title="Compounded Dividends"
+            list={createYearToNumberLabelValueList(compoundedAnnualIncrease)}
+          />
+        </x.div>
       </x.div>
-      <Example history={filteredHistory} />
+
       <Box sx={{ width: "100%", bgcolor: "background.paper", marginBottom: 8, marginTop: 8 }}>
         <Divider variant="middle" />
       </Box>
       <x.div display="flex" justifyContent="space-between" w="100%">
-        <LabelValueList title="Average Annual Growth" list={createYearToNumberLabelValueList(averageAnnualIncrease)} />
         <x.div display="flex" flexDirection="column">
           <x.div display="flex" flexDirection="column" position="relative" justifyContent="center">
             {!Number.isNaN(dividendGrowthRate) && (
@@ -174,10 +189,6 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
             </List>
           </Box>
         </x.div>
-        <LabelValueList
-          title="Compounded Dividends"
-          list={createYearToNumberLabelValueList(compoundedAnnualIncrease)}
-        />
       </x.div>
     </>
   );

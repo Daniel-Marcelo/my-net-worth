@@ -64,7 +64,7 @@ export function QuotePage() {
             </x.div>
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <x.div display="flex" flexDirection="column" flex="1" alignItems="center" mt={4}>
+            <x.div display="flex" flexDirection="column" flex="1" mt={4}>
               <DividendDiscountModel ticker={selectedQuote.ticker} />
             </x.div>
           </TabPanel>

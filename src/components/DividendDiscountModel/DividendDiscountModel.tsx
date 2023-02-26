@@ -63,6 +63,22 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
       value: `${value}%`,
     }));
 
+  const difference = ((trueValue - currentPrice) / trueValue) * 100;
+  const differenceMos = ((trueValue * (1 - marginOfSafety) - currentPrice) / (trueValue * (1 - marginOfSafety))) * 100;
+  const getDifferenceColor = (diff: number) => {
+    if (diff === 0) {
+      return "black";
+    }
+    return diff > 0 ? "green" : "red";
+  };
+
+  const getFontWeight = (diff: number) => {
+    if (diff === 0) {
+      return "normal";
+    }
+    return "semibold";
+  };
+
   return (
     <>
       <x.div display="flex">
@@ -92,24 +108,19 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
           <Example history={filteredHistory} />
         </x.div>
 
-        <x.div display="flex" flex={1}>
+        <x.div display="flex" flex={1} gap={4} justifyContent="center">
           <LabelValueList
-            title="Average Annual Growth"
+            title="Average Annual Dividend Growth"
             list={createYearToNumberLabelValueList(averageAnnualIncrease)}
+            cardProps={{ flex: 1 }}
           />
           <LabelValueList
-            title="Compounded Dividends"
+            title="Compounded Dividend Growth"
             list={createYearToNumberLabelValueList(compoundedAnnualIncrease)}
+            cardProps={{ flex: 1 }}
           />
-        </x.div>
-      </x.div>
 
-      <Box sx={{ width: "100%", bgcolor: "background.paper", marginBottom: 8, marginTop: 8 }}>
-        <Divider variant="middle" />
-      </Box>
-      <x.div display="flex" justifyContent="space-between" w="100%">
-        <x.div display="flex" flexDirection="column">
-          <x.div display="flex" flexDirection="column" position="relative" justifyContent="center">
+          <x.span flex={1}>
             {!Number.isNaN(dividendGrowthRate) && (
               <TextField
                 sx={{ marginBottom: 4 }}
@@ -139,10 +150,18 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
                 setMarginOfSafety(+e.target.value);
               }}
             />
-          </x.div>
-          <Box sx={{ bgcolor: "background.paper" }}>
-            <List sx={{ p: 0, borderRadius: 8 }}>
-              <ListItem>
+          </x.span>
+        </x.div>
+      </x.div>
+
+      <Box sx={{ width: "100%", bgcolor: "background.paper", marginBottom: 4, marginTop: 4 }}>
+        <Divider variant="middle" />
+      </Box>
+      <x.div display="flex" justifyContent="space-between" w="100%">
+        <x.div display="flex" flexDirection="column">
+          <Box>
+            <List sx={{ p: 0, borderRadius: 8, display: "flex", gap: 4 }}>
+              <ListItem sx={{ bgcolor: "background.paper" }}>
                 <ListItemText>
                   <x.span mr={16}>Current price</x.span>
                   <x.span float="right">{moduleData.financialData.currentPrice.fmt}</x.span>
@@ -150,36 +169,42 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
               </ListItem>
               {trueValue && (
                 <>
-                  <ListItem>
+                  <ListItem sx={{ bgcolor: "background.paper" }}>
                     <ListItemText>
                       <x.span mr={16}>True Value</x.span>
                       <x.span float="right">{trueValue.toFixed(2)}</x.span>
                     </ListItemText>
                   </ListItem>
                   {currentPrice && (
-                    <ListItem>
+                    <ListItem sx={{ bgcolor: "background.paper" }}>
                       <ListItemText>
                         <x.span mr={16}>Difference</x.span>
-                        <x.span float="right">{(((trueValue - currentPrice) / trueValue) * 100).toFixed(2)}%</x.span>
+                        <x.span
+                          float="right"
+                          fontWeight={getFontWeight(difference)}
+                          color={getDifferenceColor(difference)}
+                        >
+                          {difference.toFixed(2)}%
+                        </x.span>
                       </ListItemText>
                     </ListItem>
                   )}
-                  <ListItem>
+                  <ListItem sx={{ bgcolor: "background.paper" }}>
                     <ListItemText>
                       <x.span mr={16}>True Value (M.o.S)</x.span>
                       <x.span float="right">{(trueValue * (1 - marginOfSafety)).toFixed(2)}</x.span>
                     </ListItemText>
                   </ListItem>
                   {currentPrice && (
-                    <ListItem>
+                    <ListItem sx={{ bgcolor: "background.paper" }}>
                       <ListItemText>
                         <x.span mr={16}>Difference (M.o.S)</x.span>
-                        <x.span float="right">
-                          {(
-                            ((trueValue * (1 - marginOfSafety) - currentPrice) / (trueValue * (1 - marginOfSafety))) *
-                            100
-                          ).toFixed(2)}
-                          %
+                        <x.span
+                          float="right"
+                          fontWeight={getFontWeight(differenceMos)}
+                          color={getDifferenceColor(differenceMos)}
+                        >
+                          {differenceMos.toFixed(2)}%
                         </x.span>
                       </ListItemText>
                     </ListItem>

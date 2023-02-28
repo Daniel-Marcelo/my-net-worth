@@ -35,7 +35,6 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
 
   const { moduleData } = useFinanceStore();
   const [requiredRateOfReturn, setRequiredRateOfReturn] = useState<number>(0.08);
-  const [trueValue, setTrueValue] = useState<number>();
   const [marginOfSafety, setMarginOfSafety] = useState<number>(0.1);
   const DDMFormula = useDDMFormula();
   useCalculateDividendFrequency(history);
@@ -45,26 +44,12 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
     .slice(history.length - 5, history.length - 1)
     .reduce((acc, div) => acc + div.amount, 0);
 
-  const onChangeDividendGrowthRate = (newGrowthRate: number) => {
-    setDividendGrowthRate(newGrowthRate);
-    const trueV = DDMFormula(last4DividendsTotal, newGrowthRate, requiredRateOfReturn);
-    setTrueValue(trueV);
-  };
-
-  const onChangeRequiredRateOfReturn = (newRateOfReturn: number) => {
-    setRequiredRateOfReturn(newRateOfReturn);
-    const trueV = DDMFormula(last4DividendsTotal, dividendGrowthRate, newRateOfReturn);
-    setTrueValue(trueV);
-  };
-
   const createYearToNumberLabelValueList = (yearToNumber: YearToNumber) =>
     Object.entries(yearToNumber).map(([key, value]) => ({
       label: `${key} ${pluralize("Year", +key)}`,
       value: `${value}%`,
     }));
 
-  const difference = ((trueValue - currentPrice) / trueValue) * 100;
-  const differenceMos = ((trueValue * (1 - marginOfSafety) - currentPrice) / (trueValue * (1 - marginOfSafety))) * 100;
   const getDifferenceColor = (diff: number) => {
     if (diff === 0) {
       return "black";
@@ -72,12 +57,14 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
     return diff > 0 ? "green" : "red";
   };
 
+  // eslint-disable-next-line arrow-body-style
   const getFontWeight = (diff: number) => {
-    if (diff === 0) {
-      return "normal";
-    }
-    return "semibold";
+    return diff === 0 ? "normal" : "semibold";
   };
+
+  const trueValue = DDMFormula(last4DividendsTotal, dividendGrowthRate, requiredRateOfReturn);
+  const difference = ((trueValue - currentPrice) / trueValue) * 100;
+  const differenceMos = ((trueValue * (1 - marginOfSafety) - currentPrice) / (trueValue * (1 - marginOfSafety))) * 100;
 
   return (
     <>
@@ -128,7 +115,7 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
                 value={dividendGrowthRate}
                 type="number"
                 onChange={(e) => {
-                  onChangeDividendGrowthRate(+e.target.value);
+                  setDividendGrowthRate(+e.target.value);
                 }}
               />
             )}
@@ -138,7 +125,7 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
               value={requiredRateOfReturn}
               type="number"
               onChange={(e) => {
-                onChangeRequiredRateOfReturn(+e.target.value);
+                setRequiredRateOfReturn(+e.target.value);
               }}
             />
             <TextField

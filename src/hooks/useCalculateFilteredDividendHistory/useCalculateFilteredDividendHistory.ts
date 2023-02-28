@@ -15,7 +15,7 @@ export const useCalculateFilteredDividendHistory = (
 
   const setFilteredHistoryBasedOnYear = (timeframe: Range) => {
     const minimumYear = new Date().getFullYear() - rangeToYearsMap.get(timeframe);
-    const yearsToDividends = calcYearsToDividends(history);
+    const [yearsToDividends] = calcYearsToDividends(history);
     const yearlyHistory = Object.entries(yearsToDividends).map(
       ([key, value]) =>
         ({

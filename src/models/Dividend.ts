@@ -16,3 +16,10 @@ export const DividendFrequencyToDisplay = new Map([
   [2, DividendFrequency.BiAnnually],
   [1, DividendFrequency.Annually],
 ]);
+
+export const DividendFrequencyToCount = new Map([
+  [DividendFrequency.Monthly, 12],
+  [DividendFrequency.Quarterly, 3],
+  [DividendFrequency.BiAnnually, 6],
+  [DividendFrequency.Annually, 1],
+]);

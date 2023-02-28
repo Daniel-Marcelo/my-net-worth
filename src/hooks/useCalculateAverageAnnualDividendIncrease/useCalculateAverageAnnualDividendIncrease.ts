@@ -36,7 +36,7 @@ export const useCalculateAverageAnnualDividendIncrease = (history: YFDividendHis
 
   useEffect(() => {
     console.log("in history use effect");
-    const yearsToDividends = calcYearsToDividends(history);
+    const [yearsToDividends] = calcYearsToDividends(history);
     generateAverageAnnualIncreases(yearsToDividends);
   }, [history]);
 

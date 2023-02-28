@@ -7,6 +7,7 @@ import { useLoadFinanceModules } from "../../hooks/useLoadFinanceModules";
 import { TickerSummaryTab } from "../../components/TickerSummaryTab";
 import { useQuoteStore } from "../../stores/quote.store";
 import { useGetRiskFreeRate } from "../../hooks";
+import { MultiplesTab } from "../../components/MultiplesTab";
 
 function a11yProps(index: number) {
   return {
@@ -56,6 +57,7 @@ export function QuotePage() {
             <Tabs value={value} onChange={(e, v) => setValue(v)} aria-label="basic tabs example">
               <Tab label="Chart" {...a11yProps(0)} />
               <Tab label="DDM" {...a11yProps(1)} />
+              <Tab label="Multiples" {...a11yProps(2)} />
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
@@ -66,6 +68,11 @@ export function QuotePage() {
           <TabPanel value={value} index={1}>
             <x.div display="flex" flexDirection="column" flex="1" mt={4}>
               <DividendDiscountModel ticker={selectedQuote.ticker} />
+            </x.div>
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <x.div display="flex" flexDirection="column" flex="1" mt={4}>
+              <MultiplesTab ticker={selectedQuote.ticker} />
             </x.div>
           </TabPanel>
         </Box>

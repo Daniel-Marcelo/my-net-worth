@@ -22,6 +22,7 @@ export const useLocalStorageService = <T extends FirebaseItem>(collectionName: s
     array.push(newItem);
     LocalStorageUtil.Set(collectionName, array);
   },
+  getByQuery: async () => LocalStorageUtil.GetList<T>(collectionName),
   delete: async (id: string) => {
     const array = LocalStorageUtil.GetList<T>(collectionName);
     const updatedArray = array.filter((item) => item.id !== id);

@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, QueryConstraint } from "firebase/firestore";
 import { db } from "..";
 import { DBService } from "./useDBService";
 
@@ -20,6 +20,19 @@ export const useFirebaseService = <T>(collectionName: string): DBService<T> => (
       } as T;
     }
     throw new Error("Document does not exist");
+  },
+  getByQuery: async (...queryConstraints: QueryConstraint[]) => {
+    const list = [] as T[];
+    const querySnapshot = await getDocs(query(collection(db, collectionName), ...queryConstraints));
+
+    querySnapshot.forEach((document) => {
+      const item = document.data() as T;
+      list.push({
+        id: document.id,
+        ...item,
+      });
+    });
+    return list;
   },
   getList: async () => {
     const list = [] as T[];

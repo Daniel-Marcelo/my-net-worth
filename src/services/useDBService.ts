@@ -1,3 +1,4 @@
+import { QueryConstraint } from "firebase/firestore";
 import { FirebaseItem } from "../models/Firebase";
 import { LocalStorageUtil } from "../utils/localStorage";
 import { useFirebaseService } from "./useFirebaseService";
@@ -7,6 +8,7 @@ export interface DBService<T extends FirebaseItem> {
   create: (item: T) => Promise<void>;
   delete: (id: string) => Promise<void>;
   get: (id: string) => Promise<T>;
+  getByQuery: (...queryConstraints: QueryConstraint[]) => Promise<T[]>;
   getList: () => Promise<T[]>;
   // deleteList: () => Promise<void>
 }

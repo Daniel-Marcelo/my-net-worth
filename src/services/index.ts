@@ -5,3 +5,4 @@ export * from "./useLocalStorageService";
 export * from "./useYahooFinance";
 export * from "./useFinance";
 export * from "./usePortfolioEntryService";
+export * from "./useSymbolsV1Service";

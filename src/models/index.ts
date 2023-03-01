@@ -7,3 +7,4 @@ export * from "./PortfolioEntry";
 export * from "./Finance";
 export * from "./Dividend";
 export * from "./Symbols";
+export * from "./Multiples";

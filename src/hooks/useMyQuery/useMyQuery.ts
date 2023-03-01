@@ -13,12 +13,12 @@ export const useMyQuery = <
   options: Omit<UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>, "initialData"> & {
     initialData?: () => undefined;
   }
-): MyQueryResult => {
+): MyQueryResult<TQueryFnData, TError, TData> => {
   const query = useQuery({
     ...options,
   });
 
-  const myQuery = query as MyQueryResult;
+  const myQuery = query as MyQueryResult<TQueryFnData, TError, TData>;
   myQuery.isInFlight = query.fetchStatus === "fetching" && query.status === "loading";
   return myQuery;
 };

@@ -1,4 +1,6 @@
-export interface PolySymbolV1 {
+import { FirebaseItem } from "./Firebase";
+
+export interface PolySymbolV1 extends FirebaseItem {
   logo: string;
   listdate: string;
   cik: string;

@@ -7,3 +7,4 @@ export * from "./useCalculateFilteredDividendHistory";
 export * from "./useCalculateCompoundedAnnualDividendIncrease";
 export * from "./useCalculateAverageAnnualDividendIncrease";
 export * from "./useDividendGrowthRate";
+export * from "./useGetSimilarCompanies";

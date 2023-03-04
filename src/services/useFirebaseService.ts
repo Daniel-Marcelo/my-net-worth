@@ -1,5 +1,5 @@
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, QueryConstraint } from "firebase/firestore";
-import { db } from "..";
+import { db } from "../firebase";
 import { DBService } from "./useDBService";
 
 export const useFirebaseService = <T>(collectionName: string): DBService<T> => ({

@@ -32,20 +32,13 @@ const queryClient = new QueryClient({
   },
 });
 function App() {
-  useAuthContext();
-
-  // const test = () => {
-  //   fetch("/search/quote?symbols=TLS.AX,MUS.AX").then((response) => {
-  //     console.log(response);
-  //   });
-  // };
-
+  // useAuthContext();
   return (
     <ThemeProvider theme={theme}>
-      <ToastContainer />
-      <Preflight />
-      <BrowserRouter>
-        <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <ToastContainer />
+        <Preflight />
+        <BrowserRouter>
           <AuthContextProvider>
             <UserSettingsProvider>
               <NavBar />
@@ -89,8 +82,8 @@ function App() {
               </Routes>
             </UserSettingsProvider>
           </AuthContextProvider>
-        </QueryClientProvider>
-      </BrowserRouter>
+        </BrowserRouter>
+      </QueryClientProvider>
     </ThemeProvider>
   );
 }

@@ -1,5 +1,5 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { db } from "..";
+import { db } from "../firebase";
 import { PortfolioEntry } from "../models";
 import { LocalStorageUtil } from "../utils/localStorage";
 import { DBService, useDBService } from "./useDBService";

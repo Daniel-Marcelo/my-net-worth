@@ -5,8 +5,8 @@ import { GoogleLoginButton } from "react-social-login-buttons";
 import passwordValidator from "password-validator";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
-import { useLogin } from "../Login/useLogin";
-import { useRegister } from "./useRegister";
+import { useNavigate } from "react-router-dom";
+import { useAuthService } from "../../services/AuthService";
 
 function validate(email) {
   const re = /\S+@\S+\.\S+/;
@@ -29,26 +29,27 @@ schema
   .oneOf(["Passw0rd", "Password123"]);
 
 export function RegisterPage() {
+  // Form fields
   const [passwordRulesValid, setPasswordRulesValid] = useState(schema.validate("", { list: true }) as string[]);
-  const [loginWithGoogle] = useLogin();
-  const registerService = useRegister();
-  // const authService = useAuthService();
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [clickedSave, setClickedSave] = useState(false);
 
-  // console.log(schema.validate("", { list: true }) as any[]);
+  const authService = useAuthService();
+  const navigate = useNavigate();
+
   useEffect(() => {
     const passwordValid = schema.validate(password, { list: true }) as string[];
     setPasswordRulesValid(passwordValid);
   }, [password]);
 
-  const onClickRegister = () => {
+  const onClickRegister = async () => {
     setClickedSave(true);
     if (validate(email) && !passwordRulesValid.length) {
-      registerService.registerWithEmailAndPassword(email, password);
+      await authService.createWithEmailAndPassword(email, password);
+      navigate("/portfolios");
     }
   };
 
@@ -141,7 +142,7 @@ export function RegisterPage() {
         </x.div>
 
         <x.div mt={4}>
-          <GoogleLoginButton onClick={() => loginWithGoogle()} />
+          <GoogleLoginButton onClick={() => authService.loginWithGoogle()} />
         </x.div>
       </x.div>
     </x.div>

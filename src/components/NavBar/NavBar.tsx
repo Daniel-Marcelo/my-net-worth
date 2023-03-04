@@ -4,20 +4,20 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useAuthIdToken } from "@react-query-firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { x } from "@xstyled/styled-components";
 import { useAuthContext } from "../../context/AuthContext";
+import { auth } from "../../firebase";
 
 interface NavBarLinkProps {
   ml?: number;
   text: string;
-  route: string;
+  onClick: () => void;
 }
-function NavBarLink({ text, route, ml = 4 }: NavBarLinkProps) {
-  const navigate = useNavigate();
-
+function NavBarLink({ text, onClick, ml = 4 }: NavBarLinkProps) {
   return (
-    <x.span ml={ml} cursor="pointer" onClick={() => navigate(route)}>
+    <x.span ml={ml} cursor="pointer" onClick={onClick}>
       <Typography variant="h6" component="span" sx={{ flexGrow: 1 }}>
         {text}
       </Typography>
@@ -26,6 +26,7 @@ function NavBarLink({ text, route, ml = 4 }: NavBarLinkProps) {
 }
 
 export function NavBar() {
+  const navigate = useNavigate();
   const { login } = useAuthContext();
   const [isLoggedIn] = login;
   return (
@@ -35,21 +36,36 @@ export function NavBar() {
           <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
             <MenuIcon />
           </IconButton>
-          <NavBarLink ml={0} text="Quote" route="/quote" />
-          <NavBarLink text="Calculator" route="/calc" />
-          {!isLoggedIn === undefined && (
+          <NavBarLink ml={0} text="Quote" onClick={() => navigate("/quote")} />
+          <NavBarLink text="Calculator" onClick={() => navigate("/calc")} />
+          {isLoggedIn ? (
             <>
-              {isLoggedIn ? <NavBarLink text="Portfolios" route="/portfolios" /> : ""}
-              {!isLoggedIn ? (
-                <x.span display="flex" flex={1} justifyContent="end">
-                  <NavBarLink text="Register" route="/register" />
-                  <NavBarLink text="Login" route="/login" />
-                </x.span>
-              ) : (
-                ""
-              )}
+              <NavBarLink text="Portfolios" onClick={() => navigate("/portfolios")} />
+              <x.span display="flex" flex={1} justifyContent="end">
+                <NavBarLink
+                  text="Logout"
+                  onClick={() => {}}
+                  //   const auth = getAuth();
+                  //   signOut(auth)
+                  //     .then(() => {
+                  //       // Sign-out successful.
+                  //     })
+                  //     .catch((error) => {
+                  //       // An error happened.
+                  //     });
+                  // }}
+                />
+              </x.span>
             </>
+          ) : (
+            ""
           )}
+          {!isLoggedIn ? (
+            <x.span display="flex" flex={1} justifyContent="end">
+              <NavBarLink text="Register" onClick={() => navigate("/register")} />
+              <NavBarLink text="Login" onClick={() => navigate("/login")} />
+            </x.span>
+          ) : null}
         </Toolbar>
       </AppBar>
     </Box>

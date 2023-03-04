@@ -5,7 +5,7 @@ import { GoogleLoginButton } from "react-social-login-buttons";
 import passwordValidator from "password-validator";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
-import { useLogin } from "./useLogin";
+import { useAuthService } from "../../services/AuthService";
 
 function validate(email: string) {
   const re = /\S+@\S+\.\S+/;
@@ -29,7 +29,7 @@ schema
 
 export function LoginPage() {
   const [passwordRulesValid, setPasswordRulesValid] = useState(schema.validate("", { list: true }) as string[]);
-  const [loginWithGoogle, loginWithEmailPassword] = useLogin();
+  const authService = useAuthService();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [clickedSave, setClickedSave] = useState(false);
@@ -44,7 +44,7 @@ export function LoginPage() {
     // const passwordValid = schema.validate(password, { list: true }) as string[];
     // console.log(passwordValid);
     if (validate(email) && !passwordRulesValid.length) {
-      loginWithEmailPassword(email, password);
+      authService.loginWithEmailPassword(email, password);
     }
   };
 
@@ -111,7 +111,7 @@ export function LoginPage() {
         </x.div>
 
         <x.div mt={4}>
-          <GoogleLoginButton onClick={() => loginWithGoogle()} />
+          <GoogleLoginButton onClick={() => authService.loginWithGoogle()} />
         </x.div>
       </x.div>
     </x.div>

@@ -1,17 +1,11 @@
-import { useEffect, useState } from "react";
-import { YFDividendHistory } from "../../types/yahoo-finance.d";
-import { DividendFrequency } from "../../types";
 import { DividendFrequencyToDisplay } from "../../models";
 
-export const useCalculateDividendFrequency = (history: YFDividendHistory.HistoryList[]) => {
-  const [dividendFrequency, setDividendFrequency] = useState<DividendFrequency>();
-  const orderedHistory: YFDividendHistory.HistoryList[] = history.slice(-30);
-
-  useEffect(() => {
-    const updatedYearToDividendCount: { [key: number]: number } = orderedHistory.reduce(
+export const useCalculateDividendFrequency = () => {
+  const calculateDividendFrequency = (dividendYearHistorys: string[]) => {
+    const updatedYearToDividendCount: { [key: number]: number } = dividendYearHistorys.reduce(
       (acc, item) => ({
         ...acc,
-        [item.year]: acc[item.year] ? acc[item.year] + 1 : 1,
+        [item]: acc[item] ? acc[item] + 1 : 1,
       }),
       {}
     );
@@ -31,8 +25,7 @@ export const useCalculateDividendFrequency = (history: YFDividendHistory.History
       return key;
     }, "0");
 
-    setDividendFrequency(DividendFrequencyToDisplay.get(frequency));
-  }, [history]);
-
-  return dividendFrequency;
+    return [frequency, DividendFrequencyToDisplay.get(frequency)] as const;
+  };
+  return calculateDividendFrequency;
 };

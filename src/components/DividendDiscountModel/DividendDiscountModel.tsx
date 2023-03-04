@@ -6,7 +6,6 @@ import { Example } from "../DividendHistoryChart";
 import { PriceChartTimeRange as Range } from "../../models";
 import { ViewType, YearToNumber } from "../../types";
 import { useDDMFormula } from "./useDDMFormula";
-import { useCalculateDividendFrequency } from "./useCalculateDividendFrequency";
 import { useFinanceStore } from "../../stores";
 import { PriceChartToolbar } from "../PriceChartToolbar";
 import { LabelValueList } from "../LabelValueList";
@@ -37,7 +36,6 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
   const [requiredRateOfReturn, setRequiredRateOfReturn] = useState<number>(0.08);
   const [marginOfSafety, setMarginOfSafety] = useState<number>(0.1);
   const DDMFormula = useDDMFormula();
-  useCalculateDividendFrequency(history);
 
   const currentPrice = moduleData.financialData.currentPrice.raw;
   const last4DividendsTotal = history

@@ -1,6 +1,7 @@
 import { Button } from "@mui/material";
 import { x } from "@xstyled/styled-components";
 import { useNavigate } from "react-router-dom";
+import { DividendCalendar } from "../../components/DividendCalendar";
 import { useAuthContext } from "../../context/AuthContext";
 
 export function HomePage() {
@@ -12,6 +13,7 @@ export function HomePage() {
 
   return (
     <x.div h="100vh" display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" pt={32}>
+      <DividendCalendar rowData={[]} />
       <x.div letterSpacing="10px" fontSize="58px">
         MY NET WORTH
       </x.div>

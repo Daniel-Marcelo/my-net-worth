@@ -1,10 +1,8 @@
 import { Button } from "@mui/material";
 import { x } from "@xstyled/styled-components";
 import { useNavigate } from "react-router-dom";
-import { useAuthUser } from "@react-query-firebase/auth";
 import { DividendCalendar } from "../../components/DividendCalendar";
 import { useAuthContext } from "../../context/AuthContext";
-import { auth } from "../../firebase";
 
 export function HomePage() {
   const navigate = useNavigate();
@@ -12,7 +10,6 @@ export function HomePage() {
   const [isLoggedIn] = login;
   const onClickLogin = () => navigate("/login");
   const onClickPortfolios = () => navigate("/portfolios");
-  const user = useAuthUser(["user"], auth);
   return (
     <x.div h="100vh" display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" pt={32}>
       <DividendCalendar rowData={[]} />

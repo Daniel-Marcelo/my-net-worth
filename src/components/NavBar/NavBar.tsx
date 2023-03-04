@@ -4,11 +4,9 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useAuthIdToken } from "@react-query-firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { x } from "@xstyled/styled-components";
 import { useAuthContext } from "../../context/AuthContext";
-import { auth } from "../../firebase";
 
 interface NavBarLinkProps {
   ml?: number;

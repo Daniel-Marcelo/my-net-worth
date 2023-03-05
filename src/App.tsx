@@ -32,7 +32,7 @@ const queryClient = new QueryClient({
   },
 });
 function App() {
-  // useAuthContext();
+  useAuthContext();
   return (
     <ThemeProvider theme={theme}>
       <QueryClientProvider client={queryClient}>

@@ -1,5 +1,6 @@
 import React, { PropsWithChildren, useEffect, useState } from "react";
-import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { auth } from "../firebase";
 
 const AuthContext = React.createContext(null);
 
@@ -9,7 +10,6 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
   const [user, setUser] = useState<User>();
 
   useEffect(() => {
-    const auth = getAuth();
     onAuthStateChanged(auth, (userData) => {
       if (userData) {
         console.log("%c User is signed in", "background: green; color: white");

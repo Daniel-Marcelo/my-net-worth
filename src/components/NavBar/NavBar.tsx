@@ -7,6 +7,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 import { x } from "@xstyled/styled-components";
 import { useAuthContext } from "../../context/AuthContext";
+import { useLogout } from "../../hooks/useAuth";
 
 interface NavBarLinkProps {
   ml?: number;
@@ -25,6 +26,7 @@ function NavBarLink({ text, onClick, ml = 4 }: NavBarLinkProps) {
 
 export function NavBar() {
   const navigate = useNavigate();
+  const logout = useLogout();
   const { login } = useAuthContext();
   const [isLoggedIn] = login;
   return (
@@ -40,19 +42,7 @@ export function NavBar() {
             <>
               <NavBarLink text="Portfolios" onClick={() => navigate("/portfolios")} />
               <x.span display="flex" flex={1} justifyContent="end">
-                <NavBarLink
-                  text="Logout"
-                  onClick={() => {}}
-                  //   const auth = getAuth();
-                  //   signOut(auth)
-                  //     .then(() => {
-                  //       // Sign-out successful.
-                  //     })
-                  //     .catch((error) => {
-                  //       // An error happened.
-                  //     });
-                  // }}
-                />
+                <NavBarLink text="Logout" onClick={logout.mutate} />
               </x.span>
             </>
           ) : (

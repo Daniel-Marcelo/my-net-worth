@@ -6,7 +6,7 @@ import passwordValidator from "password-validator";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
 import { useNavigate } from "react-router-dom";
-import { useAuthService } from "../../services/AuthService";
+import { useCreateUserWithEmail, useLoginWithGoogle } from "../../hooks/useAuth";
 
 function validate(email) {
   const re = /\S+@\S+\.\S+/;
@@ -37,8 +37,10 @@ export function RegisterPage() {
   const [password, setPassword] = useState("");
   const [clickedSave, setClickedSave] = useState(false);
 
-  const authService = useAuthService();
   const navigate = useNavigate();
+
+  const loginWithGoogleMutation = useLoginWithGoogle();
+  const createWithEmailMutation = useCreateUserWithEmail();
 
   useEffect(() => {
     const passwordValid = schema.validate(password, { list: true }) as string[];
@@ -48,8 +50,12 @@ export function RegisterPage() {
   const onClickRegister = async () => {
     setClickedSave(true);
     if (validate(email) && !passwordRulesValid.length) {
-      await authService.createWithEmailAndPassword(email, password);
-      navigate("/portfolios");
+      createWithEmailMutation.mutate(
+        { email, password },
+        {
+          onSuccess: () => navigate("/portfolios"),
+        }
+      );
     }
   };
 
@@ -142,7 +148,7 @@ export function RegisterPage() {
         </x.div>
 
         <x.div mt={4}>
-          <GoogleLoginButton onClick={() => authService.loginWithGoogle()} />
+          <GoogleLoginButton onClick={loginWithGoogleMutation.mutate} />
         </x.div>
       </x.div>
     </x.div>

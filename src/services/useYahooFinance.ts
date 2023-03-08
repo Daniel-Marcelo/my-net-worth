@@ -1,3 +1,4 @@
+import axios from "axios";
 import { PriceChartInterval, PriceChartTimeRange, Quote, QuoteType, SummaryProfile } from "../models";
 import { YF, YFDividendHistory, YFModule } from "../types/yahoo-finance.d";
 import { Finance } from "./useFinance";
@@ -11,7 +12,7 @@ export const useYahooFinance = (): Finance => {
     range = PriceChartTimeRange.OneDay,
     interval = PriceChartInterval.FifteenMins
   ) => {
-    const response = await fetch(
+    const response = await axios.get(
       `/chart/${ticker}?range=${range}&includePrePost=false&interval=${interval}&corsDomain=finance.yahoo.com&.tsrc=finance`
     );
     const data: YF.PriceHistoryResponse = await response.json();
@@ -28,7 +29,7 @@ export const useYahooFinance = (): Finance => {
   };
 
   const searchForTicker = async (text: string): Promise<Quote[]> => {
-    const response = await fetch(`/search?q=${text}`);
+    const response = await fetch(`https://query2.finance.yahoo.com/v1/finance/search?q=${text}`);
     const data = await response.json();
     return data.quotes
       .filter((quote) => [QuoteType.Etf, QuoteType.Equity].includes(quote.quoteType))

@@ -28,15 +28,7 @@ export const useYahooFinance = (): Finance => {
   };
 
   const searchForTicker = async (text: string): Promise<Quote[]> => {
-    const response = await fetch(
-      `https://query2.finance.yahoo.com/v1/finance/search?q=${text}&corsDomain=finance.yahoo.com&.tsrc=finance`,
-      {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-        mode: "no-cors",
-      }
-    );
+    const response = await fetch(`/search?q=${text}&corsDomain=finance.yahoo.com&.tsrc=finance`);
     const data = await response.json();
     return data.quotes
       .filter((quote) => [QuoteType.Etf, QuoteType.Equity].includes(quote.quoteType))
@@ -64,7 +56,7 @@ export const useYahooFinance = (): Finance => {
   };
 
   const getEvents = async (stock: string): Promise<YFDividendHistory.RootObject> => {
-    const url = `/chart/${stock}?interval=1d&period1=0&period2=1674432000&events=div&corsDomain=finance.yahoo.com&.tsrc=finance`;
+    const url = `/chart/${stock}?interval=1d&period1=0&period2=1674432000&events=div`;
     const response = await fetch(url);
     return response.json();
   };

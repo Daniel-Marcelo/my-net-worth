@@ -34,6 +34,7 @@ export const useYahooFinance = (): Finance => {
         headers: {
           "Access-Control-Allow-Origin": "*",
         },
+        mode: "no-cors",
       }
     );
     const data = await response.json();

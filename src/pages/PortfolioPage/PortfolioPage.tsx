@@ -1,6 +1,6 @@
-import { useRef, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 import { x } from "@xstyled/styled-components";
-import { Button } from "@mui/material";
+import { Box, Button, Tab, Tabs, Typography } from "@mui/material";
 import { TickerSearch } from "../../components/TickerSearch";
 import { useFinance, usePortfolioEntryService } from "../../services";
 import { FormDialog } from "../../components/AddTickerDialog";
@@ -13,6 +13,40 @@ import { PortfolioSummary } from "../../components/PortfolioSummary/PortfolioSum
 import { useGetTickerPrices } from "./useGetTickerPrices";
 import { TickerHistoryDialog } from "../../components/TickerHistoryDialog";
 import { DeletePortfolioEntryDialog } from "../../components/DeletePortfolioEntryDialog";
+import { DividendCalendarTab } from "../../components/DividendCalendarTab";
+
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
+
+interface TabPanelProps {
+  children?: ReactNode;
+  index: number;
+  value: number;
+}
+
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
 
 export function PortfolioPage() {
   const ref = useRef();
@@ -27,6 +61,7 @@ export function PortfolioPage() {
   const tickerToPriceMap = useGetTickerPrices(groupedEntries);
   const [selectedTicker, setSelectedTicker] = useState("");
   const [selectedGroupEntry, setSelectedGroupEntry] = useState<GroupedPortfolioEntry>();
+  const [value, setValue] = useState(0);
 
   const onAdd = async (numberOfShares: number) => {
     const summaryProfile = await financeService.getSummaryProfile(selectedQuote.ticker);
@@ -83,19 +118,31 @@ export function PortfolioPage() {
           Updates
         </Button>
       </x.div>
-      <x.div mt={4}>
-        {groupedEntries.map((portfolioEntry) => (
-          <PortfolioEntryCard
-            onClickDelete={() => {
-              setSelectedGroupEntry(portfolioEntry);
-              setDeleteEntryOpen(true);
-            }}
-            onClickCard={onClickCard}
-            tickerToPriceMap={tickerToPriceMap}
-            portfolioEntry={portfolioEntry}
-          />
-        ))}
-      </x.div>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs value={value} onChange={(e, v) => setValue(v)} aria-label="basic tabs example">
+          <Tab label="Entries" {...a11yProps(0)} />
+          <Tab label="Dividend Calendar" {...a11yProps(1)} />
+        </Tabs>
+      </Box>
+      <TabPanel value={value} index={0}>
+        <x.div mt={4}>
+          {groupedEntries.map((portfolioEntry) => (
+            <PortfolioEntryCard
+              onClickDelete={() => {
+                setSelectedGroupEntry(portfolioEntry);
+                setDeleteEntryOpen(true);
+              }}
+              onClickCard={onClickCard}
+              tickerToPriceMap={tickerToPriceMap}
+              portfolioEntry={portfolioEntry}
+            />
+          ))}
+        </x.div>
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        <DividendCalendarTab groupedEntries={groupedEntries} />
+      </TabPanel>
+
       <UpdatesDrawer portfolioEntries={portfolioEntries} open={updatesOpen} onClose={onUpdatesDrawerClose} />
       <FormDialog onAdd={onAdd} />
     </x.div>

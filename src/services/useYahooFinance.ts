@@ -12,11 +12,10 @@ export const useYahooFinance = (): Finance => {
     range = PriceChartTimeRange.OneDay,
     interval = PriceChartInterval.FifteenMins
   ) => {
-    const response = await axios.get(
+    const response: YF.PriceHistoryResponse = await axios.get(
       `/chart/${ticker}?range=${range}&includePrePost=false&interval=${interval}&corsDomain=finance.yahoo.com&.tsrc=finance`
     );
-    const data: YF.PriceHistoryResponse = await response.json();
-    const result = data.chart.result[0];
+    const result = response.chart.result[0];
     return result;
   };
   const getTimesAndPrices = async (

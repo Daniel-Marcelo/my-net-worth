@@ -28,7 +28,9 @@ export const useYahooFinance = (): Finance => {
   };
 
   const searchForTicker = async (text: string): Promise<Quote[]> => {
-    const response = await fetch(`/search?q=${text}&corsDomain=finance.yahoo.com&.tsrc=finance`);
+    const response = await fetch(
+      `https://query2.finance.yahoo.com/v1/finance/search?q=${text}&corsDomain=finance.yahoo.com&.tsrc=finance`
+    );
     const data = await response.json();
     return data.quotes
       .filter((quote) => [QuoteType.Etf, QuoteType.Equity].includes(quote.quoteType))

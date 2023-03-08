@@ -28,7 +28,7 @@ export const useYahooFinance = (): Finance => {
   };
 
   const searchForTicker = async (text: string): Promise<Quote[]> => {
-    const response = await fetch(`/search?q=${text}&corsDomain=finance.yahoo.com&.tsrc=finance`);
+    const response = await fetch(`/search?q=${text}`);
     const data = await response.json();
     return data.quotes
       .filter((quote) => [QuoteType.Etf, QuoteType.Equity].includes(quote.quoteType))
@@ -40,7 +40,7 @@ export const useYahooFinance = (): Finance => {
   };
 
   const getModules = async (stock: string, modules = FinanceModules): Promise<YFModule.RootObject> => {
-    const url = `/quoteSummary/${stock}?modules=${modules.join(",")}&corsDomain=finance.yahoo.com&.tsrc=finance`;
+    const url = `/quoteSummary/${stock}?modules=${modules.join(",")}`;
     const response = await fetch(url);
     return response.json();
   };

@@ -19,6 +19,7 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import { useEffect } from "react";
 
 const theme = {
   ...defaultTheme,
@@ -32,6 +33,13 @@ const queryClient = new QueryClient({
   },
 });
 function App() {
+  useEffect(() => {
+    console.log(process.env.REACT_APP_API_URL);
+    const run = async () => {
+      await fetch(`${process.env.REACT_APP_API_URL}/getList`);
+    };
+    run();
+  });
   useAuthContext();
   return (
     <ThemeProvider theme={theme}>

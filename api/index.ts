@@ -31,6 +31,6 @@ app.get("");
 //   res.sendFile(path.join(`${__dirname}/frontend/build/index.html`));
 // });
 
-const port = process.env.API_PORT || 4000;
-app.listen(port, () => console.log(`LISTENING ON PORT ${port}`));
-export default app;
+// const port = process.env.API_PORT || 4000;
+// app.listen(port, () => console.log(`LISTENING ON PORT ${port}`));
+export { app };

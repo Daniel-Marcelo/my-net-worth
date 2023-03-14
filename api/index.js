@@ -1,21 +1,18 @@
-import * as express from "express";
-import * as dotenv from "dotenv";
-import * as cors from "cors";
-import { RequestInfo, RequestInit } from "node-fetch";
-
-// const path = require("path");
+const express = require("express");
+const app = express();
+const dotenv = require("dotenv");
+var cors = require("cors");
+const path = require("path");
 
 // const got = require('got');
-const app = express();
-
+const { pipeline } = require("stream");
 dotenv.config();
 app.use(cors());
 
-const fetchData = (url: URL | RequestInfo, init?: RequestInit | undefined) =>
-  import("node-fetch").then(({ default: fetch }) => fetch(url, init));
+const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
 app.get("/api/getList", (req, res) => {
-  fetchData("https://query2.finance.yahoo.com/v1/finance/search?q=AAPL")
+  fetch("https://query2.finance.yahoo.com/v1/finance/search?q=AAPL")
     .then((data) => {
       data.json().then((d) => {
         res.end(JSON.stringify(d));
@@ -33,4 +30,5 @@ app.get("");
 
 const port = process.env.API_PORT || 4000;
 app.listen(port, () => console.log(`LISTENING ON PORT ${port}`));
-export { app };
+
+module.exports = app;

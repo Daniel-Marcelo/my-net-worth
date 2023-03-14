@@ -1,6 +1,6 @@
 import * as express from "express";
 import * as dotenv from "dotenv";
-import * as cors from "cors";
+import cors from "cors";
 import { RequestInfo, RequestInit } from "node-fetch";
 
 // const path = require("path");

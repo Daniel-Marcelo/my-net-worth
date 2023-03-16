@@ -1,7 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const { router } = require("./quote/quote-routes");
+// const { router } = require("./quote/quote-routes");
 
 const app = express();
 dotenv.config();
@@ -17,7 +17,7 @@ app.get("/api/getList", (req, res) => {
     .catch((er) => console.log(er));
 });
 
-app.use("/api/quote", router);
+// app.use("/api/quote", router);
 
 app.get("");
 // Handles any requests that don't match the ones above

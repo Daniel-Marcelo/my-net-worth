@@ -24,13 +24,5 @@ function abc(app) {
       changeOrigin: true,
     })
   );
-
-  app.use(
-    "/quote",
-    createProxyMiddleware({
-      target: "https://finance.yahoo.com/",
-      changeOrigin: true,
-    })
-  );
 }
 module.exports = abc;

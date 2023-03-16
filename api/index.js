@@ -1,27 +1,16 @@
 const express = require("express");
-const app = express();
 const dotenv = require("dotenv");
-var cors = require("cors");
-const path = require("path");
+const cors = require("cors");
+const expressListRoutes = require("express-list-routes");
+const { router } = require("./quote/quote-routes");
 
-// const got = require('got');
-const { pipeline } = require("stream");
+const app = express();
 dotenv.config();
 app.use(cors());
 
-const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
+app.use("/api/quote", router);
 
-app.get("/api/getList", (req, res) => {
-  fetch("https://query2.finance.yahoo.com/v1/finance/search?q=AAPL")
-    .then((data) => {
-      data.json().then((d) => {
-        res.end(JSON.stringify(d));
-      });
-    })
-    .catch((er) => console.log(er));
-});
-
-app.get("");
+expressListRoutes(app);
 
 // Handles any requests that don't match the ones above
 // app.get("*", (req, res) => {

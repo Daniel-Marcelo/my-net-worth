@@ -58,12 +58,12 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "yarn build:api && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint --fix --ext .js,.ts,.jsx,.tsx .",
     "prepare": "husky install",
-    "build:api": "tsc ./api/index.ts"
+    "build:api": "tsc ./api/**/**.ts"
   },
   "eslintConfig": {
     "extends": [

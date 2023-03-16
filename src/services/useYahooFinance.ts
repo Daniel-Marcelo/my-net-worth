@@ -1,5 +1,5 @@
 import axios from "axios";
-import { PriceChartInterval, PriceChartTimeRange, Quote, QuoteType, SummaryProfile } from "../models";
+import { PriceChartInterval, PriceChartTimeRange, Quote, SummaryProfile } from "../models";
 import { YF, YFDividendHistory, YFModule } from "../types/yahoo-finance.d";
 import { Finance } from "./useFinance";
 import { FinanceModule, FinanceModules } from "../types";
@@ -11,13 +11,13 @@ export const useYahooFinance = (): Finance => {
     ticker: string,
     range = PriceChartTimeRange.OneDay,
     interval = PriceChartInterval.FifteenMins
-  ) => {
-    const response: YF.PriceHistoryResponse = await axios.get(
-      `/chart/${ticker}?range=${range}&includePrePost=false&interval=${interval}&corsDomain=finance.yahoo.com&.tsrc=finance`
-    );
-    const result = response.chart.result[0];
-    return result;
-  };
+  ): Promise<YF.Result> =>
+    (
+      await axios.get(
+        `${process.env.REACT_APP_API_URL}/quote/price-history/${ticker}?range=${range}&interval=${interval}`
+      )
+    ).data;
+
   const getTimesAndPrices = async (
     ticker: string,
     range = PriceChartTimeRange.OneDay,
@@ -27,23 +27,10 @@ export const useYahooFinance = (): Finance => {
     return [result.timestamp, getRoundedPrices(result)];
   };
 
-  const searchForTicker = async (text: string): Promise<Quote[]> => {
-    const response = await fetch(`https://query2.finance.yahoo.com/v1/finance/search?q=${text}`);
-    const data = await response.json();
-    return data.quotes
-      .filter((quote) => [QuoteType.Etf, QuoteType.Equity].includes(quote.quoteType))
-      .map((quote) => ({
-        ticker: quote.symbol,
-        name: quote.shortname,
-        exchangeDisplay: quote.exchDisp,
-      }));
-  };
-
-  const getModules = async (stock: string, modules = FinanceModules): Promise<YFModule.RootObject> => {
-    const url = `/quoteSummary/${stock}?modules=${modules.join(",")}`;
-    const response = await fetch(url);
-    return response.json();
-  };
+  const searchForTicker = async (text: string): Promise<Quote[]> =>
+    (await axios.get(`${process.env.REACT_APP_API_URL}/quote/ticker?q=${text}`)).data;
+  const getModules = async (stock: string, modules = FinanceModules): Promise<YFModule.RootObject> =>
+    (await axios.get(`${process.env.REACT_APP_API_URL}/quote/modules/${stock}`)).data;
 
   const getSummaryProfile = async (stock: string): Promise<SummaryProfile> => {
     const data = await getModules(stock, [FinanceModule.summaryProfile]);
@@ -55,11 +42,8 @@ export const useYahooFinance = (): Finance => {
     return data.quoteSummary.result[0].incomeStatementHistory.incomeStatementHistory;
   };
 
-  const getEvents = async (stock: string): Promise<YFDividendHistory.RootObject> => {
-    const url = `/chart/${stock}?interval=1d&period1=0&period2=1674432000&events=div`;
-    const response = await fetch(url);
-    return response.json();
-  };
+  const getEvents = async (stock: string): Promise<YFDividendHistory.RootObject> =>
+    (await axios.get(`${process.env.REACT_APP_API_URL}/quote/events/${stock}`)).data;
 
   const getDividendHistory = async (stock: string) => {
     const data = await getEvents(stock);

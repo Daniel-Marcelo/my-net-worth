@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import { TickerSearchResponse } from "../models/yahoo-finance.js";
 import { GetEventsResponse } from "../models/yahoo-finance/events.js";
 import { FinanceModules, GetModulesResponse } from "../models/yahoo-finance/finance-modules.js";

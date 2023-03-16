@@ -57,7 +57,7 @@ export interface TickerSearchResponse {
   timeTakenForCulturalAssets: number;
 }
 
-export enum QuoteType {
+export const enum QuoteType {
   Option = "OPTION",
   Future = "FUTURE",
   Equity = "EQUITY",

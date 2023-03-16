@@ -2,7 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import path from "path";
-import router from "./quote/quote-routes";
+// eslint-disable-next-line import/no-relative-packages
+import router from "../utils/quote-routes";
 
 const app = express();
 dotenv.config();

@@ -3,7 +3,7 @@ import { QuoteType } from "../models/yahoo-finance";
 import { PriceChartInterval, PriceChartTimeRange } from "../models/yahoo-finance/price-history";
 import { yahooFinanceService } from "../services/yahoo-finance";
 
-export const router = express.Router();
+const router = express.Router();
 router.get("/ticker", async (req, res) => {
   console.log(req.params);
   console.log(req.query);
@@ -39,3 +39,5 @@ router.get("/price-history/:ticker", async (req, res) => {
   );
   res.end(JSON.stringify(priceHistoryResponse.chart.result[0]));
 });
+
+export default router;

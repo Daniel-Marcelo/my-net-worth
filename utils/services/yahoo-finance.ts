@@ -1,12 +1,12 @@
-import { TickerSearchResponse } from "../../utils/models/yahoo-finance";
-import { GetEventsResponse } from "../../utils/models/yahoo-finance/events";
-import { FinanceModules, GetModulesResponse } from "../../utils/models/yahoo-finance/finance-modules";
+import { TickerSearchResponse } from "../models/yahoo-finance.js";
+import { GetEventsResponse } from "../models/yahoo-finance/events.js";
+import { FinanceModules, GetModulesResponse } from "../models/yahoo-finance/finance-modules.js";
 import {
   PriceChartInterval,
   PriceChartTimeRange,
   PriceHistoryResponse,
-} from "../../utils/models/yahoo-finance/price-history";
-import { myFetch } from "../utils/fetch";
+} from "../models/yahoo-finance/price-history.js";
+import { myFetch } from "../utils/fetch.js";
 
 const searchForTicker = async (ticker: string) => {
   const response = await myFetch(`https://query2.finance.yahoo.com/v1/finance/search?q=${ticker}`);

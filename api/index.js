@@ -1,6 +1,6 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const cors = require("cors");
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
 // const { router } = require("./quote/quote-routes");
 
 const app = express();
@@ -27,5 +27,3 @@ app.get("");
 
 const port = process.env.API_PORT || 4000;
 app.listen(port, () => console.log(`LISTENING ON PORT ${port}`));
-
-module.exports = app;

@@ -23,13 +23,13 @@ const getPriceHistory = async (
 const getModules = async (stock: string, modules = FinanceModules): Promise<GetModulesResponse> => {
   const url = `https://query1.finance.yahoo.com/v10/finance/quoteSummary/${stock}?modules=${modules.join(",")}`;
   const response = await myFetch(url);
-  return response.json();
+  return (await response.json()) as GetModulesResponse;
 };
 
 const getEvents = async (stock: string): Promise<GetEventsResponse> => {
   const url = `https://query1.finance.yahoo.com/v8/finance/chart/${stock}?interval=1d&period1=0&period2=1674432000&events=div`;
   const response = await myFetch(url);
-  return response.json();
+  return (await response.json()) as GetEventsResponse;
 };
 
 export const yahooFinanceService = {

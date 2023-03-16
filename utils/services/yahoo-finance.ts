@@ -1,7 +1,11 @@
-import { TickerSearchResponse } from "../models/yahoo-finance";
-import { GetEventsResponse } from "../models/yahoo-finance/events";
-import { FinanceModules, GetModulesResponse } from "../models/yahoo-finance/finance-modules";
-import { PriceChartInterval, PriceChartTimeRange, PriceHistoryResponse } from "../models/yahoo-finance/price-history";
+import { TickerSearchResponse } from "../../utils/models/yahoo-finance";
+import { GetEventsResponse } from "../../utils/models/yahoo-finance/events";
+import { FinanceModules, GetModulesResponse } from "../../utils/models/yahoo-finance/finance-modules";
+import {
+  PriceChartInterval,
+  PriceChartTimeRange,
+  PriceHistoryResponse,
+} from "../../utils/models/yahoo-finance/price-history";
 import { myFetch } from "../utils/fetch";
 
 const searchForTicker = async (ticker: string) => {

@@ -34,6 +34,12 @@ const queryClient = new QueryClient({
 });
 function App() {
   useEffect(() => {
+    const run = async () => {
+      await fetch(`${process.env.REACT_APP_API_URL}/getList`);
+    };
+    run();
+  });
+  useEffect(() => {
     console.log(process.env.REACT_APP_API_URL);
     const run = async () => {
       await fetch(`${process.env.REACT_APP_API_URL}/quote/ticker?q=PEP`);

@@ -2,7 +2,7 @@
 import * as express from "express";
 import { QuoteType } from "../models/yahoo-finance";
 import { PriceChartInterval, PriceChartTimeRange } from "../models/yahoo-finance/price-history";
-import { yahooFinanceService } from "../services/yahoo-finance";
+import { yahooFinanceService } from "../services/yahoo-finance-service";
 
 const router = express.Router();
 router.get("/ticker", async (req, res) => {

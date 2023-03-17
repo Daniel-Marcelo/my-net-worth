@@ -1,7 +1,7 @@
 /* eslint-disable import/extensions */
 import { TickerSearchResponse } from "../models/yahoo-finance";
 import { GetEventsResponse } from "../models/yahoo-finance/events";
-import { FinanceModules, GetModulesResponse } from "../models/yahoo-finance/finance-modules";
+import { GetModulesResponse } from "../models/yahoo-finance/finance-modules";
 import { PriceChartInterval, PriceChartTimeRange, PriceHistoryResponse } from "../models/yahoo-finance/price-history";
 import { myFetch } from "../utils/fetch.js";
 
@@ -21,7 +21,7 @@ const getPriceHistory = async (
   return (await response.json()) as PriceHistoryResponse;
 };
 
-const getModules = async (stock: string, modules = FinanceModules): Promise<GetModulesResponse> => {
+const getModules = async (stock: string, modules: string[]): Promise<GetModulesResponse> => {
   const url = `https://query1.finance.yahoo.com/v10/finance/quoteSummary/${stock}?modules=${modules.join(",")}`;
   const response = await myFetch(url);
   return (await response.json()) as GetModulesResponse;

@@ -73,7 +73,7 @@ export interface PriceHistoryResponse {
   chart: Chart;
 }
 
-export const enum PriceChartTimeRange {
+export enum PriceChartTimeRange {
   OneDay = "1d",
   FiveDays = "5d",
   OneMonth = "1mo",
@@ -86,7 +86,7 @@ export const enum PriceChartTimeRange {
   Max = "max",
 }
 
-export const enum PriceChartInterval {
+export enum PriceChartInterval {
   TwoMins = "2m",
   FifteenMins = "15m",
   OneHour = "1h",

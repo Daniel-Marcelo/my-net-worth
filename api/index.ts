@@ -1,7 +1,7 @@
-import * as express from "express";
-import * as dotenv from "dotenv";
-import * as cors from "cors";
-import * as path from "path";
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import path from "path";
 // eslint-disable-next-line import/no-relative-packages
 import router from "../utils/quote/quote-routes";
 

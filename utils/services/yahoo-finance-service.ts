@@ -3,14 +3,10 @@ import { TickerSearchResponse } from "../models/yahoo-finance";
 import { GetEventsResponse } from "../models/events";
 import { GetModulesResponse } from "../models/finance-modules";
 import { PriceChartInterval, PriceChartTimeRange, PriceHistoryResponse } from "../models/price-history";
-// import { myFetch } from "../fetch/fetch";
-
-const myFetch = (url: URL | RequestInfo, init?: RequestInit | undefined) =>
-  import("node-fetch").then(({ default: fetch }) => fetch(url, init));
-
+import axios from "axios";
 const searchForTicker = async (ticker: string) => {
-  const response = await myFetch(`https://query2.finance.yahoo.com/v1/finance/search?q=${ticker}`);
-  return (await response.json()) as TickerSearchResponse;
+  const response = await axios.get(`https://query2.finance.yahoo.com/v1/finance/search?q=${ticker}`);
+  return response.data as TickerSearchResponse;
 };
 
 const getPriceHistory = async (
@@ -18,22 +14,22 @@ const getPriceHistory = async (
   range = PriceChartTimeRange.OneDay,
   interval = PriceChartInterval.FifteenMins
 ) => {
-  const response = await myFetch(
+  const response = await axios.get(
     `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?range=${range}&includePrePost=false&interval=${interval}&corsDomain=finance.yahoo.com&.tsrc=finance`
   );
-  return (await response.json()) as PriceHistoryResponse;
+  return response.data as PriceHistoryResponse;
 };
 
 const getModules = async (stock: string, modules: string[]): Promise<GetModulesResponse> => {
   const url = `https://query1.finance.yahoo.com/v10/finance/quoteSummary/${stock}?modules=${modules.join(",")}`;
-  const response = await myFetch(url);
-  return (await response.json()) as GetModulesResponse;
+  const response = await axios.get(url);
+  return response.data as GetModulesResponse;
 };
 
 const getEvents = async (stock: string): Promise<GetEventsResponse> => {
   const url = `https://query1.finance.yahoo.com/v8/finance/chart/${stock}?interval=1d&period1=0&period2=1674432000&events=div`;
-  const response = await myFetch(url);
-  return (await response.json()) as GetEventsResponse;
+  const response = await axios.get(url);
+  return response.data as GetEventsResponse;
 };
 
 export const yahooFinanceService = {

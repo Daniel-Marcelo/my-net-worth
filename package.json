@@ -63,7 +63,8 @@
     "eject": "react-scripts eject",
     "lint": "eslint --fix --ext .js,.ts,.jsx,.tsx .",
     "prepare": "husky install",
-    "build:api": "tsc ./utils/**/**.ts",
+    "build:api": "yarn build:api-utils && tsc ./api/**.ts",
+    "build:api-utils": "tsc ./utils/**/**.ts",
     "dev:v": "vercel dev"
   },
   "eslintConfig": {

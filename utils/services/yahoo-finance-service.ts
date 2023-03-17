@@ -1,9 +1,12 @@
-/* eslint-disable import/extensions */
+import { RequestInfo, RequestInit } from "node-fetch";
 import { TickerSearchResponse } from "../models/yahoo-finance";
-import { GetEventsResponse } from "../models/yahoo-finance/events";
-import { GetModulesResponse } from "../models/yahoo-finance/finance-modules";
-import { PriceChartInterval, PriceChartTimeRange, PriceHistoryResponse } from "../models/yahoo-finance/price-history";
-import { myFetch } from "../utils/fetch.js";
+import { GetEventsResponse } from "../models/events";
+import { GetModulesResponse } from "../models/finance-modules";
+import { PriceChartInterval, PriceChartTimeRange, PriceHistoryResponse } from "../models/price-history";
+// import { myFetch } from "../fetch/fetch";
+
+const myFetch = (url: URL | RequestInfo, init?: RequestInit | undefined) =>
+  import("node-fetch").then(({ default: fetch }) => fetch(url, init));
 
 const searchForTicker = async (ticker: string) => {
   const response = await myFetch(`https://query2.finance.yahoo.com/v1/finance/search?q=${ticker}`);

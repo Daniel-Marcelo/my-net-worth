@@ -23,8 +23,9 @@ app.use("/api/quote", router);
 
 app.get("");
 console.log("__dirname", __dirname);
+console.log("__dirname", `${__dirname}/../build/index.html`);
 app.get("*", (req, res) => {
-  res.sendFile(path.join(`${__dirname}/build/index.html`));
+  res.sendFile(path.join(`${__dirname}/../build/index.html`));
 });
 // Handles any requests that don't match the ones above
 // app.get("*", (req, res) => {

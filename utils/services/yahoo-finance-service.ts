@@ -12,7 +12,7 @@ const searchForTicker = async (ticker: string) => {
 };
 
 const getPriceHistory = async (
-  ticker = "AAPL",
+  ticker: string,
   range = PriceChartTimeRange.OneDay,
   interval = PriceChartInterval.FifteenMins
 ) => {

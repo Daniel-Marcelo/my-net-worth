@@ -1,5 +1,5 @@
 import axios from "axios";
-import { TickerSearchResponse } from "../models/yahoo-finance";
+import { TickerSearchResponse } from "../models/ticker-search";
 import { GetEventsResponse } from "../models/events";
 import { GetModulesResponse } from "../models/finance-modules";
 import { PriceChartInterval, PriceChartTimeRange, PriceHistoryResponse } from "../models/price-history";

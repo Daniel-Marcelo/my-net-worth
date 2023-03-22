@@ -1,5 +1,5 @@
 import * as express from "express";
-import { QuoteType } from "../models/yahoo-finance";
+import { QuoteType } from "../models/ticker-search";
 import { PriceChartInterval, PriceChartTimeRange } from "../models/price-history";
 import { yahooFinanceService } from "../services/yahoo-finance-service";
 import { FinanceModules } from "../models/finance-modules";

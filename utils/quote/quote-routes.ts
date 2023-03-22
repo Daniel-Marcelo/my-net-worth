@@ -7,7 +7,7 @@ import { FinanceModules } from "../models/finance-modules";
 const router = express.Router();
 router.get("/ticker", async (req, res) => {
   const tickerSearchResponse = await yahooFinanceService.searchForTicker(req.query.q as string);
-  res.end(
+  res.send(
     JSON.stringify(
       tickerSearchResponse.quotes
         .filter((quote) => [QuoteType.Etf, QuoteType.Equity].includes(quote.quoteType as QuoteType))
@@ -22,12 +22,12 @@ router.get("/ticker", async (req, res) => {
 
 router.get("/modules/:ticker", async (req, res) => {
   const priceHistoryResponse = await yahooFinanceService.getModules(req.params.ticker, FinanceModules);
-  res.end(JSON.stringify(priceHistoryResponse));
+  res.send(JSON.stringify(priceHistoryResponse));
 });
 
 router.get("/events/:ticker", async (req, res) => {
   const eventsResponse = await yahooFinanceService.getEvents(req.params.ticker);
-  res.end(JSON.stringify(eventsResponse));
+  res.send(JSON.stringify(eventsResponse));
 });
 
 router.get("/price-history/:ticker", async (req, res) => {
@@ -36,7 +36,7 @@ router.get("/price-history/:ticker", async (req, res) => {
     req.query.range as PriceChartTimeRange,
     req.query.interval as PriceChartInterval
   );
-  res.end(JSON.stringify(priceHistoryResponse.chart.result[0]));
+  res.send(JSON.stringify(priceHistoryResponse.chart.result[0]));
 });
 
 export default router;

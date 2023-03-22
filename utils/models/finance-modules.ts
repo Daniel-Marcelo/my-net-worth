@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-interface */
 export const enum FinanceModule {
   assetProfile = "assetProfile",
   summaryProfile = "summaryProfile",

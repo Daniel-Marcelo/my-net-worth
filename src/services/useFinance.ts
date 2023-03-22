@@ -1,7 +1,5 @@
 import { PriceChartInterval, PriceChartTimeRange, Quote, SummaryProfile } from "../models";
 import { YF, YFDividendHistory, YFModule } from "../types/yahoo-finance.d";
-import { LocalStorageUtil } from "../utils/localStorage";
-import { useLocalFinance } from "./useLocalFinance";
 import { useYahooFinance } from "./useYahooFinance";
 
 export interface Finance {
@@ -20,7 +18,5 @@ export interface Finance {
 }
 export const useFinance = (): Finance => {
   const yahooFinance = useYahooFinance();
-  const localFinance = useLocalFinance();
-
-  return LocalStorageUtil.DoUse() ? localFinance : yahooFinance;
+  return yahooFinance;
 };

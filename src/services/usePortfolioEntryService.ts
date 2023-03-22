@@ -1,7 +1,6 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase";
 import { PortfolioEntry } from "../models";
-import { LocalStorageUtil } from "../utils/localStorage";
 import { DBService, useDBService } from "./useDBService";
 
 interface PortfolioEntryService extends DBService<PortfolioEntry> {
@@ -24,14 +23,9 @@ export const usePortfolioEntryService = (): PortfolioEntryService => {
     return items;
   };
 
-  const localGetAllByPortfolioId = async (portfolioId: string): Promise<PortfolioEntry[]> => {
-    const entries = await dbService.getList();
-    return entries.filter((entry) => +entry.portfolioId === +portfolioId);
-  };
-
   const portfolioEntryService = {
     ...dbService,
-    getAllByPortfolioId: LocalStorageUtil.DoUse() ? localGetAllByPortfolioId : firebaseGetAllByPortfolioId,
+    getAllByPortfolioId: firebaseGetAllByPortfolioId,
   };
 
   return portfolioEntryService;

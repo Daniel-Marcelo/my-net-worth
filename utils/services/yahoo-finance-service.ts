@@ -19,7 +19,7 @@ const getPriceHistory = async (
   range = PriceChartTimeRange.OneDay,
   interval = PriceChartInterval.FifteenMins
 ) => {
-  const url = `${baseUrl()}/chart/${ticker}?rangez=${range}&includePrePost=false&interval=${interval}&${cors}&${tsrc}`;
+  const url = `${baseUrl()}/chart/${ticker}?range=${range}&includePrePost=false&interval=${interval}&${cors}&${tsrc}`;
   const response = await axios.get<PriceHistoryResponse>(url);
   return response.data;
 };

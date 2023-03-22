@@ -2,7 +2,6 @@ import axios from "axios";
 import { PriceChartInterval, PriceChartTimeRange, Quote, SummaryProfile } from "../models";
 import { YF, YFDividendHistory, YFModule } from "../types/yahoo-finance.d";
 import { Finance } from "./useFinance";
-import { FinanceModule, FinanceModules } from "../types";
 
 export const getRoundedPrices = (result: YF.Result) =>
   result.indicators.quote[0].close.map((price) => Math.round(price * 100) / 100);
@@ -29,17 +28,17 @@ export const useYahooFinance = (): Finance => {
 
   const searchForTicker = async (text: string): Promise<Quote[]> =>
     (await axios.get(`${process.env.REACT_APP_API_URL}/quote/ticker?q=${text}`)).data;
-  const getModules = async (stock: string, modules = FinanceModules): Promise<YFModule.RootObject> =>
+  const getModules = async (stock: string): Promise<YFModule.Result> =>
     (await axios.get(`${process.env.REACT_APP_API_URL}/quote/modules/${stock}`)).data;
 
   const getSummaryProfile = async (stock: string): Promise<SummaryProfile> => {
-    const data = await getModules(stock, [FinanceModule.summaryProfile]);
-    return data.quoteSummary.result[0].summaryProfile;
+    const data = await getModules(stock);
+    return data.summaryProfile;
   };
 
   const getIncomeSheet = async (stock: string): Promise<YFModule.IncomeStatementHistory2[]> => {
-    const data = await getModules(stock, [FinanceModule.incomeStatementHistory]);
-    return data.quoteSummary.result[0].incomeStatementHistory.incomeStatementHistory;
+    const data = await getModules(stock);
+    return data.incomeStatementHistory.incomeStatementHistory;
   };
 
   const getEvents = async (stock: string): Promise<YFDividendHistory.RootObject> =>

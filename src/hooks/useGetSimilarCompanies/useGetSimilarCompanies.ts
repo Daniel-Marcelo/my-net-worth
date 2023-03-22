@@ -37,9 +37,9 @@ export const useGetSimilarCompanies = (ticker: string) => {
             ...old,
             {
               ticker: simTicker,
-              price: tempModuleData.quoteSummary?.result[0].price.regularMarketPrice?.fmt,
-              eps: tempModuleData.quoteSummary.result[0].defaultKeyStatistics.trailingEps?.fmt,
-              pe: tempModuleData.quoteSummary.result[0].summaryDetail.trailingPE?.fmt,
+              price: tempModuleData.price.regularMarketPrice?.fmt,
+              eps: tempModuleData.defaultKeyStatistics.trailingEps?.fmt,
+              pe: tempModuleData.summaryDetail.trailingPE?.fmt,
             },
           ]);
         })

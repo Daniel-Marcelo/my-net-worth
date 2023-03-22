@@ -2738,7 +2738,7 @@ export interface Result {
 }
 
 export interface QuoteSummary {
-  result: Result[];
+  result: [Result];
   error?: any;
 }
 

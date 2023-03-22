@@ -24,10 +24,10 @@ const getPriceHistory = async (
   return response.data;
 };
 
-const getModules = async (stock: string, modules: string[]): Promise<GetModulesResponse> => {
+const getModules = async (stock: string, modules: string[]) => {
   const url = `${baseUrl(1, 10)}/quoteSummary/${stock}?modules=${modules.join(",")}`;
   const response = await axios.get<GetModulesResponse>(url);
-  return response.data;
+  return response.data.quoteSummary.result[0];
 };
 
 const getEvents = async (stock: string): Promise<GetEventsResponse> => {

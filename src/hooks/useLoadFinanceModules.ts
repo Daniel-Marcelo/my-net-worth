@@ -8,8 +8,7 @@ export const useLoadFinanceModules = (ticker?: string) => {
   const loadModules = useCallback(async () => {
     if (ticker) {
       try {
-        const moduleData = await finance.getModules(ticker);
-        setModuleData(moduleData.quoteSummary.result[0]);
+        setModuleData(await finance.getModules(ticker));
       } catch (error) {
         console.error(error);
       }

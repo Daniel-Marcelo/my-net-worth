@@ -12,7 +12,7 @@ interface FormDialogProps {
 }
 export function FormDialog({ onAdd }: FormDialogProps) {
   const [numberOfShares, setNumberOfShares] = useNumberOfShares();
-  const { selectedQuote, setSelectedQuote } = useQuoteStore((state) => state);
+  const { selectedQuote, setSelectedQuote } = useQuoteStore();
 
   return (
     <Dialog open={!!selectedQuote} onClose={() => setSelectedQuote(undefined)}>

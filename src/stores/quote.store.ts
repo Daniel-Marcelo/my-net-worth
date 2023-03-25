@@ -6,7 +6,7 @@ interface QuoteStoreData {
   ticker: string;
   setSelectedQuote: (quote: Quote) => void;
 }
-export const useQuoteStore = create<QuoteStoreData>((set) => ({
+const quoteStore = create<QuoteStoreData>((set) => ({
   selectedQuote: null,
   ticker: "",
   setSelectedQuote: (selectedQuote) => {
@@ -14,3 +14,5 @@ export const useQuoteStore = create<QuoteStoreData>((set) => ({
     set({ ticker: selectedQuote.ticker });
   },
 }));
+
+export const useQuoteStore = () => quoteStore((state) => state);

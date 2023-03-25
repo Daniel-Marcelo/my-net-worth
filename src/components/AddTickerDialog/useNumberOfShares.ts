@@ -3,7 +3,7 @@ import { useQuoteStore } from "../../stores";
 
 export const useNumberOfShares = () => {
   const [numberOfShares, setNumberOfShares] = useState<number>();
-  const { selectedQuote } = useQuoteStore((state) => state);
+  const { selectedQuote } = useQuoteStore();
 
   useEffect(() => {
     setNumberOfShares(undefined);

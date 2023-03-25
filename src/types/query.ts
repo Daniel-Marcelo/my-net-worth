@@ -1,4 +1,5 @@
 export const enum QueryKey {
-  GetHistory = "getHistory",
-  GetRiskFreeRate = "getRiskFreeRate",
+  GetHistory = "GetHistory",
+  GetRiskFreeRate = "GetRiskFreeRate",
+  GetFinanceModules = "GetFinanceModules",
 }

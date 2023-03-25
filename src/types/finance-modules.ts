@@ -1,3 +1,36 @@
+export interface RangeData {
+  start: number;
+  end: number;
+  currentValue: number;
+  currentValueLabel: string;
+}
+
+export interface WaccData {
+  beta: number;
+  totalDebt: number;
+  interestExpense: number;
+  incomeBeforeTax: number;
+  incomeTaxExpense: number;
+  marketCap: number;
+  weightOfDebt: number;
+  weightOfEquity: number;
+  rateOfInterest: number;
+  calculatedEffectiveTaxRate: number;
+  dividendPerShare: number;
+  currentPrice: number;
+}
+
+export class TickerSummaryItem {
+  public label: string;
+
+  public value: string;
+
+  constructor(label: string, value: string) {
+    this.label = label;
+    this.value = value;
+  }
+}
+
 export const enum FinanceModule {
   assetProfile = "assetProfile",
   summaryProfile = "summaryProfile",

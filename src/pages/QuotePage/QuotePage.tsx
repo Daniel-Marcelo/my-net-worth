@@ -44,14 +44,14 @@ function TabPanel(props: TabPanelProps) {
 
 export function QuotePage() {
   const [value, setValue] = useState(0);
-  const { quote: selectedQuote, setQuote: setSelectedQuote } = useQuoteStore();
-  useLoadFinanceModules(selectedQuote?.ticker);
+  const { quote, ticker, setQuote } = useQuoteStore();
+  useLoadFinanceModules(quote?.ticker);
   useGetRiskFreeRate();
 
   return (
     <x.div p={8}>
-      <TickerSearch setSelectedQuote={setSelectedQuote} selectedQuote={selectedQuote} />
-      {selectedQuote?.ticker && (
+      <TickerSearch setSelectedQuote={setQuote} selectedQuote={quote} />
+      {ticker && (
         <Box sx={{ width: "100%", marginTop: "1rem" }}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <Tabs value={value} onChange={(e, v) => setValue(v)} aria-label="basic tabs example">
@@ -62,17 +62,17 @@ export function QuotePage() {
           </Box>
           <TabPanel value={value} index={0}>
             <x.div display="flex" flexDirection="column" flex="1" mt={8}>
-              {selectedQuote?.ticker && <TickerSummaryTab ticker={selectedQuote.ticker} />}
+              {quote?.ticker && <TickerSummaryTab ticker={quote.ticker} />}
             </x.div>
           </TabPanel>
           <TabPanel value={value} index={1}>
             <x.div display="flex" flexDirection="column" flex="1" mt={4}>
-              <DividendDiscountModel ticker={selectedQuote.ticker} />
+              <DividendDiscountModel ticker={quote.ticker} />
             </x.div>
           </TabPanel>
           <TabPanel value={value} index={2}>
             <x.div display="flex" flexDirection="column" flex="1" mt={4}>
-              <MultiplesTab ticker={selectedQuote.ticker} />
+              <MultiplesTab ticker={quote.ticker} />
             </x.div>
           </TabPanel>
         </Box>

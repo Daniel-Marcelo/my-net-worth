@@ -2,15 +2,15 @@ import { create } from "zustand";
 import { Quote } from "../models";
 
 interface QuoteStoreData {
-  selectedQuote: Quote;
+  quote: Quote;
   ticker: string;
-  setSelectedQuote: (quote: Quote) => void;
+  setQuote: (quote: Quote) => void;
 }
 const quoteStore = create<QuoteStoreData>((set) => ({
-  selectedQuote: null,
+  quote: null,
   ticker: "",
-  setSelectedQuote: (selectedQuote) => {
-    set({ selectedQuote });
+  setQuote: (selectedQuote) => {
+    set({ quote: selectedQuote });
     set({ ticker: selectedQuote.ticker });
   },
 }));

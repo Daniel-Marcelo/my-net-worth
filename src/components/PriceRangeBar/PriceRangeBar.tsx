@@ -6,7 +6,7 @@ import { useFinanceStore } from "../../stores/finance.store";
 import { useQuoteStore } from "../../stores/quote.store";
 
 export function PriceRangeBar() {
-  const { selectedQuote } = useQuoteStore();
+  const { quote: selectedQuote } = useQuoteStore();
   const { rangeData } = useFinanceStore();
   const [width, setWidth] = useState(0);
   const ref = useRef<HTMLDivElement>();

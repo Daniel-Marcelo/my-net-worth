@@ -1,17 +1,16 @@
 import { format } from "date-fns";
 import { useState } from "react";
-import { useFinance } from "../services";
+import { financeApi } from "../services";
 import { QueryKey } from "../types";
 import { YFDividendHistory } from "../types/yahoo-finance.d";
 import { useMyQuery } from "./useMyQuery";
 
 export const useGetHistoryQuery = (ticker: string) => {
-  const finance = useFinance();
   const [history, setHistory] = useState<YFDividendHistory.HistoryList[]>([]);
 
   useMyQuery({
     queryKey: [QueryKey.GetHistory, ticker],
-    queryFn: () => finance.getDividendHistory(ticker),
+    queryFn: () => financeApi.getDividendHistory(ticker),
     onSuccess: (data) => {
       const updatedHistory = Object.entries(data).map(([key, value]) => {
         const t = new Date(1970, 0, 1);

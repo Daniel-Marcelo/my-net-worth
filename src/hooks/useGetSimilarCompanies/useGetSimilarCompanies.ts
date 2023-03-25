@@ -1,12 +1,11 @@
 import { where } from "firebase/firestore";
 import { useCallback, useEffect, useState } from "react";
 import { MultiplesTableRow, PolySymbolV1 } from "../../models";
-import { useFinance, usePolySymbolV1Service } from "../../services";
+import { financeApi, usePolySymbolV1Service } from "../../services";
 import { useFinanceStore } from "../../stores";
 import { useMyQuery } from "../useMyQuery";
 
 export const useGetSimilarCompanies = (ticker: string) => {
-  const financeApi = useFinance();
   const symbolsApi = usePolySymbolV1Service();
   const [rowData, setRowData] = useState<MultiplesTableRow[]>([]);
   const { moduleData } = useFinanceStore();

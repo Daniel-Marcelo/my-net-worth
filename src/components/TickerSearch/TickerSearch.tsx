@@ -3,7 +3,7 @@ import React, { forwardRef, SyntheticEvent, useRef, useState } from "react";
 import { x } from "@xstyled/styled-components";
 import debounce from "lodash/debounce";
 import { Quote } from "../../models/Quote";
-import { useFinance } from "../../services";
+import { financeApi } from "../../services";
 
 interface TickerSearchProps {
   setSelectedQuote: (value: Quote) => void;
@@ -12,12 +12,12 @@ interface TickerSearchProps {
 
 export const TickerSearch = forwardRef(({ setSelectedQuote, selectedQuote }: TickerSearchProps, ref) => {
   const searchRef = useRef();
-  const finance = useFinance();
+
   const [options, setOptions] = useState([]);
 
   const getOptions = debounce(async (event: SyntheticEvent<Element, Event>, value: string) => {
     if (value && value.length && event.type !== "click") {
-      const response = await finance.searchForTicker(value);
+      const response = await financeApi.searchForTicker(value);
       setOptions(response);
     }
   }, 300);

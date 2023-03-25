@@ -3,10 +3,11 @@ import { format } from "date-fns";
 import { range } from "lodash";
 import { useState } from "react";
 import { x } from "@xstyled/styled-components";
-import { useFinance } from "../../services";
+
 import { MonthToRow } from "../../types";
 import { DividendCalendar } from "../DividendCalendar/DividendCalendar";
 import { GroupedPortfolioEntry } from "../../models";
+import { financeApi } from "../../services";
 
 const currentYear = new Date().getFullYear();
 
@@ -24,7 +25,6 @@ interface DividendCalendarTabProps {
 }
 
 export function DividendCalendarTab({ groupedEntries }: DividendCalendarTabProps) {
-  const finance = useFinance();
   const [monthToRowTemplate, setMothToRowTemplate] = useState<MonthToRow>(defaultMonthToRowTemplate());
 
   const findQuantity = (ticker: string) => {
@@ -36,7 +36,7 @@ export function DividendCalendarTab({ groupedEntries }: DividendCalendarTabProps
       .map((entry) => entry.ticker)
       .map((item) => ({
         queryKey: ["something", item],
-        queryFn: () => finance.getDividendHistory(item),
+        queryFn: () => financeApi.getDividendHistory(item),
         onSuccess: (data) => {
           const thisYearLastYearDividends = Object.entries(data)
             .filter(([key]) => {

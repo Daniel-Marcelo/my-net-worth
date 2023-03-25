@@ -2,12 +2,13 @@ import { x } from "@xstyled/styled-components";
 import { useEffect, useState } from "react";
 import { PriceChartInterval, PriceChartTimeRange } from "../../models";
 import { useChartData } from "../../pages/QuotePage/useChartData";
-import { useFinance } from "../../services";
+
 import { PriceChart } from "../PriceChart";
 import { PriceChartToolbar } from "../PriceChartToolbar";
 import { useFinanceStore } from "../../stores/finance.store";
 import { PriceRangeBar } from "../PriceRangeBar";
 import { LabelValueList } from "../LabelValueList";
+import { financeApi } from "../../services";
 
 interface TickerSummaryTabProps {
   ticker: string;
@@ -15,13 +16,13 @@ interface TickerSummaryTabProps {
 export function TickerSummaryTab({ ticker }: TickerSummaryTabProps) {
   const [selectedTimeframe, setSelectedTimeFrame] = useState("1d");
   const [chartData, setChartData] = useChartData();
-  const finance = useFinance();
+
   const { tickerSummaryItems1, tickerSummaryItems2 } = useFinanceStore((state) => state);
 
   const fetchHistory = async (range = PriceChartTimeRange.OneDay, interval = PriceChartInterval.TwoMins) => {
     setSelectedTimeFrame(range);
     if (ticker) {
-      const result = await finance.getPriceHistory(ticker, range, interval);
+      const result = await financeApi.getPriceHistory(ticker, range, interval);
       setChartData(result);
     }
   };

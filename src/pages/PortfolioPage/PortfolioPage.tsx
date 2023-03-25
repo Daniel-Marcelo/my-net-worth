@@ -2,7 +2,7 @@ import { ReactNode, useRef, useState } from "react";
 import { x } from "@xstyled/styled-components";
 import { Box, Button, Tab, Tabs, Typography } from "@mui/material";
 import { TickerSearch } from "../../components/TickerSearch";
-import { useFinance, usePortfolioEntryService } from "../../services";
+import { financeApi, usePortfolioEntryService } from "../../services";
 import { FormDialog } from "../../components/AddTickerDialog";
 import { GroupedPortfolioEntry, PortfolioEntry, Quote } from "../../models";
 import { UpdatesDrawer } from "../../components/UpdatesDrawer";
@@ -53,7 +53,6 @@ export function PortfolioPage() {
   const id = usePortfolioIdFromUrl();
   const [selectedQuote, setSelectedQuote] = useState<Quote>();
   const portfolioEntryService = usePortfolioEntryService();
-  const financeService = useFinance();
   const [portfolioEntries, getPortfolioEntries] = useGetEntriesByPortfolioId();
   const [updatesOpen, setUpdatesOpen] = useState(false);
   const [deleteEntryOpen, setDeleteEntryOpen] = useState(false);
@@ -64,7 +63,7 @@ export function PortfolioPage() {
   const [value, setValue] = useState(0);
 
   const onAdd = async (numberOfShares: number) => {
-    const summaryProfile = await financeService.getSummaryProfile(selectedQuote.ticker);
+    const summaryProfile = await financeApi.getSummaryProfile(selectedQuote.ticker);
     const portfolioEntry = {
       ticker: selectedQuote.ticker,
       name: selectedQuote.name,

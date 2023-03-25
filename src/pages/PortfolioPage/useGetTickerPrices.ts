@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { GroupedPortfolioEntry } from "../../models";
-import { useFinance } from "../../services";
+import { financeApi } from "../../services";
 
 export const useGetTickerPrices = (groupedEntries: GroupedPortfolioEntry[]) => {
   const [tickerToPriceMap, setTickerToPriceMap] = useState(new Map<string, number>());
-  const financeApi = useFinance();
 
   const setMostRecentPrice = async (values: Map<string, number>, ticker: string, tickers: string[]) => {
     const [, prices] = await financeApi.getTimesAndPrices(ticker);

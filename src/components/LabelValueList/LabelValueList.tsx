@@ -19,7 +19,7 @@ export function LabelValueList({ title, list, cardProps = {} }: YearToNumberList
       )}
       <Box sx={{ bgcolor: "background.paper" }}>
         <List sx={{ p: 0, borderRadius: 8 }}>
-          {list.map(({ label, value }) => (
+          {(list || []).map(({ label, value }) => (
             <ListItem>
               <ListItemText>
                 <x.div display="flex" justifyContent="space-between">

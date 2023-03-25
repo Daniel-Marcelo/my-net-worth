@@ -2,18 +2,19 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useEffect, useRef, useState } from "react";
-import { useFinanceStore } from "../../stores/finance.store";
 import { useQuoteStore } from "../../stores/quote.store";
+import { useLoadFinanceModules } from "../../hooks/useLoadFinanceModules";
 
 export function PriceRangeBar() {
-  const { quote: selectedQuote } = useQuoteStore();
-  const { rangeData } = useFinanceStore();
+  const { quote } = useQuoteStore();
+  const { getRangeData } = useLoadFinanceModules();
+  const rangeData = getRangeData();
   const [width, setWidth] = useState(0);
   const ref = useRef<HTMLDivElement>();
 
   const applyWidth = () => {
     const hasWidth = ref && ref.current && ref?.current?.clientWidth;
-    if (hasWidth && rangeData?.currentValue && selectedQuote?.ticker) {
+    if (hasWidth && rangeData?.currentValue && quote?.ticker) {
       setWidth(ref.current.clientWidth * (rangeData.currentValue / 100));
     }
   };
@@ -25,7 +26,7 @@ export function PriceRangeBar() {
 
   useEffect(() => {
     applyWidth();
-  }, [ref, selectedQuote, rangeData]);
+  }, [ref, quote, rangeData]);
 
   useEffect(() => {
     window.addEventListener("resize", () => applyWidth());

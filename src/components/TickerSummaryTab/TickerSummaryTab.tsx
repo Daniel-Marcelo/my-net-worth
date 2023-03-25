@@ -5,10 +5,10 @@ import { useChartData } from "../../pages/QuotePage/useChartData";
 
 import { PriceChart } from "../PriceChart";
 import { PriceChartToolbar } from "../PriceChartToolbar";
-import { useFinanceStore } from "../../stores/finance.store";
 import { PriceRangeBar } from "../PriceRangeBar";
 import { LabelValueList } from "../LabelValueList";
 import { financeApi } from "../../services";
+import { useLoadFinanceModules } from "../../hooks/useLoadFinanceModules";
 
 interface TickerSummaryTabProps {
   ticker: string;
@@ -17,7 +17,9 @@ export function TickerSummaryTab({ ticker }: TickerSummaryTabProps) {
   const [selectedTimeframe, setSelectedTimeFrame] = useState("1d");
   const [chartData, setChartData] = useChartData();
 
-  const { tickerSummaryItems1, tickerSummaryItems2 } = useFinanceStore((state) => state);
+  const { getSummaryItems1, getSummaryItems2 } = useLoadFinanceModules();
+  const tickerSummaryItems1 = getSummaryItems1();
+  const tickerSummaryItems2 = getSummaryItems2();
 
   const fetchHistory = async (range = PriceChartTimeRange.OneDay, interval = PriceChartInterval.TwoMins) => {
     setSelectedTimeFrame(range);

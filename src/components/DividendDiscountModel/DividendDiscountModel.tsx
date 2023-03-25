@@ -6,7 +6,6 @@ import { Example } from "../DividendHistoryChart";
 import { PriceChartTimeRange as Range } from "../../models";
 import { ViewType, YearToNumber } from "../../types";
 import { useDDMFormula } from "./useDDMFormula";
-import { useFinanceStore } from "../../stores";
 import { PriceChartToolbar } from "../PriceChartToolbar";
 import { LabelValueList } from "../LabelValueList";
 import {
@@ -16,6 +15,7 @@ import {
   useDividendGrowthRate,
 } from "../../hooks";
 import { useGetHistoryQuery } from "../../hooks/useGetHistoryQuery";
+import { useLoadFinanceModules } from "../../hooks/useLoadFinanceModules";
 
 interface DividendDiscountModelProps {
   ticker: string;
@@ -32,12 +32,13 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
   const averageAnnualIncrease = useCalculateAverageAnnualDividendIncrease(history);
   const [dividendGrowthRate, setDividendGrowthRate] = useDividendGrowthRate(averageAnnualIncrease, 5);
 
-  const { moduleData } = useFinanceStore();
+  const { getModuleData } = useLoadFinanceModules();
+  const moduleData = getModuleData();
   const [requiredRateOfReturn, setRequiredRateOfReturn] = useState<number>(0.08);
   const [marginOfSafety, setMarginOfSafety] = useState<number>(0.1);
   const DDMFormula = useDDMFormula();
 
-  const currentPrice = moduleData.financialData.currentPrice.raw;
+  const currentPrice = moduleData?.financialData?.currentPrice?.raw;
   const last4DividendsTotal = history
     .slice(history.length - 5, history.length - 1)
     .reduce((acc, div) => acc + div.amount, 0);
@@ -60,9 +61,10 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
     return diff === 0 ? "normal" : "semibold";
   };
 
-  const trueValue = DDMFormula(last4DividendsTotal, dividendGrowthRate, requiredRateOfReturn);
-  const difference = ((trueValue - currentPrice) / trueValue) * 100;
-  const differenceMos = ((trueValue * (1 - marginOfSafety) - currentPrice) / (trueValue * (1 - marginOfSafety))) * 100;
+  const trueValue = currentPrice && DDMFormula(last4DividendsTotal, dividendGrowthRate, requiredRateOfReturn);
+  const difference = currentPrice && ((trueValue - currentPrice) / trueValue) * 100;
+  const differenceMos =
+    currentPrice && ((trueValue * (1 - marginOfSafety) - currentPrice) / (trueValue * (1 - marginOfSafety))) * 100;
 
   return (
     <>

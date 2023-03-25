@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { financeApi } from "../services";
-import { useFinanceStore } from "../stores/finance.store";
+import { useQuoteStore } from "../stores";
 import { QueryKey, RangeData, TickerSummaryItem, WaccData } from "../types";
 import { YFModule } from "../types/yahoo-finance.d";
 
@@ -11,14 +11,13 @@ const getBalanceSheet = (statements: YFModule.BalanceSheetStatement[]) => {
   return statements[1];
 };
 
-export const useLoadFinanceModules = (ticker?: string) => {
-  const { setModuleData } = useFinanceStore();
+export const useLoadFinanceModules = () => {
+  const { ticker } = useQuoteStore();
 
   const query = useQuery({
     enabled: !!ticker,
     queryKey: [QueryKey.GetFinanceModules, ticker],
     queryFn: () => financeApi.getModules(ticker),
-    onSuccess: (data) => setModuleData(data),
   });
 
   return {
@@ -84,6 +83,20 @@ export const useLoadFinanceModules = (ticker?: string) => {
         ),
         new TickerSummaryItem("Market Cap", summaryDetail.marketCap.fmt),
         new TickerSummaryItem("Beta", summaryDetail.beta.fmt),
+      ];
+    },
+    getSummaryItems2: () => {
+      const moduleData = query?.data;
+      if (!moduleData) return null;
+      const { summaryDetail, defaultKeyStatistics } = moduleData;
+      return [
+        new TickerSummaryItem("PE", summaryDetail.trailingPE.fmt),
+        new TickerSummaryItem("EPS", defaultKeyStatistics.trailingEps.fmt),
+        new TickerSummaryItem("Dividend Yield", summaryDetail.dividendYield.fmt),
+        new TickerSummaryItem("Ex. Dividend Date", summaryDetail.exDividendDate.fmt),
+        new TickerSummaryItem("Dividend Rate", summaryDetail.dividendRate.fmt),
+        new TickerSummaryItem("5 yr Average Div Yield", `${summaryDetail.fiveYearAvgDividendYield.fmt}%`),
+        new TickerSummaryItem("Trailing Annual Div Yield", summaryDetail.trailingAnnualDividendYield.fmt),
       ];
     },
   };

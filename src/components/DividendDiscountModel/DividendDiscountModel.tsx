@@ -32,8 +32,7 @@ export function DividendDiscountModel({ ticker }: DividendDiscountModelProps) {
   const averageAnnualIncrease = useCalculateAverageAnnualDividendIncrease(history);
   const [dividendGrowthRate, setDividendGrowthRate] = useDividendGrowthRate(averageAnnualIncrease, 5);
 
-  const { getModuleData } = useLoadFinanceModules();
-  const moduleData = getModuleData();
+  const { moduleData } = useLoadFinanceModules();
   const [requiredRateOfReturn, setRequiredRateOfReturn] = useState<number>(0.08);
   const [marginOfSafety, setMarginOfSafety] = useState<number>(0.1);
   const DDMFormula = useDDMFormula();

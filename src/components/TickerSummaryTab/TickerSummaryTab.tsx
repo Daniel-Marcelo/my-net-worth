@@ -17,9 +17,7 @@ export function TickerSummaryTab({ ticker }: TickerSummaryTabProps) {
   const [selectedTimeframe, setSelectedTimeFrame] = useState("1d");
   const [chartData, setChartData] = useChartData();
 
-  const { getSummaryItems1, getSummaryItems2 } = useLoadFinanceModules();
-  const tickerSummaryItems1 = getSummaryItems1();
-  const tickerSummaryItems2 = getSummaryItems2();
+  const { summaryItems1: tickerSummaryItems1, summaryItems2: tickerSummaryItems2 } = useLoadFinanceModules();
 
   const fetchHistory = async (range = PriceChartTimeRange.OneDay, interval = PriceChartInterval.TwoMins) => {
     setSelectedTimeFrame(range);

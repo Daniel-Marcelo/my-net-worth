@@ -8,8 +8,7 @@ import { useMyQuery } from "../useMyQuery";
 export const useGetSimilarCompanies = (ticker: string) => {
   const symbolsApi = usePolySymbolV1Service();
   const [rowData, setRowData] = useState<MultiplesTableRow[]>([]);
-  const { getModuleData } = useLoadFinanceModules();
-  const moduleData = getModuleData();
+  const { moduleData } = useLoadFinanceModules();
   const query = useMyQuery<PolySymbolV1[]>({
     queryKey: ["getSymbolV1", ticker],
     queryFn: () => symbolsApi.getByQuery(where("symbol", "==", ticker)),

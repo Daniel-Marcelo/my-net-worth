@@ -7,8 +7,7 @@ import { useLoadFinanceModules } from "../../hooks/useLoadFinanceModules";
 
 export function PriceRangeBar() {
   const { quote } = useQuoteStore();
-  const { getRangeData } = useLoadFinanceModules();
-  const rangeData = getRangeData();
+  const { rangeData } = useLoadFinanceModules();
   const [width, setWidth] = useState(0);
   const ref = useRef<HTMLDivElement>();
 

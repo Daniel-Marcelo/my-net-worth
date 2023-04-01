@@ -26,7 +26,7 @@ export function PriceChartToolbar({ selectedTimeFrame, onClick, ranges = default
   return (
     <ButtonGroup variant="outlined" aria-label="outlined button group">
       {ranges.map((range) => (
-        <PriceChartTimePeriod isActive={isActive} range={range} onClick={onClick} />
+        <PriceChartTimePeriod key={`${range}-summary`} isActive={isActive} range={range} onClick={onClick} />
       ))}
     </ButtonGroup>
   );

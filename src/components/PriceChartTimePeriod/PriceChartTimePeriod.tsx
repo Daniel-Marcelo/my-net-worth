@@ -37,7 +37,7 @@ export function PriceChartTimePeriod({ isActive, range, onClick }: PriceChartTim
   const interval = rangeToInterval.get(range);
   const label = rangeToLabel.get(range);
   return (
-    <Button variant={isActive(range) ? "contained" : "outlined"} onClick={() => onClick(range, interval)}>
+    <Button variant={isActive(range) ? "contained" : "outlined"} size="small" onClick={() => onClick(range, interval)}>
       {label}
     </Button>
   );

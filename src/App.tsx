@@ -2,8 +2,9 @@ import { defaultTheme, ThemeProvider, Preflight } from "@xstyled/styled-componen
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
+import { Toolbar } from "@mui/material";
 import { LoggedInReRoute } from "./components/LoggedInReRoute/LoggedInReRoute";
-import { NavBar } from "./components/NavBar/NavBar";
+import { NavBar } from "./components/NavBarV2/NavBar";
 import { ProtectedPage } from "./components/ProtectedPage/ProtectedPage";
 import { AuthContextProvider, useAuthContext } from "./context/AuthContext";
 import { UserSettingsProvider } from "./context/UserSettingsContext";
@@ -19,6 +20,7 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import { RoutePath } from "./types/routes";
 
 const theme = {
   ...defaultTheme,
@@ -42,20 +44,21 @@ function App() {
           <AuthContextProvider>
             <UserSettingsProvider>
               <NavBar />
+              <Toolbar />
               <Routes>
-                <Route path="/home" element={<HomePage />} />
+                <Route path={RoutePath.Home} element={<HomePage />} />
                 <Route
-                  path="/portfolios"
+                  path={RoutePath.Portfolios}
                   element={
                     <ProtectedPage>
                       <PortfoliosPage />
                     </ProtectedPage>
                   }
                 />
-                <Route path="/quote" element={<QuotePage />} />
-                <Route path="/calc" element={<Calculator />} />
+                <Route path={RoutePath.Quote} element={<QuotePage />} />
+                <Route path={RoutePath.Calculator} element={<Calculator />} />
                 <Route
-                  path="/portfolio/:id"
+                  path={RoutePath.Portfolio}
                   element={
                     <ProtectedPage>
                       <PortfolioPage />
@@ -63,7 +66,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="/login"
+                  path={RoutePath.Login}
                   element={
                     <LoggedInReRoute>
                       <LoginPage />
@@ -71,14 +74,14 @@ function App() {
                   }
                 />
                 <Route
-                  path="/register"
+                  path={RoutePath.Register}
                   element={
                     <LoggedInReRoute>
                       <RegisterPage />
                     </LoggedInReRoute>
                   }
                 />
-                <Route path="/*" element={<Navigate to="/home" replace />} />
+                <Route path={RoutePath.CatchAll} element={<Navigate to="/home" replace />} />
               </Routes>
             </UserSettingsProvider>
           </AuthContextProvider>

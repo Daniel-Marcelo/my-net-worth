@@ -63,11 +63,20 @@ export function RegisterPage() {
     passwordRulesValid.includes(rule) ? <CloseIcon color="error" /> : <CheckIcon color="success" />;
 
   return (
-    <x.div h="100vh" display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" pt={12}>
-      <x.div letterSpacing="5px" fontSize="32px">
-        REGISTER FOR MY NET WORTH
+    <x.div h="100vh" display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" p={8}>
+      <x.div letterSpacing="widest" fontSize={{ sm: "3xl", md: "5xl" }} mb={4}>
+        REGISTER
       </x.div>
-      <x.div mt={12} display="flex" flexDirection="column" alignItems="center">
+      <x.div
+        p={8}
+        borderRadius="lg"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        borderWidth="1px"
+        borderStyle="solid"
+        borderColor="blue-gray-300"
+      >
         <x.div w="100%">
           <TextField
             fullWidth
@@ -122,34 +131,36 @@ export function RegisterPage() {
         <x.div display="flex" flexDirection="column">
           <x.span mt={4} mb={0.5}>
             {renderIcon("min")}
-            <x.span ml={4}>Minimum of 8 characters in length</x.span>
+            <x.span ml={4} fontSize="sm">
+              Minimum 8 characters
+            </x.span>
           </x.span>
 
-          <x.span my={0.5}>
+          <x.span my={0.5} fontSize="sm">
             {renderIcon("uppercase")}
-            <x.span ml={4}>At least 1 uppercase letter</x.span>
+            <x.span ml={4}>Minimum 1 uppercase letter</x.span>
           </x.span>
 
-          <x.span my={0.5}>
+          <x.span my={0.5} fontSize="sm">
             {renderIcon("lowercase")}
-            <x.span ml={4}>At least 1 lowercase letter</x.span>
+            <x.span ml={4}>Minimum 1 lowercase letter</x.span>
           </x.span>
 
-          <x.span my={0.5}>
+          <x.span my={0.5} fontSize="sm">
             {renderIcon("digits")}
-            <x.span ml={4}>At least 1 number</x.span>
+            <x.span ml={4}>Minimum 1 number</x.span>
           </x.span>
         </x.div>
 
         <x.div mt={4}>
           <Button size="large" variant="contained" onClick={onClickRegister}>
-            <x.span px={48}>REGISTER</x.span>
+            <x.span>REGISTER</x.span>
           </Button>
         </x.div>
+      </x.div>
 
-        <x.div mt={4}>
-          <GoogleLoginButton onClick={loginWithGoogleMutation.mutate} />
-        </x.div>
+      <x.div mt={4}>
+        <GoogleLoginButton onClick={loginWithGoogleMutation.mutate} />
       </x.div>
     </x.div>
   );

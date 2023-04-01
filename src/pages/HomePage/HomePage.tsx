@@ -10,19 +10,26 @@ export function HomePage() {
   const onClickLogin = () => navigate("/login");
   const onClickPortfolios = () => navigate("/portfolios");
   return (
-    <x.div h="100vh" display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" pt={32}>
-      <x.div letterSpacing="10px" fontSize="58px">
+    <x.div
+      className="homePage"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      flex="1"
+      justifyContent="center"
+    >
+      <x.div letterSpacing="widest" fontSize={{ sm: "3xl", md: "5xl" }}>
         MY NET WORTH
       </x.div>
 
-      <x.div mt={32}>
+      <x.div mt={24}>
         {isLoggedIn ? (
           <Button size="large" variant="contained" onClick={onClickPortfolios}>
-            <x.span px={48}>PORTFOLIOS</x.span>
+            <x.span>PORTFOLIOS</x.span>
           </Button>
         ) : (
           <Button size="large" variant="contained" onClick={onClickLogin}>
-            <x.span px={48}>LOGIN</x.span>
+            <x.span>LOGIN</x.span>
           </Button>
         )}
       </x.div>

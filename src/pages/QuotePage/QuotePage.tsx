@@ -45,7 +45,7 @@ export function QuotePage() {
   useGetRiskFreeRate();
 
   return (
-    <x.div p={8}>
+    <x.div px={2} py={8}>
       <TickerSearch setSelectedQuote={setQuote} selectedQuote={quote} />
       {ticker && (
         <Box sx={{ width: "100%", marginTop: "1rem" }}>

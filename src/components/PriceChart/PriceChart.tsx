@@ -9,10 +9,11 @@ interface PriceChartProps {
 export function PriceChart({ chartData, selectedTicker }: PriceChartProps) {
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <LineChart data={chartData}>
-        <CartesianGrid strokeDasharray="3 3" />
+      <LineChart data={chartData} margin={{ left: 0 }}>
         <XAxis dataKey="name" />
         <YAxis
+          hide
+          width={40}
           type="number"
           domain={[
             (dataMin) => Math.round(dataMin) - Math.round(dataMin * 0.01),
@@ -21,7 +22,7 @@ export function PriceChart({ chartData, selectedTicker }: PriceChartProps) {
         />
         <Tooltip />
         <Legend formatter={() => `${selectedTicker} Price`} />
-        <Line dot={false} type="monotone" dataKey="price" stroke="#8884d8" activeDot={{ r: 8 }} />
+        <Line dot={false} type="monotone" dataKey="price" stroke="green" activeDot={{ r: 8 }} />
         <Spinner />
       </LineChart>
     </ResponsiveContainer>

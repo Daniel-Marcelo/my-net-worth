@@ -34,23 +34,25 @@ export function TickerSummaryTab({ ticker }: TickerSummaryTabProps) {
   }, [ticker]);
 
   return (
-    <x.div display="flex">
-      <x.div display="flex" flexDirection="column" flex={1}>
-        <x.div mb={8} display="flex" justifyContent="center">
+    <x.div>
+      <x.div>
+        <x.div display="flex" justifyContent="center">
           <PriceChartToolbar selectedTimeFrame={selectedTimeframe} onClick={fetchHistory} />
         </x.div>
-        <x.div ml={-6} flex={1}>
+        <x.div h="50vh" w="100%" mt={4}>
           {chartData.length ? <PriceChart selectedTicker={ticker} chartData={chartData} /> : ""}
         </x.div>
       </x.div>
-      <x.div display="flex" flex={1} flexDirection="column">
-        <x.div mb={8}>
+      <x.div display="flex" w="100%" flexDirection="column">
+        <x.div my={4}>
           <PriceRangeBar />
         </x.div>
 
-        <x.div display="flex" justifyContent="center">
-          <LabelValueList list={tickerSummaryItems1} cardProps={{ marginLeft: "2rem" }} />
-          <LabelValueList list={tickerSummaryItems2} cardProps={{ marginLeft: "4rem" }} />
+        <x.div mt={4} width="100%" mx={1}>
+          <LabelValueList list={tickerSummaryItems1} />
+        </x.div>
+        <x.div mt={4} width="100%" mx={1}>
+          <LabelValueList list={tickerSummaryItems2} />
         </x.div>
       </x.div>
     </x.div>

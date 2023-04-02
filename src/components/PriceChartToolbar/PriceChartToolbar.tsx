@@ -10,12 +10,10 @@ interface PriceChartToolbarProps {
 
 const defaultRanges = [
   Range.OneDay,
-  Range.FiveDays,
   Range.OneMonth,
   Range.SixMonths,
   Range.YearToDate,
   Range.OneYear,
-  Range.TwoYears,
   Range.FiveYears,
   Range.TenYears,
   Range.Max,

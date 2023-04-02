@@ -23,10 +23,8 @@ export function LabelValueList({ title, list, cardProps = {} }: YearToNumberList
             <ListItem>
               <ListItemText>
                 <x.div display="flex" justifyContent="space-between">
-                  <x.div fontSize="sm" pr={12}>
-                    {label}
-                  </x.div>
-                  <x.div fontSize="sm">{value}</x.div>
+                  <x.div fontSize="xs">{label}</x.div>
+                  <x.div fontSize="xs">{value}</x.div>
                 </x.div>
               </ListItemText>
             </ListItem>

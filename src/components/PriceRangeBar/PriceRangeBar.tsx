@@ -34,25 +34,24 @@ export function PriceRangeBar() {
     };
   }, []);
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%", position: "relative" }}>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
         <Typography variant="body2" color="text.secondary">
           52 week range
         </Typography>
       </Box>
-      <Box sx={{ display: "flex", alignItems: "center", paddingLeft: "2rem", paddingRight: "2rem" }}>
-        <Box sx={{ minWidth: 35, marginRight: "1rem" }}>
-          <Typography variant="body2" color="text.secondary">{`${rangeData?.start}`}</Typography>
-        </Box>
-        <Box sx={{ width: "100%", mr: 1, position: "relative" }} ref={ref}>
+      <Box sx={{ position: "absolute", right: 0, top: 0 }}>
+        <Typography variant="body2" color="text.secondary">{`${rangeData?.start}`}</Typography>
+      </Box>
+      <Box sx={{ position: "absolute", left: 0, top: 0 }}>
+        <Typography variant="body2" color="text.secondary">{`${rangeData?.end}`}</Typography>
+      </Box>
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box sx={{ mx: 2, position: "relative", flex: 1 }} ref={ref}>
           <LinearProgress variant="determinate" value={rangeData?.currentValue} />
           <Box sx={{ position: "absolute", left: width - 15 }}>
             <Typography variant="body2" color="text.secondary">{`${rangeData?.currentValueLabel}`}</Typography>
           </Box>
-        </Box>
-
-        <Box sx={{ minWidth: 35 }}>
-          <Typography variant="body2" color="text.secondary">{`${rangeData?.end}`}</Typography>
         </Box>
       </Box>
     </Box>

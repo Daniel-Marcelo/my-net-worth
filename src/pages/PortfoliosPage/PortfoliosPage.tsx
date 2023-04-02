@@ -2,12 +2,22 @@ import { Button, Card, CardContent, Typography } from "@mui/material";
 import { x } from "@xstyled/styled-components";
 import { SyntheticEvent, useEffect, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { usePortfolioService } from "../../services";
 import { CreatePortfolioModal } from "../../components/CreatePortfolioModal";
 import { useGetPortfolios } from "./usePortfolios";
 import { DeletePortfolioDialog } from "../../components/DeletePortfolioDialog";
 import { Portfolio } from "../../models";
+
+const Root = styled("div")(({ theme }) => ({
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+  },
+  [theme.breakpoints.up("sm")]: {
+    width: "50%",
+  },
+}));
 
 export function PortfoliosPage() {
   const navigate = useNavigate();
@@ -74,8 +84,11 @@ export function PortfoliosPage() {
       ) : (
         <>
           {portfolios.map((portfolio) => (
-            <x.div mt={4} key={portfolio.id} cursor="pointer">
-              <Card sx={{ minWidth: 400 }} onClick={() => navigate(`/portfolio/${portfolio.id}`, { replace: true })}>
+            <Root>
+              <Card
+                sx={{ width: "100%", cursor: "pointer", marginTop: 2 }}
+                onClick={() => navigate(`/portfolio/${portfolio.id}`, { replace: true })}
+              >
                 <CardContent>
                   <x.div display="flex" justifyContent="space-between">
                     <Typography variant="h5" component="div">
@@ -98,7 +111,7 @@ export function PortfoliosPage() {
             <Button size="medium" color="error"></Button>
           </CardActions> */}
               </Card>
-            </x.div>
+            </Root>
           ))}
         </>
       )}

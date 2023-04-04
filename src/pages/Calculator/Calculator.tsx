@@ -124,79 +124,87 @@ export function Calculator() {
       <Typography variant="h3" component="div" sx={{ textAlign: "center", flexGrow: 1 }}>
         Investment Calculator
       </Typography>
-      <x.div mt={8} display="flex" justifyContent="space-between">
-        <TextField
-          value={startingAmount}
-          type="number"
-          onChange={(event) => setStartingAmount(+event.target.value)}
-          label="Starting Amount"
-          variant="outlined"
-          helperText={clickedCalculate && getHelperText(startingAmount)}
-          error={clickedCalculate && isError(startingAmount)}
-        />
-        <TextField
-          value={additionalContribution}
-          type="number"
-          onChange={(event) => setAdditionalContribution(+event.target.value)}
-          label="Additional Contribution"
-          variant="outlined"
-          helperText={clickedCalculate && getHelperText(additionalContribution)}
-          error={clickedCalculate && isError(additionalContribution)}
-        />
-        <FormControl variant="outlined" sx={{ minWidth: 120 }}>
-          <InputLabel id="demo-simple-select-standard-label">Period</InputLabel>
-          <Select
-            labelId="demo-simple-select-standard-label"
-            id="demo-simple-select-standard"
-            label="Period"
-            value={contributionPeriod}
-            onChange={(event) => setContributionPeriod(event.target.value as ContributionPeriodValue)}
-          >
-            {contributionPeriodOptions.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}{" "}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <TextField
-          type="number"
-          value={rateOfReturn}
-          onChange={(event) => setRateOfReturn(+event.target.value)}
-          label="Rate of Return"
-          variant="outlined"
-          helperText={clickedCalculate && getHelperText(rateOfReturn)}
-          error={clickedCalculate && isError(rateOfReturn)}
-        />
-        <TextField
-          value={years}
-          type="number"
-          inputProps={{
-            min: "1",
-            step: "1",
-          }}
-          onChange={(event) => {
-            setYears(+event.target.value);
-          }}
-          label="Years to Grow"
-          variant="outlined"
-          helperText={clickedCalculate && getHelperText(years)}
-          error={clickedCalculate && isError(years)}
-        />
-
-        <Button variant="contained" onClick={validate}>
-          Calculate
-        </Button>
+      <x.div>
+        <x.div mt={2}>
+          <x.div>
+            <TextField
+              value={startingAmount}
+              type="number"
+              onChange={(event) => setStartingAmount(+event.target.value)}
+              label="Starting Amount"
+              variant="outlined"
+              helperText={clickedCalculate && getHelperText(startingAmount)}
+              error={clickedCalculate && isError(startingAmount)}
+            />
+          </x.div>
+          <x.div mt={2}>
+            <TextField
+              value={additionalContribution}
+              type="number"
+              onChange={(event) => setAdditionalContribution(+event.target.value)}
+              label="Additional Contribution"
+              variant="outlined"
+              helperText={clickedCalculate && getHelperText(additionalContribution)}
+              error={clickedCalculate && isError(additionalContribution)}
+            />
+          </x.div>
+          <x.div mt={2}>
+            <FormControl variant="outlined" sx={{ minWidth: 195 }}>
+              <InputLabel id="demo-simple-select-standard-label">Period</InputLabel>
+              <Select
+                labelId="demo-simple-select-standard-label"
+                id="demo-simple-select-standard"
+                label="Period"
+                value={contributionPeriod}
+                onChange={(event) => setContributionPeriod(event.target.value as ContributionPeriodValue)}
+              >
+                {contributionPeriodOptions.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}{" "}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </x.div>
+          <x.div mt={2}>
+            <TextField
+              type="number"
+              value={rateOfReturn}
+              onChange={(event) => setRateOfReturn(+event.target.value)}
+              label="Rate of Return"
+              variant="outlined"
+              helperText={clickedCalculate && getHelperText(rateOfReturn)}
+              error={clickedCalculate && isError(rateOfReturn)}
+            />
+          </x.div>
+          <x.div mt={2}>
+            <TextField
+              value={years}
+              type="number"
+              inputProps={{
+                min: "1",
+                step: "1",
+              }}
+              onChange={(event) => {
+                setYears(+event.target.value);
+              }}
+              label="Years to Grow"
+              variant="outlined"
+              helperText={clickedCalculate && getHelperText(years)}
+              error={clickedCalculate && isError(years)}
+            />
+          </x.div>
+          <Button variant="contained" onClick={validate} sx={{ marginTop: 1 }}>
+            Calculate
+          </Button>
+        </x.div>
       </x.div>
-
       {totalValue ? (
         <Typography variant="h6" component="div" sx={{ textAlign: "center", my: 4, flexGrow: 1 }}>
           {currency}
           {format(totalValue)}
         </Typography>
-      ) : (
-        ""
-      )}
+      ) : null}
       <x.div display="flex" justifyContent="center">
         {chartData.length ? (
           <BarChart width={1000} height={300} data={chartData}>

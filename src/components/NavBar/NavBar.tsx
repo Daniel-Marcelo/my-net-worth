@@ -40,7 +40,7 @@ export function NavBar() {
           <NavBarLink text="Calculator" onClick={() => navigate("/calc")} />
           {isLoggedIn ? (
             <>
-              <NavBarLink text="Portfolios" onClick={() => navigate("/portfolios")} />
+              <NavBarLink text="Portfolios" onClick={() => navigate("/adasdasdasd")} />
               <x.span display="flex" flex={1} justifyContent="end">
                 <NavBarLink text="Logout" onClick={logout.mutate} />
               </x.span>

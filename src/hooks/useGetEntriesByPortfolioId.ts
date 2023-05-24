@@ -1,31 +1,16 @@
-import { useCallback, useEffect, useState } from "react";
-import { PortfolioEntry } from "../models";
 import { usePortfolioEntryService } from "../services";
 import { usePortfolioIdFromUrl } from "./usePortfolioIdFromUrl";
-import { useGetPortfolioById } from "./useGetPortfolioById";
 import { toast } from "../utils";
+import { useMyQuery } from "./useMyQuery";
+import { QueryKey } from "../types";
 
 export const useGetEntriesByPortfolioId = () => {
   const id = usePortfolioIdFromUrl();
   const portfolioEntryService = usePortfolioEntryService();
-  const [portfolioEntries, setPortfolioEntries] = useState<PortfolioEntry[]>([]);
-  const getPortfolio = useGetPortfolioById();
 
-  const getPortfolioEntries = useCallback(async () => {
-    try {
-      await getPortfolio();
-      const entries = await portfolioEntryService.getAllByPortfolioId(id);
-      setPortfolioEntries(entries);
-    } catch (error) {
-      toast.error("Error getting portfolio entries.");
-    }
-  }, [id]);
-
-  useEffect(() => {
-    if (id) {
-      getPortfolioEntries();
-    }
-  }, [getPortfolioEntries, id]);
-
-  return [portfolioEntries, getPortfolioEntries] as const;
+  return useMyQuery({
+    queryKey: [id, QueryKey.GetPortfolioEntriesByPortfolioId],
+    queryFn: () => portfolioEntryService.getAllByPortfolioId(id),
+    onError: () => toast.error("Error getting portfolio entries."),
+  });
 };

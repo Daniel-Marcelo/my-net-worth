@@ -14,6 +14,7 @@ import { useGetTickerPrices } from "./useGetTickerPrices";
 import { TickerHistoryDialog } from "../../components/TickerHistoryDialog";
 import { DeletePortfolioEntryDialog } from "../../components/DeletePortfolioEntryDialog";
 import { DividendCalendarTab } from "../../components/DividendCalendarTab";
+import { useQuoteStore } from "../../stores";
 
 function a11yProps(index: number) {
   return {
@@ -49,37 +50,36 @@ function TabPanel(props: TabPanelProps) {
 }
 
 export function PortfolioPage() {
-  const ref = useRef();
   const id = usePortfolioIdFromUrl();
-  const [selectedQuote, setSelectedQuote] = useState<Quote>();
+  const { quote, setQuote } = useQuoteStore();
   const portfolioEntryService = usePortfolioEntryService();
-  const [portfolioEntries, getPortfolioEntries] = useGetEntriesByPortfolioId();
+  const getEntriesByPortfolioIdQuery = useGetEntriesByPortfolioId();
   const [updatesOpen, setUpdatesOpen] = useState(false);
   const [deleteEntryOpen, setDeleteEntryOpen] = useState(false);
-  const groupedEntries = useGroupedEntries(portfolioEntries);
+  const groupedEntries = useGroupedEntries();
   const tickerToPriceMap = useGetTickerPrices(groupedEntries);
   const [selectedTicker, setSelectedTicker] = useState("");
   const [selectedGroupEntry, setSelectedGroupEntry] = useState<GroupedPortfolioEntry>();
   const [value, setValue] = useState(0);
 
   const onAdd = async (numberOfShares: number) => {
-    const summaryProfile = await financeApi.getSummaryProfile(selectedQuote.ticker);
+    const summaryProfile = await financeApi.getSummaryProfile(quote.ticker);
     const portfolioEntry = {
-      ticker: selectedQuote.ticker,
-      name: selectedQuote.name,
+      ticker: quote.ticker,
+      name: quote.name,
       portfolioId: `${id}`,
       createdAt: new Date().toISOString(),
       numberOfShares,
       website: summaryProfile.website,
     } as PortfolioEntry;
     await portfolioEntryService.create(portfolioEntry);
-    await getPortfolioEntries();
-    setSelectedQuote(undefined);
+    getEntriesByPortfolioIdQuery.refetch();
+    setQuote(undefined);
   };
 
   const onUpdatesDrawerClose = async () => {
     setUpdatesOpen(false);
-    await getPortfolioEntries();
+    getEntriesByPortfolioIdQuery.refetch();
   };
 
   const onClickCard = (ticker: string) => {
@@ -103,7 +103,7 @@ export function PortfolioPage() {
       )}
       <TickerHistoryDialog
         ticker={selectedTicker}
-        portfolioEntries={portfolioEntries}
+        portfolioEntries={getEntriesByPortfolioIdQuery?.data || []}
         open={!!selectedTicker}
         closeDialog={() => setSelectedTicker("")}
       />
@@ -111,7 +111,7 @@ export function PortfolioPage() {
       <x.div mb={4} textAlign="center">
         Select a ticker to add to this portfolio
       </x.div>
-      <TickerSearch ref={ref} setSelectedQuote={(quote) => setSelectedQuote(quote)} selectedQuote={selectedQuote} />
+      <TickerSearch setSelectedQuote={setQuote} selectedQuote={quote} />
       <x.div mt={4} display="flex" justifyContent="end">
         <Button variant="contained" onClick={() => setUpdatesOpen(true)}>
           Updates
@@ -141,8 +141,11 @@ export function PortfolioPage() {
       <TabPanel value={value} index={1}>
         <DividendCalendarTab groupedEntries={groupedEntries} />
       </TabPanel>
-
-      <UpdatesDrawer portfolioEntries={portfolioEntries} open={updatesOpen} onClose={onUpdatesDrawerClose} />
+      <UpdatesDrawer
+        portfolioEntries={getEntriesByPortfolioIdQuery?.data || []}
+        open={updatesOpen}
+        onClose={onUpdatesDrawerClose}
+      />
       <FormDialog onAdd={onAdd} />
     </x.div>
   );

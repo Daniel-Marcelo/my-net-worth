@@ -39,4 +39,6 @@ router.get("/price-history/:ticker", async (req, res) => {
   res.send(JSON.stringify(priceHistoryResponse.chart.result[0]));
 });
 
-export default router;
+const quoteRouter = router;
+
+export default quoteRouter;

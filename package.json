@@ -61,7 +61,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "cd utils && yarn build && cd ../api && yarn build && cd .. && react-scripts build",
+    "build": "yarn build:be && react-scripts build",
+    "build:be": "cd utils && yarn build && cd ../api && yarn build && cd ..",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint --fix --ext .js,.ts,.jsx,.tsx .",

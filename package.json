@@ -61,14 +61,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "yarn build:api && react-scripts build",
+    "build": "cd utils && yarn build && cd ../api && yarn build && cd .. && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint --fix --ext .js,.ts,.jsx,.tsx .",
     "prepare": "husky install",
-    "build:api": "yarn build:api-utils && tsc ./api/**.ts --esModuleInterop",
-    "build:api-utils": "tsc ./utils/**/**.ts",
-    "buildt": "tsc",
     "dev:v": "vercel dev"
   },
   "eslintConfig": {

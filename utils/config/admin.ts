@@ -17,9 +17,9 @@ dotenv.config();
 
 admin.initializeApp({
   credential: admin.credential.cert({
-    projectId: process.env.PROJECT_ID,
+    projectId: process.env.PROJECT_ID?.replace(/\\n/g, "\n"),
     privateKey: process.env.PRIVATE_KEY?.replace(/\\n/g, "\n"),
-    clientEmail: process.env.CLIENT_EMAIL,
+    clientEmail: process.env.CLIENT_EMAIL?.replace(/\\n/g, "\n"),
   }),
 });
 

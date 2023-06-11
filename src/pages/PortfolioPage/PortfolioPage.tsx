@@ -1,4 +1,4 @@
-import { ReactNode, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { x } from "@xstyled/styled-components";
 import { Box, Button, Tab, Tabs, Typography } from "@mui/material";
 import { TickerSearch } from "../../components/TickerSearch";
@@ -74,9 +74,7 @@ export function PortfolioPage() {
     } as PortfolioEntry;
     await portfolioEntryService.create(portfolioEntry);
     getEntriesByPortfolioIdQuery.refetch();
-    setQuote(undefined);
   };
-
   const onUpdatesDrawerClose = async () => {
     setUpdatesOpen(false);
     getEntriesByPortfolioIdQuery.refetch();

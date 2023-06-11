@@ -3,6 +3,7 @@ import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
+import { useEffect, useState } from "react";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useQuoteStore } from "../../stores";
 import { useNumberOfShares } from "./useNumberOfShares";
@@ -13,9 +14,14 @@ interface FormDialogProps {
 export function FormDialog({ onAdd }: FormDialogProps) {
   const [numberOfShares, setNumberOfShares] = useNumberOfShares();
   const { quote: selectedQuote, setQuote: setSelectedQuote } = useQuoteStore();
+  const [showAddTickerDialog, setShowAddTickerDialog] = useState(false);
+
+  useEffect(() => {
+    setShowAddTickerDialog(!!selectedQuote);
+  }, [selectedQuote]);
 
   return (
-    <Dialog open={!!selectedQuote} onClose={() => setSelectedQuote(undefined)}>
+    <Dialog open={showAddTickerDialog} onClose={() => setSelectedQuote(undefined)}>
       <DialogTitle>
         How many shares of {selectedQuote?.name} ({selectedQuote?.ticker}) do you want to add?
       </DialogTitle>
@@ -23,6 +29,7 @@ export function FormDialog({ onAdd }: FormDialogProps) {
         onSubmit={(e) => {
           e.preventDefault();
           onAdd(numberOfShares);
+          setShowAddTickerDialog(false);
         }}
       >
         <DialogContent>

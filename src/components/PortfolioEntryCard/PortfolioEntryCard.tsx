@@ -126,6 +126,7 @@ export function PortfolioEntryCard({
       <CardContent sx={{ ":last-child": { paddingBottom: 2 } }}>
         <x.div display="flex" alignItems="center" ref={myRef}>
           <Image
+            ticker={groupedEntry.ticker}
             inViewport={inViewport}
             src={`${TickersToWebsites[groupedEntry.ticker] || groupedEntry.website}`}
             height="16"

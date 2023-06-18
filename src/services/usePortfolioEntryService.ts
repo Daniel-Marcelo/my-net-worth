@@ -1,5 +1,4 @@
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { db } from "../firebase";
+import axios from "axios";
 import { PortfolioEntry } from "../models";
 import { DBService, useDBService } from "./useDBService";
 
@@ -11,16 +10,10 @@ export const usePortfolioEntryService = (): PortfolioEntryService => {
   const dbService = useDBService<PortfolioEntry>(portfolioCollection);
 
   const firebaseGetAllByPortfolioId = async (portfolioId: string) => {
-    const q = query(collection(db, portfolioCollection), where("portfolioId", "==", portfolioId));
-    const querySnapshot = await getDocs(q);
-    const items = [] as PortfolioEntry[];
-    querySnapshot.forEach((doc) => {
-      items.push({
-        id: doc.id,
-        ...(doc.data() as PortfolioEntry),
-      });
-    });
-    return items;
+    const response = await axios.get<PortfolioEntry[]>(
+      `${process.env.REACT_APP_API_URL}/portfolio-entries/${portfolioId}`
+    );
+    return response.data;
   };
 
   const portfolioEntryService = {

@@ -5,7 +5,7 @@ import cors from "cors";
 import path from "path";
 import quoteRouter from "../utils/quote/quote-routes";
 import portfolioEntriesRouter from "../utils/portfolio-entries/portfolio-entries.routes";
-import { db } from "../utils/config/admin";
+
 const app = express();
 dotenv.config();
 app.use(cors());
@@ -26,24 +26,6 @@ app.use("/api/portfolio-entries", portfolioEntriesRouter);
 app.get("");
 console.log("__dirname", __dirname);
 console.log("__dirname", `${__dirname}/../build/index.html`);
-
-app.get("/api/books", async (req, res) => {
-  const booksRef = db.collection("portfolioEntry");
-  try {
-    console.log("inside");
-    booksRef.get().then((snapshot: any) => {
-      const data = snapshot.docs.map((doc: any) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      // console.log(data);
-      res.end(JSON.stringify({ status: data }));
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ general: "Something went wrong, please try again" });
-  }
-});
 
 app.get("*", (req, res) => {
   // console.log(res);

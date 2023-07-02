@@ -84,9 +84,8 @@ export function PortfolioPage() {
     setSelectedTicker(ticker);
   };
 
-  const onClickConfirmDelete = (ticker: string) => {
-    // eslint-disable-next-line no-console
-    console.log(ticker);
+  const onClickConfirmDelete = async () => {
+    await portfolioEntryService.delete2(...selectedGroupEntry.ids);
   };
 
   return (

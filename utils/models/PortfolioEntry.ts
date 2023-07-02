@@ -16,3 +16,7 @@ export interface GroupedPortfolioEntry extends FirebaseItem {
   lastUpdated: string[];
   website: string;
 }
+
+export interface DeletePortfolioEntriesRequest {
+  ids: string[];
+}

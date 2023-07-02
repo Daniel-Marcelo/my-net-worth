@@ -21,8 +21,10 @@ export const useGroupedEntries = () => {
         if (acc[entry.ticker]) {
           acc[entry.ticker].totalShares += entry.numberOfShares;
           acc[entry.ticker].lastUpdated.push(entry.createdAt);
+          acc[entry.ticker].ids.push(entry.id);
         } else {
           acc[entry.ticker] = {
+            ids: [entry.id],
             ticker: entry.ticker,
             totalShares: entry.numberOfShares,
             name: entry.name,

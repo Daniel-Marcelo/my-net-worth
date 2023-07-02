@@ -16,7 +16,8 @@
     "isolatedModules": true,
     "noEmit": false,
     "jsx": "react-jsx",
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "outDir": "generated"
   },
   "include": ["../utils"]
 }

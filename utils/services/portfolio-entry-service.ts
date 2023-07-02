@@ -1,4 +1,4 @@
-import { PortfolioEntry } from "../portfolio-entries/PortfolioEntry";
+import { PortfolioEntry } from "../models/PortfolioEntry";
 import { FirebaseService } from "./firebase-service";
 
 class PortfolioEntryService extends FirebaseService<PortfolioEntry> {

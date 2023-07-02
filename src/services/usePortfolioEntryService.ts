@@ -7,7 +7,7 @@ interface PortfolioEntryService extends DBService<PortfolioEntry> {
 }
 const portfolioCollection = "portfolioEntry";
 export const usePortfolioEntryService = (): PortfolioEntryService => {
-  const dbService = useDBService<PortfolioEntry>(portfolioCollection);
+  const dbService = useDBService<PortfolioEntry>(portfolioCollection, `portfolio-entries`);
 
   const firebaseGetAllByPortfolioId = async (portfolioId: string) => {
     const response = await axios.get<PortfolioEntry[]>(

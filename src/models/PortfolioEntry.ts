@@ -10,6 +10,7 @@ export interface PortfolioEntry extends FirebaseItem {
 }
 
 export interface GroupedPortfolioEntry extends FirebaseItem {
+  ids: string[];
   ticker: string;
   name: string;
   totalShares: number;

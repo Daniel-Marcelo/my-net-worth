@@ -5,14 +5,20 @@ import { DeletePortfolioEntriesRequest, PortfolioEntry } from "../models/Portfol
 const portfolioEntriesRouter = express.Router();
 
 portfolioEntriesRouter.get("/:id", async (req, res) => {
-  const portfolioId = req.params.id;
-  const data = await portfolioEntryService.getEntriesByPortfolioId(portfolioId);
+  const { id } = req.params;
+  const data = await portfolioEntryService.get(id);
   res.send(JSON.stringify(data));
 });
 
 portfolioEntriesRouter.get("", async (req, res) => {
-  const data = await portfolioEntryService.getList();
-  res.send(JSON.stringify(data));
+  const { portfolioId } = req.query;
+  if (portfolioId) {
+    const data = await portfolioEntryService.getEntriesByPortfolioId(portfolioId as string);
+    res.send(JSON.stringify(data));
+  } else {
+    const data = await portfolioEntryService.getList();
+    res.send(JSON.stringify(data));
+  }
 });
 
 portfolioEntriesRouter.post("", async (req, res) => {

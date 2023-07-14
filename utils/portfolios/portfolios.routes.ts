@@ -1,6 +1,6 @@
 import * as express from "express";
-import { portfolioService } from "./portfolio-service";
 import { DeletePortfolioEntriesRequest, PortfolioEntry } from "../models/PortfolioEntry";
+import { portfolioService } from "./portfolio-service";
 
 const portfoliosRouter = express.Router();
 

@@ -27,12 +27,12 @@ app.use("/api/portfolio-entries", portfolioEntriesRouter);
 app.use("/api/portfolios", portfoliosRouter);
 
 app.get("");
-console.log("__dirname", __dirname);
-console.log("__dirname", `${__dirname}/../build/index.html`);
+// console.log("__dirname", __dirname);
+// console.log("__dirname", `${__dirname}/../build/index.html`);
 
 app.get("*", (req, res) => {
   // console.log(res);
-  console.log(req.body);
+  // console.log(req.body);
   console.log("catch all triggered");
   res.sendFile(path.join(`${__dirname}/../build/index.html`));
 });

@@ -31,11 +31,13 @@ export const useInvestmentCalculator = () => {
       allYearsContributions += thisYearContributions;
 
       const normalizedContributions = +(thisYearContributions + y === 1 ? 0 : allYearsContributions);
+      const interest = +(total - normalizedContributions - startingAmount).toFixed(0);
       items.push({
         name: `Year ${y}`,
         startingAmount,
-        interest: +(total - normalizedContributions - startingAmount).toFixed(0),
+        interest,
         contributions: +normalizedContributions.toFixed(0),
+        total: startingAmount + interest + normalizedContributions,
       });
     }
     return [items, total] as const;

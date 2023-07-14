@@ -17,6 +17,7 @@ export interface BarChartEntry {
   startingAmount: number;
   interest: number;
   contributions: number;
+  total?: number;
 }
 
 export enum ChartEntry {

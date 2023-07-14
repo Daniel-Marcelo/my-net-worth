@@ -1,22 +1,13 @@
 import { useEffect, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
 import { GroupedPortfolioEntry } from "../../models";
-import { useGetEntriesByPortfolioId, usePortfolioIdFromUrl } from "../../hooks";
-import { portfolioEntriesApi } from "../../services/portfolio-entries.api";
+import { useGetEntriesByPortfolioId } from "../../hooks";
 
 export const useGroupedEntries = () => {
-  const id = usePortfolioIdFromUrl();
   const getEntriesByPortfolioIdQuery = useGetEntriesByPortfolioId();
   const [groupedEntries, setGroupedEntries] = useState<GroupedPortfolioEntry[]>([]);
 
-  const m = useMutation({
-    mutationKey: [id, "groiped"],
-    mutationFn: () => portfolioEntriesApi.getGroupedEntries(id),
-  });
-
   useEffect(() => {
     if (getEntriesByPortfolioIdQuery.data?.length) {
-      m.mutate();
       const groupedEntryList = getEntriesByPortfolioIdQuery.data.reduce((acc, entry) => {
         if (acc[entry.ticker]) {
           acc[entry.ticker].totalShares += entry.numberOfShares;

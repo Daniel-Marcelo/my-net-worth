@@ -29,6 +29,7 @@ import { ContributionPeriodLabel, ContributionPeriodValue } from "../../models/C
 import { useInvestmentCalculator } from "./useInvestmentCalculator";
 import { useLabelize } from "../../hooks/useLabelize";
 import { useFormatNumber } from "../../hooks/useFormatNumber";
+import { CalculatorInformationSummary } from "../../components/CalculatorInformationSummary";
 
 const calculatorColours = {
   startingAmount: "#0088FE",
@@ -196,6 +197,22 @@ export function Calculator() {
       </Button>
       {chartData.length ? (
         <>
+          <Card
+            sx={{
+              paddingY: 4,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            variant="outlined"
+          >
+            <CalculatorInformationSummary
+              values={[5, 8, 10, 15, 20, 30, 40]}
+              currency={currency}
+              chartData={chartData}
+            />
+          </Card>
           <Card sx={{ height: "400px" }} variant="outlined">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData} margin={{ right: 16, top: 12 }}>
@@ -210,7 +227,7 @@ export function Calculator() {
               </BarChart>
             </ResponsiveContainer>
           </Card>
-          <Card sx={{ height: "400px" }} variant="outlined">
+          <Card sx={{ height: "400px", marginBottom: 2 }} variant="outlined">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie data={pieData} cx="50%" cy="50%" outerRadius={120} fill="#8884d8" dataKey="value">

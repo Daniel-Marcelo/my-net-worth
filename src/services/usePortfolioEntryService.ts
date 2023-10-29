@@ -9,11 +9,14 @@ const portfolioCollection = "portfolioEntry";
 export const usePortfolioEntryService = (): PortfolioEntryService => {
   const dbService = useDBService<PortfolioEntry>(portfolioCollection, `portfolio-entries`);
 
-  const firebaseGetAllByPortfolioId = async (portfolioId: string) => {
-    const response = await axios.get<PortfolioEntry[]>(
-      `${process.env.REACT_APP_API_URL}/portfolio-entries/${portfolioId}`
-    );
-    return response.data;
+  const firebaseGetAllByPortfolioId = async (portfolioId?: string) => {
+    if (portfolioId) {
+      const response = await axios.get<PortfolioEntry[]>(
+        `${process.env.REACT_APP_API_URL}/portfolio-entries/${portfolioId}`
+      );
+      return response.data;
+    }
+    return [];
   };
 
   const portfolioEntryService = {

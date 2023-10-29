@@ -20,12 +20,14 @@ const getPriceHistory = async (
   interval = PriceChartInterval.FifteenMins
 ) => {
   const url = `${baseUrl()}/chart/${ticker}?range=${range}&includePrePost=false&interval=${interval}&${cors}&${tsrc}`;
+  console.log(url);
   const response = await axios.get<PriceHistoryResponse>(url);
   return response.data;
 };
 
 const getModules = async (stock: string, modules: string[]) => {
   const url = `${baseUrl(1, 10)}/quoteSummary/${stock}?modules=${modules.join(",")}`;
+  console.log("Making request", url);
   const response = await axios.get<GetModulesResponse>(url);
   return response.data.quoteSummary.result[0];
 };

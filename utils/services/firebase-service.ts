@@ -44,6 +44,7 @@ export class FirebaseService<T> {
   }
 
   async get(id: string) {
+    console.log("Getting item by id", id);
     const document = await this.collectionRef.doc(id).get();
     const item = document.data() as T;
 

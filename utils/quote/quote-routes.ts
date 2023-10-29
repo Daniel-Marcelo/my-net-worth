@@ -15,6 +15,7 @@ router.get("/ticker", async (req, res) => {
           ticker: quote.symbol,
           name: quote.shortname,
           exchangeDisplay: quote.exchDisp,
+          ...quote,
         }))
     )
   );

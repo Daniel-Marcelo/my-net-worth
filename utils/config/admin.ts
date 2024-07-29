@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+console.log(process.env.PRIVATE_KEY);
+
 admin.initializeApp({
   credential: admin.credential.cert({
     projectId: process.env.PROJECT_ID?.replace(/\\n/g, "\n"),
